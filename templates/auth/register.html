@@ -1,0 +1,133 @@
+{% extends "base.html" %}
+
+{% block title %}Register - Virtual Daycare Platform{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+  <div class="row justify-content-center">
+    <div class="col-md-8 col-lg-7">
+      <div class="card card-custom p-4 p-md-5 shadow-sm">
+        <div class="text-center mb-4">
+          <div class="brand-icon mx-auto mb-3" style="width: 50px; height: 50px; font-size: 1.6rem;">
+            <i class="bi bi-person-plus-fill"></i>
+          </div>
+          <h3 class="fw-bold text-dark mb-1">Create an Account</h3>
+          <p class="text-muted small">Join our daycare community as a parent or caretaker</p>
+        </div>
+
+        <form method="POST" action="{{ url_for('auth.register') }}">
+          <!-- Role Selection Radios -->
+          <div class="mb-4">
+            <label class="form-label fw-semibold small text-secondary d-block">I am registering as:</label>
+            <div class="row g-2">
+              <div class="col-6">
+                <input type="radio" class="btn-check" name="role" id="roleParent" value="parent" checked autocomplete="off" onchange="toggleChildFields()">
+                <label class="btn btn-outline-primary w-100 py-2 rounded-3 text-center" for="roleParent">
+                  <i class="bi bi-people-fill d-block fs-5 mb-1"></i>
+                  <span class="fw-bold">Parent / Guardian</span>
+                </label>
+              </div>
+              <div class="col-6">
+                <input type="radio" class="btn-check" name="role" id="roleCaregiver" value="caregiver" autocomplete="off" onchange="toggleChildFields()">
+                <label class="btn btn-outline-success w-100 py-2 rounded-3 text-center" for="roleCaregiver">
+                  <i class="bi bi-heart-pulse-fill d-block fs-5 mb-1"></i>
+                  <span class="fw-bold">Caretaker / Staff</span>
+                </label>
+              </div>
+            </div>
+          </div>
+
+          <div id="caregiverNotice" class="alert alert-warning small d-none mb-3">
+            <i class="bi bi-info-circle me-1"></i> <strong>Note:</strong> Caretaker accounts require review and approval by the Daycare Director before child records can be accessed.
+          </div>
+
+          <!-- User Personal Information -->
+          <div class="row g-3 mb-3">
+            <div class="col-md-6">
+              <label for="name" class="form-label fw-semibold small text-secondary">Full Name *</label>
+              <input type="text" class="form-control" id="name" name="name" placeholder="e.g. John Doe" required>
+            </div>
+            <div class="col-md-6">
+              <label for="phone" class="form-label fw-semibold small text-secondary">Phone Number</label>
+              <input type="tel" class="form-control" id="phone" name="phone" placeholder="+1 (555) 000-0000">
+            </div>
+          </div>
+
+          <div class="mb-3">
+            <label for="email" class="form-label fw-semibold small text-secondary">Email Address *</label>
+            <input type="email" class="form-control" id="email" name="email" placeholder="name@example.com" required>
+          </div>
+
+          <div class="row g-3 mb-4">
+            <div class="col-md-6">
+              <label for="password" class="form-label fw-semibold small text-secondary">Password *</label>
+              <input type="password" class="form-control" id="password" name="password" placeholder="Min. 6 characters" required>
+            </div>
+            <div class="col-md-6">
+              <label for="confirm_password" class="form-label fw-semibold small text-secondary">Confirm Password *</label>
+              <input type="password" class="form-control" id="confirm_password" name="confirm_password" placeholder="Repeat password" required>
+            </div>
+          </div>
+
+          <!-- Child Profile Information (Optional for Parent Onboarding) -->
+          <div id="childFieldsSection" class="p-3 bg-light rounded-3 border mb-4">
+            <div class="d-flex align-items-center mb-2">
+              <i class="bi bi-balloon text-primary fs-5 me-2"></i>
+              <h6 class="fw-bold text-dark mb-0">Child Information (Optional - Can add later)</h6>
+            </div>
+            <p class="text-muted small mb-3">Register your first child right now to get started immediately.</p>
+
+            <div class="row g-3 mb-2">
+              <div class="col-md-7">
+                <label for="child_name" class="form-label small text-secondary">Child's Full Name</label>
+                <input type="text" class="form-control form-control-sm" id="child_name" name="child_name" placeholder="e.g. Liam Miller">
+              </div>
+              <div class="col-md-5">
+                <label for="child_dob" class="form-label small text-secondary">Date of Birth</label>
+                <input type="date" class="form-control form-control-sm" id="child_dob" name="child_dob">
+              </div>
+            </div>
+
+            <div class="mb-2">
+              <label for="allergies" class="form-label small text-secondary">Known Allergies / Diet Restrictions</label>
+              <input type="text" class="form-control form-control-sm" id="allergies" name="allergies" placeholder="e.g. Peanuts, Gluten, Dairy (or None)">
+            </div>
+
+            <div>
+              <label for="notes" class="form-label small text-secondary">Special Notes (Nap habits, soothing toys)</label>
+              <textarea class="form-control form-control-sm" id="notes" name="notes" rows="2" placeholder="e.g. Loves sleeping with blanket"></textarea>
+            </div>
+          </div>
+
+          <button type="submit" class="btn btn-primary w-100 py-2 rounded-pill fw-semibold shadow-sm">
+            Create My Account
+          </button>
+        </form>
+
+        <div class="text-center mt-3 pt-3 border-top">
+          <p class="text-muted small mb-0">
+            Already registered? 
+            <a href="{{ url_for('auth.login') }}" class="fw-semibold text-primary text-decoration-none">Sign in here</a>
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+function toggleChildFields() {
+  const isCaregiver = document.getElementById('roleCaregiver').checked;
+  const childSection = document.getElementById('childFieldsSection');
+  const caregiverNotice = document.getElementById('caregiverNotice');
+  
+  if (isCaregiver) {
+    childSection.classList.add('d-none');
+    caregiverNotice.classList.remove('d-none');
+  } else {
+    childSection.classList.remove('d-none');
+    caregiverNotice.classList.add('d-none');
+  }
+}
+</script>
+{% endblock %}

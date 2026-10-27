@@ -1,0 +1,188 @@
+{% extends "base.html" %}
+
+{% block title %}{{ child.name }} - Caretaker View{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+  <!-- Child Profile Header Card -->
+  <div class="card card-custom p-4 mb-4 shadow-sm bg-white">
+    <div class="d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-center gap-3">
+      <div class="d-flex align-items-center gap-3">
+        <div class="rounded-circle bg-primary-subtle text-primary fw-bold fs-2 d-flex align-items-center justify-content-center" style="width: 72px; height: 72px;">
+          {{ child.name[:1] }}
+        </div>
+        <div>
+          <div class="d-flex align-items-center gap-2">
+            <h3 class="fw-bold text-dark mb-0">{{ child.name }}</h3>
+            <span class="badge bg-light text-muted border text-uppercase">{{ child.age_group }}</span>
+          </div>
+          <p class="text-muted small mb-0">
+            Age: <strong>{{ child.age_string }}</strong> (DOB: {{ child.dob.strftime('%B %d, %Y') if child.dob else 'N/A' }})
+            &bull; Parent: <strong>{{ child.parent.name if child.parent else 'Unassigned' }}</strong> ({{ child.parent.phone or child.parent.email if child.parent else '' }})
+          </p>
+        </div>
+      </div>
+
+      <!-- Action Buttons -->
+      <div class="d-flex flex-wrap gap-2">
+        <a href="{{ url_for('caregiver.log_activity', child_id=child.id) }}" class="btn btn-primary rounded-pill btn-sm px-3 shadow-sm">
+          <i class="bi bi-plus-circle me-1"></i> Log Activity
+        </a>
+        <a href="{{ url_for('caregiver.upload_photo', child_id=child.id) }}" class="btn btn-outline-primary rounded-pill btn-sm px-3">
+          <i class="bi bi-camera me-1"></i> Photo
+        </a>
+        <a href="{{ url_for('messages.thread', child_id=child.id) }}" class="btn btn-outline-secondary rounded-pill btn-sm px-3">
+          <i class="bi bi-chat-dots me-1"></i> Message Parent
+        </a>
+        <a href="{{ url_for('caregiver.emergency_alert', child_id=child.id) }}" class="btn btn-outline-danger rounded-pill btn-sm px-3">
+          <i class="bi bi-exclamation-triangle-fill me-1"></i> Emergency Alert
+        </a>
+      </div>
+    </div>
+
+    <!-- Allergies & Notes Bar -->
+    <div class="row g-3 mt-3 pt-3 border-top">
+      <div class="col-md-6">
+        <strong class="small text-secondary d-block"><i class="bi bi-shield-exclamation text-danger me-1"></i> Allergies / Dietary:</strong>
+        <span class="small {% if child.allergies and child.allergies.lower() != 'none' %}text-danger fw-semibold{% else %}text-muted{% endif %}">
+          {{ child.allergies or 'None reported' }}
+        </span>
+      </div>
+      <div class="col-md-6">
+        <strong class="small text-secondary d-block"><i class="bi bi-journal-text text-primary me-1"></i> Care Notes & Routines:</strong>
+        <span class="small text-muted">{{ child.notes or 'No special routines logged.' }}</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Main Grid: Logs on left, Attendance & Photos on right -->
+  <div class="row g-4">
+    <!-- Today's Activity Timeline -->
+    <div class="col-lg-7">
+      <div class="card card-custom h-100">
+        <div class="card-header card-header-clean d-flex justify-content-between align-items-center">
+          <span class="fw-bold text-dark">
+            <i class="bi bi-clock-history text-primary me-2"></i> Today's Activity Logs ({{ today.strftime('%b %d, %Y') }})
+          </span>
+          <a href="{{ url_for('caregiver.log_activity', child_id=child.id) }}" class="btn btn-sm btn-primary rounded-pill px-3">
+            <i class="bi bi-plus-lg me-1"></i> Add Entry
+          </a>
+        </div>
+        <div class="card-body">
+          {% if today_logs %}
+            <div class="timeline-container">
+              {% for log in today_logs %}
+                <div class="timeline-item">
+                  <div class="timeline-icon">
+                    <i class="bi {{ log.icon_class }}"></i>
+                  </div>
+                  <div class="timeline-content">
+                    <div class="d-flex justify-content-between align-items-center mb-1">
+                      <div>
+                        <span class="badge badge-pill-custom {{ log.badge_class }} me-2 text-uppercase">{{ log.type }}</span>
+                        <strong class="text-dark">{{ log.title }}</strong>
+                      </div>
+                      <small class="text-muted">{{ log.formatted_time }}</small>
+                    </div>
+                    {% if log.details %}
+                      <p class="text-secondary small mb-0 mt-1" style="white-space: pre-wrap;">{{ log.details }}</p>
+                    {% endif %}
+                    <small class="text-muted d-block mt-2" style="font-size: 0.7rem;">
+                      Logged by {{ log.author.name if log.author else 'Caretaker' }}
+                    </small>
+                  </div>
+                </div>
+              {% endfor %}
+            </div>
+          {% else %}
+            <div class="text-center py-5 text-muted">
+              <i class="bi bi-calendar2-plus fs-2 d-block mb-2"></i>
+              No activities logged yet today. Click "Add Entry" to log meals, naps, diaper, mood, or milestones.
+            </div>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+
+    <!-- Right Side: Today's Attendance & Photos -->
+    <div class="col-lg-5">
+      <!-- Attendance Card -->
+      <div class="card card-custom mb-4">
+        <div class="card-header card-header-clean d-flex justify-content-between align-items-center">
+          <span class="fw-bold text-dark"><i class="bi bi-calendar-check text-success me-2"></i> Today's Attendance</span>
+          <a href="{{ url_for('caregiver.mark_child_attendance', child_id=child.id) }}" class="small text-decoration-none">Manage</a>
+        </div>
+        <div class="card-body p-3 text-center">
+          {% if today_att %}
+            <div class="d-flex justify-content-around align-items-center my-2 p-3 bg-light rounded-3 border">
+              <div>
+                <small class="text-muted d-block text-uppercase" style="font-size: 0.7rem;">Check In</small>
+                <strong class="fs-5 text-dark">{{ today_att.formatted_check_in }}</strong>
+              </div>
+              <div class="border-start ps-3">
+                <small class="text-muted d-block text-uppercase" style="font-size: 0.7rem;">Check Out</small>
+                <strong class="fs-5 text-dark">{{ today_att.formatted_check_out }}</strong>
+              </div>
+            </div>
+
+            <div class="mt-3 d-flex justify-content-center gap-2">
+              {% if not today_att.check_in_time %}
+                <form method="POST" action="{{ url_for('caregiver.mark_child_attendance', child_id=child.id) }}">
+                  <input type="hidden" name="action" value="check_in">
+                  <button type="submit" class="btn btn-sm btn-success rounded-pill px-3">
+                    <i class="bi bi-box-arrow-in-right me-1"></i> Check In Now
+                  </button>
+                </form>
+              {% elif not today_att.check_out_time %}
+                <form method="POST" action="{{ url_for('caregiver.mark_child_attendance', child_id=child.id) }}">
+                  <input type="hidden" name="action" value="check_out">
+                  <button type="submit" class="btn btn-sm btn-info text-white rounded-pill px-3">
+                    <i class="bi bi-box-arrow-right me-1"></i> Pick Up / Check Out
+                  </button>
+                </form>
+              {% else %}
+                <span class="badge bg-secondary p-2 rounded-pill"><i class="bi bi-check-all me-1"></i> Day Completed</span>
+              {% endif %}
+            </div>
+          {% else %}
+            <p class="text-muted small mb-3">No attendance marked for today yet.</p>
+            <form method="POST" action="{{ url_for('caregiver.mark_child_attendance', child_id=child.id) }}">
+              <input type="hidden" name="action" value="check_in">
+              <button type="submit" class="btn btn-sm btn-success rounded-pill px-4">
+                <i class="bi bi-box-arrow-in-right me-1"></i> Check In Child
+              </button>
+            </form>
+          {% endif %}
+        </div>
+      </div>
+
+      <!-- Recent Photos -->
+      <div class="card card-custom">
+        <div class="card-header card-header-clean d-flex justify-content-between align-items-center">
+          <span class="fw-bold text-dark"><i class="bi bi-images text-primary me-2"></i> Recent Photos</span>
+          <a href="{{ url_for('caregiver.upload_photo', child_id=child.id) }}" class="small text-decoration-none">Upload</a>
+        </div>
+        <div class="card-body p-3">
+          {% if recent_photos %}
+            <div class="row g-2">
+              {% for p in recent_photos %}
+                <div class="col-6">
+                  <div class="card photo-card h-100 border">
+                    <img src="{{ url_for('static', filename=p.filepath) }}" alt="Child Photo" class="img-fluid" style="height: 120px; object-fit: cover;">
+                    <div class="p-2">
+                      <small class="d-block text-truncate fw-medium text-dark" style="font-size: 0.75rem;">{{ p.caption or 'Activity photo' }}</small>
+                      <small class="text-muted" style="font-size: 0.65rem;">{{ p.formatted_time }}</small>
+                    </div>
+                  </div>
+                </div>
+              {% endfor %}
+            </div>
+          {% else %}
+            <p class="text-muted small text-center py-4 mb-0">No photos shared yet. Click "Upload" to share a picture with the parent.</p>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

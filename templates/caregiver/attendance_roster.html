@@ -1,0 +1,107 @@
+{% extends "base.html" %}
+
+{% block title %}Daily Attendance Roster{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+  <div class="d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-center gap-2 mb-4 pb-2 border-bottom">
+    <div>
+      <h2 class="fw-bold text-dark mb-1">Daily Attendance Roster</h2>
+      <p class="text-muted small mb-0">Date: <strong>{{ today.strftime('%A, %B %d, %Y') }}</strong> &bull; Quick classroom attendance check-in & check-out</p>
+    </div>
+    <div class="d-flex gap-2">
+      <a href="{{ url_for('caregiver.dashboard') }}" class="btn btn-outline-secondary btn-sm rounded-pill px-3">
+        &larr; Back to Dashboard
+      </a>
+    </div>
+  </div>
+
+  <div class="card card-custom">
+    <div class="card-body p-0">
+      {% if children %}
+        <div class="table-responsive">
+          <table class="table table-hover align-middle mb-0">
+            <thead class="table-light small text-muted">
+              <tr>
+                <th>Child</th>
+                <th>Assigned Room / Group</th>
+                <th>Status Today</th>
+                <th>Check In Time</th>
+                <th>Check Out Time</th>
+                <th class="text-end">1-Click Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for child in children %}
+                {% set att = child.today_attendance %}
+                <tr>
+                  <td>
+                    <div class="d-flex align-items-center gap-2">
+                      <div class="rounded-circle bg-primary-subtle text-primary fw-bold" style="width: 38px; height: 38px; display: flex; align-items: center; justify-content: center;">
+                        {{ child.name[:1] }}
+                      </div>
+                      <div>
+                        <strong class="text-dark d-block">{{ child.name }}</strong>
+                        <small class="text-muted">{{ child.age_string }}</small>
+                      </div>
+                    </div>
+                  </td>
+                  <td>
+                    <span class="badge bg-light text-muted border text-uppercase">{{ child.age_group }}</span>
+                  </td>
+                  <td>
+                    {% if child.is_checked_in %}
+                      <span class="badge bg-success rounded-pill px-2 py-1"><i class="bi bi-check-circle me-1"></i> In Daycare</span>
+                    {% elif child.is_checked_out %}
+                      <span class="badge bg-secondary rounded-pill px-2 py-1"><i class="bi bi-box-arrow-right me-1"></i> Picked Up</span>
+                    {% elif att and att.status == 'absent' %}
+                      <span class="badge bg-danger rounded-pill px-2 py-1">Absent</span>
+                    {% else %}
+                      <span class="badge bg-light text-muted border rounded-pill px-2 py-1">Not Arrived</span>
+                    {% endif %}
+                  </td>
+                  <td class="small fw-semibold text-dark">
+                    {{ att.formatted_check_in if att else '-' }}
+                  </td>
+                  <td class="small fw-semibold text-dark">
+                    {{ att.formatted_check_out if att else '-' }}
+                  </td>
+                  <td class="text-end">
+                    <div class="d-inline-flex gap-1">
+                      {% if not att or not att.check_in_time %}
+                        <form method="POST" action="{{ url_for('caregiver.mark_child_attendance', child_id=child.id) }}" class="d-inline">
+                          <input type="hidden" name="action" value="check_in">
+                          <button type="submit" class="btn btn-sm btn-success rounded-pill px-3 shadow-sm">
+                            <i class="bi bi-box-arrow-in-right me-1"></i> Check In
+                          </button>
+                        </form>
+                      {% elif not att.check_out_time %}
+                        <form method="POST" action="{{ url_for('caregiver.mark_child_attendance', child_id=child.id) }}" class="d-inline">
+                          <input type="hidden" name="action" value="check_out">
+                          <button type="submit" class="btn btn-sm btn-info text-white rounded-pill px-3 shadow-sm">
+                            <i class="bi bi-box-arrow-right me-1"></i> Check Out
+                          </button>
+                        </form>
+                      {% else %}
+                        <span class="badge bg-light text-success border px-2 py-1 small"><i class="bi bi-check2-all me-1"></i> Done</span>
+                      {% endif %}
+
+                      <a href="{{ url_for('caregiver.mark_child_attendance', child_id=child.id) }}" class="btn btn-sm btn-outline-secondary" title="Details">
+                        <i class="bi bi-pencil"></i>
+                      </a>
+                    </div>
+                  </td>
+                </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      {% else %}
+        <div class="text-center py-5 text-muted">
+          No children assigned to roster.
+        </div>
+      {% endif %}
+    </div>
+  </div>
+</div>
+{% endblock %}

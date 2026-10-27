@@ -1,0 +1,1577 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Virtual Daycare Platform - Project Report</title>
+<style>
+@page { size: A4; margin: 2.54cm; }
+body { font-family: 'Times New Roman', Times, serif; font-size: 12pt; line-height: 1.8; color: #000; margin: 0; padding: 0; }
+.title-page { text-align: center; padding-top: 120px; page-break-after: always; }
+.title-page h1 { font-size: 26pt; font-weight: bold; margin-bottom: 30px; letter-spacing: 2px; }
+.title-page h2 { font-size: 16pt; font-weight: bold; margin: 20px 0; }
+.title-page p { font-size: 14pt; margin: 10px 0; }
+.title-page .team { font-size: 13pt; margin: 5px 0; }
+.certificate { text-align: center; padding-top: 80px; page-break-after: always; }
+.certificate h1 { font-size: 22pt; font-weight: bold; margin-bottom: 40px; }
+.certificate p { font-size: 12pt; text-align: justify; margin: 20px 30px; line-height: 2; }
+.acknowledgement { text-align: center; padding-top: 80px; page-break-after: always; }
+.acknowledgement h1 { font-size: 22pt; font-weight: bold; margin-bottom: 40px; }
+.acknowledgement p { font-size: 12pt; text-align: justify; margin: 20px 30px; line-height: 2; }
+.toc { page-break-after: always; }
+.toc h1 { font-size: 18pt; font-weight: bold; text-align: center; margin-bottom: 30px; }
+.toc table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+.toc th { border: 1px solid #000; padding: 8px 12px; font-size: 11pt; text-align: left; font-weight: bold; }
+.toc td { border: 1px solid #000; padding: 6px 12px; font-size: 11pt; }
+.toc .chapter { font-weight: bold; }
+.toc .section { padding-left: 25px; }
+.toc .page { text-align: center; width: 60px; }
+.chapter { page-break-before: always; }
+.chapter h1 { font-size: 16pt; font-weight: bold; border-bottom: 2px solid #000; padding-bottom: 8px; margin-bottom: 20px; }
+.chapter h2 { font-size: 14pt; font-weight: bold; margin: 20px 0 10px 0; }
+.chapter h3 { font-size: 12pt; font-weight: bold; margin: 15px 0 8px 0; }
+.chapter p { font-size: 11pt; text-align: justify; margin: 10px 0; text-indent: 30px; }
+.chapter ul, .chapter ol { margin: 10px 0 10px 40px; }
+.chapter li { font-size: 11pt; margin: 6px 0; text-align: justify; }
+.chapter table { width: 100%; border-collapse: collapse; margin: 15px 0; }
+.chapter th { border: 1px solid #000; padding: 6px 10px; font-size: 10pt; text-align: left; font-weight: bold; }
+.chapter td { border: 1px solid #000; padding: 5px 10px; font-size: 10pt; }
+.chapter pre { font-family: 'Courier New', monospace; font-size: 9pt; margin: 15px 0; padding: 15px; border: 1px solid #000; white-space: pre-wrap; line-height: 1.4; }
+.figure { text-align: center; margin: 20px 0; font-size: 10pt; }
+.figure-title { font-weight: bold; margin-top: 10px; }
+.diagram { font-family: 'Courier New', monospace; font-size: 9pt; text-align: left; margin: 15px 0; padding: 15px; border: 1px solid #000; white-space: pre; line-height: 1.3; }
+.listing { font-family: 'Courier New', monospace; font-size: 9pt; margin: 15px 0; padding: 15px; border: 1px solid #000; white-space: pre-wrap; line-height: 1.4; }
+.listing-title { font-weight: bold; font-size: 10pt; margin: 15px 0 5px 0; }
+</style>
+</head>
+<body>
+
+<!-- TITLE PAGE -->
+<div class="title-page">
+<h1>VIRTUAL DAYCARE PLATFORM</h1>
+<p>Project submitted to the</p>
+<h2>ANNAMALAI UNIVERSITY, CHIDAMBARAM</h2>
+<p>in partial fulfillment of the requirement for the award of the degree of</p>
+<h2>BACHELOR OF COMPUTER APPLICATIONS</h2>
+<br><br>
+<p><strong>Submitted by</strong></p>
+<br>
+<p class="team">BALAJI K &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 24132010500121019</p>
+<p class="team">KAPILDEV P &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 24132010500121052</p>
+<p class="team">NAVEEN E &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 24132010500121075</p>
+<p class="team">RAGUL V &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 24132010500121089</p>
+<p class="team">KUMARAGURU M &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 24132010500121059</p>
+<br><br>
+<p>Under the Guidance of</p>
+<p>Dr.S.MADHANMOHAN M.C.A.,M.B.A.,M.Phil.,Ph.D.</p>
+<p>Assistant Professor &amp; Head</p>
+<p>Department of Computer Application</p>
+<p>Arignar Anna Government Arts College</p>
+<p>Villupuram 605 602</p>
+<br><br>
+<p><strong>ARIGNAR ANNA GOVERNMENT ARTS COLLEGE</strong></p>
+<p>(Affiliated to Annamalai University)</p>
+<p>VILLUPURAM - 605 602</p>
+<p>OCTOBER-2026</p>
+</div>
+
+<!-- CERTIFICATE -->
+<div class="certificate">
+<h1>CERTIFICATE</h1>
+<p>This is to certify that the Project Work entitled <strong>VIRTUAL DAYCARE PLATFORM</strong> submitted in partial fulfillment of requirement for the award of degree of Bachelor of Computer Applications is a bonafide record of the original work done by</p>
+<br>
+<p>BALAJI K &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 24132010500121019</p>
+<p>KAPILDEV P &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 24132010500121052</p>
+<p>NAVEEN E &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 24132010500121075</p>
+<p>RAGUL V &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 24132010500121089</p>
+<p>KUMARAGURU M &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 24132010500121059</p>
+<br>
+<p>Mrs. G. Radhika, M.Sc, M.Phil. (Ph.D.)</p>
+<p>Guest Lecturer Department Of Computer Application</p>
+<p>Arignar Anna Government Arts College</p>
+<p>Villupuram 605 602</p>
+<br>
+<p>During the Period June 2025 - October 2025</p>
+<br><br>
+<p>Signature of the HOD &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Signature of the Guide</p>
+<br>
+<p>Date:</p>
+<br>
+<p>VIVA VOCE Examination for this project Report was held on</p>
+<br>
+<p>Internal Examiner &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; External Examiner</p>
+</div>
+
+<!-- ACKNOWLEDGEMENT -->
+<div class="acknowledgement">
+<h1>ACKNOWLEDGEMENT</h1>
+<p>First and foremost we would like to thank God Almighty for making it possible to complete this project successfully. We are indeed to extend our heartfelt Gratitude and sincere thanks to our beloved principal Dr. R. SHIVAKUMAR M.Sc., M.Phil., Ph.D., who is the guiding light behind every student in our college.</p>
+<br>
+<p>We would like to thank Dr. S. MADHANMOHAN M.C.A., M.B.A., M.Phil., Ph.D., Assistant Professor, Head of the Department, Department of Computer Applications who gave this opportunity to complete this project.</p>
+<br>
+<p>We are extremely thankful to our internal project guide Mrs. G. Radhika, M.Sc, M.Phil. (Ph.D.) Guest Lecturer, Department of Computer Applications for their encouragement and support to finish the project successfully.</p>
+<br>
+<p>Lastly, but most importantly we extend our sincere thanks to other faculty members of Computer Applications Department, our parents, friends, well-wishers and everyone who have helped in the least possible way, for their kind help guidance and suggestions to make this project par excellence.</p>
+<br><br>
+<p>BALAJI K &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 24132010500121019</p>
+<p>KAPILDEV P &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 24132010500121052</p>
+<p>NAVEEN E &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 24132010500121075</p>
+<p>RAGUL V &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 24132010500121089</p>
+<p>KUMARAGURU M &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 24132010500121059</p>
+</div>
+
+<!-- TABLE OF CONTENTS -->
+<div class="toc">
+<h1>TABLE OF CONTENTS</h1>
+<table>
+<tr><th style="width:80px">Chapter</th><th style="width:350px">Title</th><th class="page">Page</th></tr>
+<tr><td></td><td></td><td></td></tr>
+<tr><td class="chapter">1</td><td class="chapter">INTRODUCTION</td><td class="page">1</td></tr>
+<tr><td></td><td class="section">1.1 Introduction</td><td class="page">1</td></tr>
+<tr><td></td><td class="section">1.2 Objective of the Project</td><td class="page">2</td></tr>
+<tr><td></td><td class="section">1.3 Scope of the Project</td><td class="page">3</td></tr>
+<tr><td></td><td class="section">1.4 Methodology Used</td><td class="page">4</td></tr>
+<tr><td></td><td class="section">1.5 Technology Used</td><td class="page">5</td></tr>
+<tr><td></td><td class="section">1.6 Conclusion</td><td class="page">6</td></tr>
+<tr><td></td><td></td><td></td></tr>
+<tr><td class="chapter">2</td><td class="chapter">SYSTEM ANALYSIS</td><td class="page">7</td></tr>
+<tr><td></td><td class="section">2.1 Introduction</td><td class="page">7</td></tr>
+<tr><td></td><td class="section">2.2 Existing System</td><td class="page">7</td></tr>
+<tr><td></td><td class="section">2.3 Problem Definition</td><td class="page">8</td></tr>
+<tr><td></td><td class="section">2.4 Feasibility Study</td><td class="page">9</td></tr>
+<tr><td></td><td class="section">2.5 Functional Requirements</td><td class="page">11</td></tr>
+<tr><td></td><td class="section">2.6 Non-Functional Requirements</td><td class="page">13</td></tr>
+<tr><td></td><td class="section">2.7 Use Case Diagram</td><td class="page">14</td></tr>
+<tr><td></td><td class="section">2.8 Context Level Data Flow Diagram</td><td class="page">15</td></tr>
+<tr><td></td><td></td><td></td></tr>
+<tr><td class="chapter">3</td><td class="chapter">SYSTEM DESIGN</td><td class="page">16</td></tr>
+<tr><td></td><td class="section">3.1 Three-Tier Architecture</td><td class="page">16</td></tr>
+<tr><td></td><td class="section">3.2 Data Flow Diagram</td><td class="page">17</td></tr>
+<tr><td></td><td class="section">3.3 Entity Relationship Design</td><td class="page">18</td></tr>
+<tr><td></td><td class="section">3.4 Class Design</td><td class="page">20</td></tr>
+<tr><td></td><td class="section">3.5 Control Flow Diagrams</td><td class="page">22</td></tr>
+<tr><td></td><td class="section">3.6 Overall System Flow</td><td class="page">24</td></tr>
+<tr><td></td><td class="section">3.7 Database Design</td><td class="page">25</td></tr>
+<tr><td></td><td class="section">3.8 User Interface Design</td><td class="page">30</td></tr>
+<tr><td></td><td></td><td></td></tr>
+<tr><td class="chapter">4</td><td class="chapter">IMPLEMENTATION</td><td class="page">31</td></tr>
+<tr><td></td><td class="section">4.1 Development Environment</td><td class="page">31</td></tr>
+<tr><td></td><td class="section">4.2 Project Structure</td><td class="page">32</td></tr>
+<tr><td></td><td class="section">4.3 Authentication and Authorization</td><td class="page">34</td></tr>
+<tr><td></td><td class="section">4.4 Activity Logging Module</td><td class="page">37</td></tr>
+<tr><td></td><td class="section">4.5 Attendance Management</td><td class="page">40</td></tr>
+<tr><td></td><td class="section">4.6 Real-Time Messaging</td><td class="page">43</td></tr>
+<tr><td></td><td class="section">4.7 Photo Management</td><td class="page">46</td></tr>
+<tr><td></td><td class="section">4.8 Notification System</td><td class="page">48</td></tr>
+<tr><td></td><td class="section">4.9 Security Implementation</td><td class="page">50</td></tr>
+<tr><td></td><td></td><td></td></tr>
+<tr><td class="chapter">5</td><td class="chapter">TESTING</td><td class="page">53</td></tr>
+<tr><td></td><td class="section">5.1 Testing Strategy</td><td class="page">53</td></tr>
+<tr><td></td><td class="section">5.2 Test Cases and Results</td><td class="page">55</td></tr>
+<tr><td></td><td class="section">5.3 Test Outcome</td><td class="page">60</td></tr>
+<tr><td></td><td></td><td></td></tr>
+<tr><td class="chapter">6</td><td class="chapter">CONCLUSION AND FUTURE ENHANCEMENTS</td><td class="page">61</td></tr>
+<tr><td></td><td class="section">6.1 Conclusion</td><td class="page">61</td></tr>
+<tr><td></td><td class="section">6.2 Limitations of the System</td><td class="page">62</td></tr>
+<tr><td></td><td class="section">6.3 Future Enhancements</td><td class="page">63</td></tr>
+<tr><td></td><td></td><td></td></tr>
+<tr><td></td><td class="chapter">REFERENCES</td><td class="page">64</td></tr>
+</table>
+</div>
+
+<!-- LIST OF FIGURES -->
+<div class="chapter">
+<h1>LIST OF FIGURES</h1>
+<table>
+<tr><th style="width:100px">Figure No.</th><th>Title</th></tr>
+<tr><td>2.1</td><td>Use Case Diagram of Virtual Daycare Platform</td></tr>
+<tr><td>2.2</td><td>Context Level Data Flow Diagram</td></tr>
+<tr><td>3.1</td><td>Three-Tier Architecture of Virtual Daycare Platform</td></tr>
+<tr><td>3.2</td><td>Data Flow Diagram (Level 0)</td></tr>
+<tr><td>3.3</td><td>Entity Relationship Diagram</td></tr>
+<tr><td>3.4</td><td>Class Diagram</td></tr>
+<tr><td>3.5</td><td>Activity Diagram - Parent Viewing Timeline</td></tr>
+<tr><td>3.6</td><td>Sequence Diagram - Activity Logging and Notification</td></tr>
+<tr><td>3.7</td><td>Overall System Flow Diagram</td></tr>
+<tr><td>4.1</td><td>Login Page</td></tr>
+<tr><td>4.2</td><td>Parent Registration Page</td></tr>
+<tr><td>4.3</td><td>Admin Dashboard</td></tr>
+<tr><td>4.4</td><td>Caregiver Dashboard</td></tr>
+<tr><td>4.5</td><td>Parent Dashboard</td></tr>
+<tr><td>4.6</td><td>Activity Logging Form</td></tr>
+<tr><td>4.7</td><td>Attendance Roster</td></tr>
+<tr><td>4.8</td><td>Messaging Thread</td></tr>
+<tr><td>4.9</td><td>Photo Gallery</td></tr>
+<tr><td>4.10</td><td>Learning Hub</td></tr>
+</table>
+</div>
+
+<!-- LIST OF TABLES -->
+<div class="chapter">
+<h1>LIST OF TABLES</h1>
+<table>
+<tr><th style="width:100px">Table No.</th><th>Title</th></tr>
+<tr><td>2.1</td><td>Summary of the Feasibility Study</td></tr>
+<tr><td>2.2</td><td>Functional Requirements</td></tr>
+<tr><td>2.3</td><td>Non-Functional Requirements</td></tr>
+<tr><td>3.1</td><td>The Three Tiers</td></tr>
+<tr><td>3.2</td><td>User Table</td></tr>
+<tr><td>3.3</td><td>Child Table</td></tr>
+<tr><td>3.4</td><td>ActivityLog Table</td></tr>
+<tr><td>3.5</td><td>Attendance Table</td></tr>
+<tr><td>3.6</td><td>Message Table</td></tr>
+<tr><td>3.7</td><td>Notification Table</td></tr>
+<tr><td>3.8</td><td>Photo Table</td></tr>
+<tr><td>3.9</td><td>LearningResource Table</td></tr>
+<tr><td>3.10</td><td>Complaint Table</td></tr>
+<tr><td>4.1</td><td>Development and Production Configuration</td></tr>
+<tr><td>4.2</td><td>Files of the Project</td></tr>
+<tr><td>4.3</td><td>Security Measures</td></tr>
+<tr><td>5.1</td><td>Levels of Testing</td></tr>
+<tr><td>5.2</td><td>The Eight Test Classes</td></tr>
+<tr><td>5.3</td><td>Principal Test Cases and Results</td></tr>
+<tr><td>5.4</td><td>Result of the Test Run</td></tr>
+</table>
+</div>
+<!-- CHAPTER 1: INTRODUCTION -->
+<div class="chapter">
+<h1>CHAPTER 1<br>INTRODUCTION</h1>
+
+<h2>1.1 Introduction</h2>
+<p>The Virtual Daycare Platform is a full-stack web application designed to connect daycare administration, classroom caretakers, and parents into one unified, secure platform. The system eliminates manual administrative overhead, digitizes compliance records, and fosters parental trust through transparent, real-time engagement. In the modern era where both parents are often working professionals, the need for a reliable communication channel between daycare staff and parents has become increasingly important. This platform addresses that need by providing a comprehensive digital solution.</p>
+<p>The platform is built using Python 3.11, Flask 3.1, SQLAlchemy ORM, Flask-Login, Flask-SocketIO, and Bootstrap 5. It provides a comprehensive solution for managing daily activities, attendance, communication, and educational resources in early childhood education centers. The application follows a modular blueprint architecture with seven distinct Flask Blueprints, each responsible for a specific domain of the system. This separation ensures maintainability, scalability, and clean code organization.</p>
+<p>The system allows three types of users to interact with the platform: administrators who manage the overall operations, caregivers who handle classroom activities and child care, and parents who monitor their children's progress and communicate with caregivers. Each user role has a dedicated dashboard and specific functionalities tailored to their needs. The platform ensures data privacy through strict role-based access control, ensuring that parents can only access information about their own children and caregivers can only access information about their assigned children.</p>
+
+<h2>1.2 Objective of the Project</h2>
+<p>The main objective of the Virtual Daycare Platform is to automate the core activities of a daycare center including activity logging, attendance tracking, parent-caregiver communication, and administrative management. The key objectives include:</p>
+<ol>
+<li>To design an online childcare management and communication system that bridges the gap between parents and daycare staff.</li>
+<li>To reduce manual effort and paperwork through automation of daily record-keeping tasks.</li>
+<li>To maintain accurate and up-to-date records of children's daily activities including meals, naps, mood changes, diaper changes, and developmental milestones.</li>
+<li>To provide real-time access to data for parents, caregivers, and administrators through role-based dashboards.</li>
+<li>To enhance parent satisfaction with a fast, error-free communication process that keeps them informed about their child's day.</li>
+<li>To build a scalable web application that supports future enhancements and can be deployed on various platforms.</li>
+<li>To implement a secure authentication and authorization system that protects sensitive child data.</li>
+<li>To create a digital attendance system that replaces paper-based registers and provides automated monthly reports.</li>
+</ol>
+
+<h2>1.3 Scope of the Project</h2>
+<p>The scope of this project covers all essential daycare operations related to child management and parent communication. The system includes the following modules and functionalities:</p>
+<p><strong>Authentication Module:</strong> Provides secure login and registration for parents, caregivers, and administrators. Includes password reset functionality with token-based verification and role-based access control. The registration process allows parents to create accounts directly while caregivers require administrator approval before accessing the system.</p>
+<p><strong>Admin Module:</strong> Displays daycare overview with key performance indicators, manages children enrollment and profile editing, handles caregiver approvals and rejections, manages complaint resolution workflow, and maintains the learning curriculum with CRUD operations for educational resources.</p>
+<p><strong>Caregiver Module:</strong> Provides classroom portal for caregivers to log daily activities across six categories (meals, naps, mood, diapers, notes, milestones), manage attendance roster with one-click check-in and check-out, upload photos with captions and categorization, and send emergency alerts to parents with severity levels.</p>
+<p><strong>Parent Module:</strong> Allows parents to view their child's daily timeline with interactive date picker, browse photo gallery with category filtering, view attendance history with monthly percentage calculation, and communicate with caregivers through real-time messaging.</p>
+<p><strong>Messaging Module:</strong> Enables real-time two-way communication between parents and caregivers with WebSocket technology. Messages are scoped to specific child threads ensuring privacy. The system supports emergency alert flagging with severity levels and unread message indicators.</p>
+<p><strong>Learning Hub Module:</strong> Provides educational resources including nursery rhymes, stories, and activities categorized by age group (infant, toddler, preschool). Includes search functionality and full-screen reading mode for better engagement.</p>
+<p>Future enhancements may include features such as payment gateway integration for fee collection, SMS and email notification integration through external services, advanced analytics and reporting dashboards, and mobile application development.</p>
+
+<h2>1.4 Methodology Used</h2>
+<p>The project follows a structured software development lifecycle with clearly defined phases. Each phase was completed before moving to the next, ensuring systematic development and quality assurance.</p>
+<p><strong>Phase 1 - Requirements Analysis:</strong> Understanding the needs of parents, caregivers, and administrators through observation of existing manual processes. Studied the current daycare management workflow and identified pain points including communication gaps, manual record keeping, and lack of real-time updates.</p>
+<p><strong>Phase 2 - System Design:</strong> Creating the architecture, database schema, and interface designs. Designed the three-tier architecture, defined the database entities and relationships, and created wireframes for all user interfaces.</p>
+<p><strong>Phase 3 - Implementation:</strong> Coding the application using Flask and related technologies. Developed each module independently following the blueprint pattern, ensuring clean separation of concerns and maintainable code.</p>
+<p><strong>Phase 4 - Testing:</strong> Verifying all functionality through automated test suites. Created comprehensive test cases covering all user roles, access control, data isolation, and core functionalities.</p>
+<p><strong>Phase 5 - Deployment:</strong> Preparing the application for production use. Configured environment variables, set up the production database, and ensured all security measures are in place.</p>
+
+<h2>1.5 Technology Used</h2>
+<p>The following technologies were used in the development of the Virtual Daycare Platform:</p>
+<table>
+<tr><th>Component</th><th>Technology</th><th>Purpose</th></tr>
+<tr><td>Frontend</td><td>HTML5, CSS3, JavaScript</td><td>User interface and client-side interactivity</td></tr>
+<tr><td>UI Framework</td><td>Bootstrap 5.3</td><td>Responsive design and pre-built components</td></tr>
+<tr><td>Templating</td><td>Jinja2 3.1</td><td>Server-side rendering of dynamic content</td></tr>
+<tr><td>Backend</td><td>Python 3.11, Flask 3.1</td><td>Server-side logic and routing</td></tr>
+<tr><td>ORM</td><td>SQLAlchemy 2.0</td><td>Database abstraction and query building</td></tr>
+<tr><td>Authentication</td><td>Flask-Login 0.6</td><td>Session management and user authentication</td></tr>
+<tr><td>Real-Time</td><td>Flask-SocketIO 5.6</td><td>WebSocket communication for live updates</td></tr>
+<tr><td>Database</td><td>SQLite (SQLAlchemy)</td><td>Data storage and retrieval</td></tr>
+<tr><td>Security</td><td>Werkzeug 3.1</td><td>Password hashing and security utilities</td></tr>
+<tr><td>Deployment</td><td>Gunicorn 26.2</td><td>Production WSGI HTTP server</td></tr>
+</table>
+
+<h2>1.6 Conclusion</h2>
+<p>The Virtual Daycare Platform represents a comprehensive solution to the challenges faced by modern daycare centers in managing operations and communicating with parents. By leveraging modern web technologies, the platform provides a secure, efficient, and user-friendly system that benefits all stakeholders. The modular architecture ensures that the system can be easily maintained and extended with new features as requirements evolve. The project demonstrates the practical application of software engineering principles to solve real-world problems in the domain of early childhood education management.</p>
+</div>
+
+<!-- CHAPTER 2: SYSTEM ANALYSIS -->
+<div class="chapter">
+<h1>CHAPTER 2<br>SYSTEM ANALYSIS</h1>
+
+<h2>2.1 Introduction</h2>
+<p>System Analysis is the process of studying a problem domain to understand user needs, existing workflows, and the functionality required in a new system. For the Virtual Daycare Platform, analysis helps identify current shortcomings in daycare management processes and defines the solutions implemented through automation. The analysis phase ensures that the system is feasible, efficient, and user-oriented. This chapter presents a comprehensive analysis of the existing system, defines the core problems, evaluates feasibility, and specifies both functional and non-functional requirements.</p>
+
+<h2>2.2 Existing System</h2>
+<p>In the traditional daycare management process, all records such as attendance, activities, and parent communications are maintained manually using paper registers or basic spreadsheets. Parents must call or visit the daycare to get updates about their child, and staff manually check logs to provide information. This approach suffers from several critical weaknesses that affect both the daycare staff and the parents.</p>
+<p><strong>Manual Data Entry:</strong> All records are maintained by hand, which leads to human error and inconsistent information. Illegible handwriting, missed entries, and calculation errors are common problems that affect data reliability.</p>
+<p><strong>Communication Gap:</strong> There is no real-time synchronization between parents and staff. Parents remain unaware of their child's activities until they visit the daycare or receive a phone call, leading to anxiety and dissatisfaction.</p>
+<p><strong>Lack of Transparency:</strong> Parents cannot instantly view daily activities, attendance records, or meal information. This lack of transparency erodes trust between parents and the daycare administration.</p>
+<p><strong>Data Loss Risk:</strong> Paper registers and spreadsheets can be misplaced, damaged, or destroyed. There is no backup mechanism, and historical data is often unavailable when needed for reference or reporting.</p>
+<p><strong>Limited Accessibility:</strong> Information cannot be accessed online or remotely. Parents who are traveling or at work have no way to check on their child's well-being during the day.</p>
+<p><strong>Delayed Processing:</strong> Staff require more time to compile and share reports. Monthly attendance summaries, activity reports, and incident records take significant effort to prepare manually.</p>
+<p><strong>Difficulty in Reporting:</strong> Managerial reports on attendance patterns, activity frequency, or child progress are tedious to prepare and often contain errors due to manual calculation.</p>
+<p>The essential weakness of every existing arrangement is the same: the information exists, but it is held privately, is not up to date, and cannot be compared. The new system therefore had to make the information shared, public, and current, rather than merely digitizing a private record book.</p>
+
+<h2>2.3 Problem Definition</h2>
+<p>From the study the problem can be stated in one sentence. There is no shared, current and searchable record of children's daily activities in the daycare, so parents cannot monitor progress, cannot communicate efficiently with caregivers, and cannot verify attendance before visiting the center.</p>
+<p>The consequences of this gap fall on both sides of the daycare. The parent loses time on unproductive calls and visits, and sometimes arrives at the center to find that the child has already been picked up or that important information was missed. The caregiver, whose records are genuinely accurate and genuinely helpful, loses trust with parents because there is no way to share information in real time. The problem is therefore not the absence of a data keeping system; the caregivers already keep records. It is the absence of a channel that carries the caregiver's own record to the parent, and that is what this project supplies.</p>
+
+<h2>2.4 Feasibility Study</h2>
+<p>The proposal was examined against the three standard feasibility criteria before any coding was undertaken. Each criterion was evaluated systematically to ensure the project could be completed successfully within the available resources and constraints.</p>
+
+<h3>2.4.1 Technical Feasibility</h3>
+<p>The required technology is available and within reach. Flask, SQLAlchemy, Flask-SocketIO, and Bootstrap are all open source and all run on the hardware that the college laboratory provides, which is more than adequate for a platform of this size. The team is familiar with Python, HTML and CSS, so no unfamiliar technology had to be adopted. The project is therefore technically feasible. All development tools including Visual Studio Code, Git version control, and the Python runtime environment are freely available and well-documented.</p>
+
+<h3>2.4.2 Economic Feasibility</h3>
+<p>The running cost of the system is the cost of a small virtual host, which is modest and scales with use. There is no licence fee, because every component used is free and open source. The benefit arises from avoided telephone calls, avoided unproductive visits, and the wider parent engagement that a real-time platform gives the daycare, so the system pays for itself after very little use. The development cost was minimal as all tools and technologies used are free for educational purposes.</p>
+
+<h3>2.4.3 Operational Feasibility</h3>
+<p>The system asks of the caregiver only that he be able to type, or at worst to prepare a spreadsheet, and that he update the activity log when events occur. The caregiver is the person best placed to know the activities, so the burden falls where the knowledge already is. The parent needs no training beyond using a web browser, and the dashboard is left open to all authenticated users. The system is operationally feasible. The interface is intuitive and follows standard web conventions that most users are already familiar with.</p>
+
+<table>
+<tr><th>Criterion</th><th>Finding</th><th>Verdict</th></tr>
+<tr><td>Technical</td><td>All components are open source and run on ordinary laboratory hardware</td><td>Feasible</td></tr>
+<tr><td>Economic</td><td>No licence cost; host cost is small and proportionate</td><td>Feasible</td></tr>
+<tr><td>Operational</td><td>Caregiver updates own records; parent needs no training</td><td>Feasible</td></tr>
+<tr><td>Schedule</td><td>Work divides cleanly into the stages of the academic term</td><td>Feasible</td></tr>
+</table>
+<p class="figure">Table 2.1 Summary of the Feasibility Study</p>
+
+<h2>2.5 Functional Requirements</h2>
+<p>A functional requirement states what the system must do, from the point of view of the person who uses it. The requirements derived for the Virtual Daycare Platform are listed in Table 2.2 and each one is satisfied by the module named beside it.</p>
+
+<table>
+<tr><th style="width:60px">Id</th><th>Requirement</th><th style="width:200px">Satisfied by</th></tr>
+<tr><td>FR-01</td><td>A visitor shall be able to view the landing page and register as a parent or caregiver</td><td>routes/auth.py, register()</td></tr>
+<tr><td>FR-02</td><td>A parent shall be able to view their child's daily activity timeline</td><td>routes/parent.py, timeline()</td></tr>
+<tr><td>FR-03</td><td>A caregiver shall be able to log activities for assigned children</td><td>routes/caregiver.py, log_activity()</td></tr>
+<tr><td>FR-04</td><td>A caregiver shall be able to mark attendance with check-in and check-out</td><td>routes/caregiver.py, mark_child_attendance()</td></tr>
+<tr><td>FR-05</td><td>A parent shall be able to send messages to the assigned caregiver</td><td>routes/messages.py, thread()</td></tr>
+<tr><td>FR-06</td><td>A caregiver shall be able to send emergency alerts to parents</td><td>routes/caregiver.py, emergency_alert()</td></tr>
+<tr><td>FR-07</td><td>An admin shall be able to approve or reject caregiver registrations</td><td>routes/admin.py, approve_caregiver()</td></tr>
+<tr><td>FR-08</td><td>An admin shall be able to enroll new children and assign caregivers</td><td>routes/admin.py, new_child()</td></tr>
+<tr><td>FR-09</td><td>A parent shall be able to view attendance history with monthly percentage</td><td>routes/parent.py, attendance()</td></tr>
+<tr><td>FR-10</td><td>A caregiver shall be able to upload photos for assigned children</td><td>routes/caregiver.py, upload_photo()</td></tr>
+<tr><td>FR-11</td><td>An admin shall be able to respond to parent complaints</td><td>routes/admin.py, respond_complaint()</td></tr>
+<tr><td>FR-12</td><td>An admin shall be able to manage learning resources</td><td>routes/admin.py, new_learning_resource()</td></tr>
+<tr><td>FR-13</td><td>A user shall be able to reset their password via email token</td><td>routes/auth.py, reset_password()</td></tr>
+<tr><td>FR-14</td><td>A caregiver shall be able to scan QR codes for attendance</td><td>routes/api.py, scan_qr_code()</td></tr>
+<tr><td>FR-15</td><td>A parent shall be able to view the learning hub</td><td>routes/learning.py, index()</td></tr>
+<tr><td>FR-16</td><td>A parent shall be able to view photo gallery with category filtering</td><td>routes/parent.py, photos()</td></tr>
+<tr><td>FR-17</td><td>A caregiver shall be able to view child detail with activity history</td><td>routes/caregiver.py, child_detail()</td></tr>
+<tr><td>FR-18</td><td>An admin shall be able to view dashboard with KPIs and statistics</td><td>routes/admin.py, dashboard()</td></tr>
+<tr><td>FR-19</td><td>A user shall be able to receive real-time notifications</td><td>notifications.py, send_notification()</td></tr>
+<tr><td>FR-20</td><td>A parent shall be able to submit complaints to admin</td><td>routes/parent.py, complaints()</td></tr>
+</table>
+<p class="figure">Table 2.2 Functional Requirements</p>
+
+<h2>2.6 Non-Functional Requirements</h2>
+<p>A non-functional requirement states how well the system must behave rather than what it does. These are the qualities against which the system was judged.</p>
+
+<table>
+<tr><th style="width:70px">Id</th><th style="width:100px">Quality</th><th>Requirement and how it is met</th></tr>
+<tr><td>NFR-01</td><td>Security</td><td>Every state changing request is protected by CSRF token; all input is escaped by the template engine; passwords are hashed with PBKDF2</td></tr>
+<tr><td>NFR-02</td><td>Privacy</td><td>Only the fields a parent needs are shown; the reset token is a random URL-safe string stored server side; unauthorized access is rejected with 403</td></tr>
+<tr><td>NFR-03</td><td>Performance</td><td>Indexes on the child name and activity timestamp; related rows fetched in one query with select_related; results paginated at 30 rows</td></tr>
+<tr><td>NFR-04</td><td>Reliability</td><td>Per-request error handling; database transactions rolled back on failure; custom error pages for 403, 404, and 500</td></tr>
+<tr><td>NFR-05</td><td>Portability</td><td>All configuration read from environment variables, so the same code runs on SQLite in development and PostgreSQL in production</td></tr>
+<tr><td>NFR-06</td><td>Usability</td><td>Responsive pages that work on mobile; consistent navigation; clear flash messages for every action</td></tr>
+<tr><td>NFR-07</td><td>Maintainability</td><td>Seven blueprint packages, business logic in routes, no duplicated markup, and an automated test suite that can be run with a single command</td></tr>
+</table>
+<p class="figure">Table 2.3 Non-Functional Requirements</p>
+
+<h2>2.7 Use Case Diagram</h2>
+<p>The use case diagram in Figure 2.1 shows the actors of the system and the tasks each of them performs. The parent is the dominant actor with the most use cases. The caregiver performs the classroom tasks including activity logging and attendance management. The administrator acts through the admin dashboard and has no custom screen of his own.</p>
+
+<div class="diagram">
++------------------------------------------------------------------+
+|                   VIRTUAL DAYCARE PLATFORM                        |
+|                                                                  |
+|  +------------------+    +------------------+    +-------------+  |
+|  |     PARENT       |    |    CAREGIVER     |    |  ADMIN      |  |
+|  |                  |    |                  |    |             |  |
+|  | - Register/Login |    | - Register/Login |    | - Login     |  |
+|  | - View Timeline  |    | - Log Activity   |    | - Dashboard |  |
+|  | - View Photos    |    | - Mark Attendance|    | - Children  |  |
+|  | - View Attendance|    | - Upload Photos  |    | - Caregivers|  |
+|  | - Send Messages  |    | - Send Alerts    |    | - Complaints|  |
+|  | - Browse Learning|    | - Scan QR Codes  |    | - Learning  |  |
+|  | - Submit Complaints    | - View Messages  |    |             |  |
+|  +------------------+    +------------------+    +-------------+  |
++------------------------------------------------------------------+
+</div>
+<p class="figure">Figure 2.1 Use Case Diagram of Virtual Daycare Platform</p>
+
+<h2>2.8 Context Level Data Flow Diagram</h2>
+<p>The context level diagram in Figure 2.2 represents the whole system as a single process and shows what enters it and what leaves it. The parent supplies a request and receives activity updates. The caregiver supplies activity data and receives notifications. The administrator supplies management commands and receives reports.</p>
+
+<div class="diagram">
+                    +---------------------------+
+                    |                           |
+    +--------+      |   VIRTUAL DAYCARE         |      +-----------+
+    |        |----->|   PLATFORM [0]           |----->|           |
+    | PARENT |      |                           |      |  PARENT   |
+    |        |<-----|                           |<-----|           |
+    +--------+      +---------------------------+      +-----------+
+                           ^        |  |
+                           |        |  |
+    +----------+           |        |  |         +-----------+
+    | CAREGIVER|-----------|        |  |---------| CAREGIVER |
+    +----------+                    |            +-----------+
+                                    |
+    +-----------+                   |
+    | ADMIN     |-------------------+
+    +-----------+
+</div>
+<p class="figure">Figure 2.2 Context Level Data Flow Diagram</p>
+</div>
+<!-- CHAPTER 3: SYSTEM DESIGN -->
+<div class="chapter">
+<h1>CHAPTER 3<br>SYSTEM DESIGN</h1>
+
+<h2>3.1 Three-Tier Architecture</h2>
+<p>The Virtual Daycare Platform is organised as a three-tier application. The separation is not decorative: it keeps the code that decides what happens separate from the code that decides how it looks and from the code that decides how it is stored, so each of the three can be changed without disturbing the others.</p>
+
+<table>
+<tr><th>Tier</th><th>Responsibility</th><th>Implemented by</th></tr>
+<tr><td>Presentation</td><td>Receives the request, collects and validates the input, renders the page and draws the timeline</td><td>Jinja2 templates, Bootstrap 5, Socket.IO client, the view functions</td></tr>
+<tr><td>Application</td><td>Holds the business rules, decides access, performs the queries and schedules real-time events</td><td>routes/auth.py, routes/admin.py, routes/caregiver.py, routes/parent.py, routes/messages.py, routes/learning.py, routes/api.py</td></tr>
+<tr><td>Data</td><td>Stores and retrieves the persistent data and enforces the relationships and the indexes</td><td>The SQLAlchemy ORM over SQLite or PostgreSQL</td></tr>
+</table>
+<p class="figure">Table 3.1 The Three Tiers</p>
+
+<div class="diagram">
++------------------------------------------------------------------+
+|                     PRESENTATION LAYER                            |
+|  Parent Browser    Caregiver Dashboard    Admin Dashboard         |
+|  Jinja2 Templates  Bootstrap 5  Socket.IO Client                  |
++------------------------------------------------------------------+
+                              |
+                              v
++------------------------------------------------------------------+
+|                     APPLICATION LAYER                             |
+|  URL Routing (routes/__init__.py)                                |
+|  View Functions: auth / admin / caregiver / parent / messages    |
+|  Forms, Auth, Role Decorators, SocketIO Events                   |
++------------------------------------------------------------------+
+                              |
+                              v
++------------------------------------------------------------------+
+|                        DATA LAYER                                 |
+|  SQLAlchemy ORM Model Layer                                      |
+|  SQLite / PostgreSQL Database                                    |
++------------------------------------------------------------------+
+</div>
+<p class="figure">Figure 3.1 Three-Tier Architecture of Virtual Daycare Platform</p>
+
+<h2>3.2 Data Flow Diagram</h2>
+<p>The level zero data flow diagram in Figure 3.2 breaks the single process of the context diagram into six processes, and names the stores that hold the data. Process 0.1 creates an account and dispatches the notification; 0.2 logs the daily activities; 0.3 manages the attendance records; 0.4 handles the messaging between parents and caregivers; 0.5 manages the photo uploads; and 0.6 maintains the learning resources.</p>
+
+<div class="diagram">
++------------------------------------------------------------------+
+|                   Data Flow Diagram (Level 0)                     |
+|                                                                  |
+|  D1 User Store    D2 Child Store    D3 Activity Store             |
+|  D4 Attendance    D5 Message Store  D6 Notification Store         |
+|                                                                  |
+|  0.1 Registration and Authentication                             |
+|  0.2 Activity Logging                                            |
+|  0.3 Attendance Management                                       |
+|  0.4 Messaging and Alerts                                        |
+|  0.5 Photo Management                                            |
+|  0.6 Learning Resource Management                                |
++------------------------------------------------------------------+
+</div>
+<p class="figure">Figure 3.2 Data Flow Diagram (Level 0)</p>
+
+<h2>3.3 Entity Relationship Design</h2>
+<p>The entity relationship design in Figure 3.3 contains nine entities. User is the master entity with a role field that determines access. Child belongs to a parent and is assigned to a caregiver. ActivityLog, Attendance, Photo, and Message all belong to a Child. Notification belongs to a User. LearningResource and Complaint are independent entities.</p>
+
+<div class="diagram">
++------------------------------------------------------------------+
+|                   Entity Relationship Diagram                    |
+|                                                                  |
+|  USER                CHILD                ACTIVITY LOG            |
+|  PK id               PK id                PK id                  |
+|  name                name                 FK child_id             |
+|  email               dob                  type                    |
+|  password_hash       gender               title                   |
+|  role                allergies            details                 |
+|  is_approved         parent_id            logged_by               |
+|  reset_token         caregiver_id         timestamp               |
+|  reset_expiry        qr_code_path                                 |
+|  created_at          created_at                                  |
+|                                                                  |
+|  ATTENDANCE          MESSAGE              NOTIFICATION            |
+|  PK id               PK id                PK id                  |
+|  FK child_id         FK child_id           FK user_id             |
+|  date                sender_id            title                   |
+|  check_in_time       receiver_id          message                 |
+|  check_out_time      content              link                    |
+|  status              timestamp            is_read                 |
+|  marked_by           is_alert             is_urgent               |
+|  notes               alert_severity       created_at              |
+|                      is_read                                     |
+|                                                                  |
+|  PHOTO               LEARNING RESOURCE    COMPLAINT               |
+|  PK id               PK id                PK id                  |
+|  FK child_id         title                FK user_id              |
+|  filepath            type                 FK child_id             |
+|  caption             age_group            subject                 |
+|  category            category             message                 |
+|  uploaded_by         description          status                  |
+|  timestamp           content              admin_response          |
+|                      icon                 created_at              |
+|                      created_at           updated_at              |
++------------------------------------------------------------------+
+</div>
+<p class="figure">Figure 3.3 Entity Relationship Diagram</p>
+
+<h2>3.4 Class Design</h2>
+<p>The class diagram in Figure 3.4 restates the same design in programming terms and shows, for each class, the attributes it owns and the operations that act on them.</p>
+
+<div class="diagram">
++------------------------------------------------------------------+
+|                        Class Diagram                              |
+|                                                                  |
+|  User (UserMixin, db.Model)                                      |
+|  - id, name, email, password_hash, role                          |
+|  - is_approved, reset_token, reset_token_expiry                  |
+|  + set_password(), check_password()                              |
+|  + is_admin, is_caretaker, is_parent                             |
+|  + generate_reset_token(), verify_reset_token()                  |
+|                                                                  |
+|  Child (db.Model)                                                |
+|  - id, name, dob, gender, allergies                              |
+|  - parent_id, caregiver_id, qr_code_path                         |
+|  + age_string, age_group                                         |
+|  + generate_qr_code(), get_monthly_attendance_stats()            |
+|  + is_checked_in, is_checked_out                                 |
+|                                                                  |
+|  ActivityLog (db.Model)                                          |
+|  - id, child_id, type, title, details                            |
+|  - logged_by, timestamp                                          |
+|  + icon_class, badge_class, formatted_time                       |
+|                                                                  |
+|  Attendance (db.Model)                                           |
+|  - id, child_id, date, check_in_time, check_out_time             |
+|  - status, marked_by, notes                                      |
+|  + formatted_check_in, duration_str, badge_class                  |
+|                                                                  |
+|  Message (db.Model)                                              |
+|  - id, child_id, sender_id, receiver_id                          |
+|  - content, is_alert, alert_severity                             |
+|  + to_dict(), formatted_time                                     |
+|                                                                  |
+|  Notification (db.Model)                                         |
+|  - id, user_id, title, message, link                             |
+|  - is_read, is_urgent, created_at                                |
+|  + to_dict(), formatted_time                                     |
++------------------------------------------------------------------+
+</div>
+<p class="figure">Figure 3.4 Class Diagram</p>
+
+<h2>3.5 Control Flow Diagrams</h2>
+
+<h3>3.5.1 Activity Diagram</h3>
+<p>Figure 3.5 follows the request for a child's timeline from the moment the parent arrives to the moment the page is rendered. The flow begins with an empty form. If no date has been supplied the system defaults to today. When a date is present the query is built, the activities are fetched, and the flow then asks whether the parent is authenticated. If so the timeline is rendered with all details; if not, the login page is shown.</p>
+
+<div class="diagram">
++------------------------------------------------------------------+
+|              Activity Diagram - Parent Viewing Timeline           |
+|                                                                  |
+|  Start                                                           |
+|    |                                                             |
+|    v                                                             |
+|  Visit Parent Dashboard                                          |
+|    |                                                             |
+|    v                                                             |
+|  Select Child                                                    |
+|    |                                                             |
+|    v                                                             |
+|  Choose Date (or Today)                                          |
+|    |                                                             |
+|    v                                                             |
+|  Query ActivityLog Table                                         |
+|    |                                                             |
+|    v                                                             |
+|  Fetch Photos for Date                                           |
+|    |                                                             |
+|    v                                                             |
+|  Fetch Attendance for Date                                        |
+|    |                                                             |
+|    v                                                             |
+|  Render Timeline Page                                            |
+|    |                                                             |
+|    v                                                             |
+|  End                                                             |
++------------------------------------------------------------------+
+</div>
+<p class="figure">Figure 3.5 Activity Diagram - Parent Viewing Timeline</p>
+
+<h3>3.5.2 Sequence Diagram</h3>
+<p>Figure 3.6 shows the same interaction as a sequence of messages between the caregiver and the server. It makes the round trips explicit: the activity is sent, the record is saved, the notification is dispatched, and the parent receives the update in real time.</p>
+
+<div class="diagram">
++------------------------------------------------------------------+
+|         Sequence Diagram - Activity Logging and Notification     |
+|                                                                  |
+|  Caregiver          Server              Parent                    |
+|     |                 |                   |                       |
+|     | 1. Submit form  |                   |                       |
+|     |---------------->|                   |                       |
+|     |                 | 2. Save to DB     |                       |
+|     |                 |                   |                       |
+|     |                 | 3. Create Notif   |                       |
+|     |                 |                   |                       |
+|     |                 | 4. Emit SocketIO  |                       |
+|     |                 |------------------>|                       |
+|     |                 |                   | 5. Real-time update |
+|     |                 |                   |                       |
+|     | 6. Confirmation |                   |                       |
+|     |<----------------|                   |                       |
++------------------------------------------------------------------+
+</div>
+<p class="figure">Figure 3.6 Sequence Diagram - Activity Logging and Notification</p>
+
+<h2>3.6 Overall System Flow</h2>
+<p>Figure 3.7 reduces the whole system to a single sequence of eight steps, from the moment a parent registers to the moment an administrator inspects the data.</p>
+
+<div class="diagram">
++------------------------------------------------------------------+
+|                 Overall System Flow Diagram                       |
+|                                                                  |
+|  1. Parent registers and logs in                                 |
+|  2. Admin enrolls child and assigns caregiver                    |
+|  3. Caregiver logs daily activities                              |
+|  4. System creates notifications for parent                      |
+|  5. Parent views timeline and photos                             |
+|  6. Caregiver marks attendance                                   |
+|  7. Parent and caregiver exchange messages                       |
+|  8. Administrator monitors all operations                        |
++------------------------------------------------------------------+
+</div>
+<p class="figure">Figure 3.7 Overall System Flow Diagram</p>
+
+<h2>3.7 Database Design</h2>
+<p>The database is created by the SQLAlchemy migration system from the models, so the tables in the deployed database always agree with the model definitions. Nine tables are created. The field lists that follow are taken from the model classes.</p>
+
+<h3>Table 3.2 User</h3>
+<table>
+<tr><th>Field</th><th>Type</th><th>Notes</th></tr>
+<tr><td>id</td><td>Integer</td><td>Primary key, auto increment</td></tr>
+<tr><td>name</td><td>String(120)</td><td>Full name, not null</td></tr>
+<tr><td>email</td><td>String(120)</td><td>Unique, not null, indexed</td></tr>
+<tr><td>password_hash</td><td>String(256)</td><td>Hashed password, not null</td></tr>
+<tr><td>role</td><td>String(20)</td><td>admin, caregiver, or parent</td></tr>
+<tr><td>phone</td><td>String(30)</td><td>Optional</td></tr>
+<tr><td>is_approved</td><td>Boolean</td><td>Defaults to true; false for pending caregivers</td></tr>
+<tr><td>reset_token</td><td>String(100)</td><td>Nullable, indexed</td></tr>
+<tr><td>reset_token_expiry</td><td>DateTime</td><td>Nullable</td></tr>
+<tr><td>created_at</td><td>DateTime</td><td>Set on creation</td></tr>
+</table>
+
+<h3>Table 3.3 Child</h3>
+<table>
+<tr><th>Field</th><th>Type</th><th>Notes</th></tr>
+<tr><td>id</td><td>Integer</td><td>Primary key</td></tr>
+<tr><td>name</td><td>String(120)</td><td>Child full name</td></tr>
+<tr><td>dob</td><td>Date</td><td>Date of birth</td></tr>
+<tr><td>gender</td><td>String(20)</td><td>Optional</td></tr>
+<tr><td>allergies</td><td>Text</td><td>Optional</td></tr>
+<tr><td>notes</td><td>Text</td><td>Optional</td></tr>
+<tr><td>photo_url</td><td>String(255)</td><td>Optional</td></tr>
+<tr><td>qr_code_path</td><td>String(255)</td><td>Path to generated QR code</td></tr>
+<tr><td>parent_id</td><td>Integer</td><td>Foreign key to users, not null</td></tr>
+<tr><td>caregiver_id</td><td>Integer</td><td>Foreign key to users, nullable</td></tr>
+<tr><td>created_at</td><td>DateTime</td><td>Set on creation</td></tr>
+</table>
+
+<h3>Table 3.4 ActivityLog</h3>
+<table>
+<tr><th>Field</th><th>Type</th><th>Notes</th></tr>
+<tr><td>id</td><td>Integer</td><td>Primary key</td></tr>
+<tr><td>child_id</td><td>Integer</td><td>Foreign key to children, not null</td></tr>
+<tr><td>type</td><td>String(30)</td><td>meal, nap, mood, diaper, note, milestone</td></tr>
+<tr><td>title</td><td>String(150)</td><td>Activity title</td></tr>
+<tr><td>details</td><td>Text</td><td>Optional</td></tr>
+<tr><td>logged_by</td><td>Integer</td><td>Foreign key to users, not null</td></tr>
+<tr><td>timestamp</td><td>DateTime</td><td>Set on creation, indexed</td></tr>
+</table>
+
+<h3>Table 3.5 Attendance</h3>
+<table>
+<tr><th>Field</th><th>Type</th><th>Notes</th></tr>
+<tr><td>id</td><td>Integer</td><td>Primary key</td></tr>
+<tr><td>child_id</td><td>Integer</td><td>Foreign key to children, not null</td></tr>
+<tr><td>date</td><td>Date</td><td>Attendance date, indexed</td></tr>
+<tr><td>check_in_time</td><td>DateTime</td><td>Nullable</td></tr>
+<tr><td>check_out_time</td><td>DateTime</td><td>Nullable</td></tr>
+<tr><td>status</td><td>String(20)</td><td>present, absent, late, excused</td></tr>
+<tr><td>marked_by</td><td>Integer</td><td>Foreign key to users, not null</td></tr>
+<tr><td>notes</td><td>Text</td><td>Optional</td></tr>
+</table>
+
+<h3>Table 3.6 Message</h3>
+<table>
+<tr><th>Field</th><th>Type</th><th>Notes</th></tr>
+<tr><td>id</td><td>Integer</td><td>Primary key</td></tr>
+<tr><td>child_id</td><td>Integer</td><td>Foreign key to children, not null</td></tr>
+<tr><td>sender_id</td><td>Integer</td><td>Foreign key to users, not null</td></tr>
+<tr><td>receiver_id</td><td>Integer</td><td>Foreign key to users, not null</td></tr>
+<tr><td>content</td><td>Text</td><td>Message body</td></tr>
+<tr><td>timestamp</td><td>DateTime</td><td>Set on creation, indexed</td></tr>
+<tr><td>is_alert</td><td>Boolean</td><td>Emergency alert flag</td></tr>
+<tr><td>alert_severity</td><td>String(20)</td><td>info, warning, critical</td></tr>
+<tr><td>is_read</td><td>Boolean</td><td>Read status</td></tr>
+</table>
+
+<h3>Table 3.7 Notification</h3>
+<table>
+<tr><th>Field</th><th>Type</th><th>Notes</th></tr>
+<tr><td>id</td><td>Integer</td><td>Primary key</td></tr>
+<tr><td>user_id</td><td>Integer</td><td>Foreign key to users, cascade delete</td></tr>
+<tr><td>title</td><td>String(150)</td><td>Notification title</td></tr>
+<tr><td>message</td><td>Text</td><td>Notification body</td></tr>
+<tr><td>link</td><td>String(255)</td><td>Optional redirect link</td></tr>
+<tr><td>is_read</td><td>Boolean</td><td>Read status, indexed</td></tr>
+<tr><td>is_urgent</td><td>Boolean</td><td>Urgent flag</td></tr>
+<tr><td>created_at</td><td>DateTime</td><td>Set on creation, indexed</td></tr>
+</table>
+
+<h3>Table 3.8 Photo</h3>
+<table>
+<tr><th>Field</th><th>Type</th><th>Notes</th></tr>
+<tr><td>id</td><td>Integer</td><td>Primary key</td></tr>
+<tr><td>child_id</td><td>Integer</td><td>Foreign key to children, not null</td></tr>
+<tr><td>filepath</td><td>String(255)</td><td>Photo file path</td></tr>
+<tr><td>caption</td><td>Text</td><td>Optional</td></tr>
+<tr><td>category</td><td>String(50)</td><td>Activity, Art, Outdoor, Meal, etc.</td></tr>
+<tr><td>uploaded_by</td><td>Integer</td><td>Foreign key to users, not null</td></tr>
+<tr><td>timestamp</td><td>DateTime</td><td>Set on creation, indexed</td></tr>
+</table>
+
+<h3>Table 3.9 LearningResource</h3>
+<table>
+<tr><th>Field</th><th>Type</th><th>Notes</th></tr>
+<tr><td>id</td><td>Integer</td><td>Primary key</td></tr>
+<tr><td>title</td><td>String(150)</td><td>Resource title</td></tr>
+<tr><td>type</td><td>String(30)</td><td>rhyme, story, activity, game</td></tr>
+<tr><td>age_group</td><td>String(30)</td><td>infant, toddler, preschool, all</td></tr>
+<tr><td>category</td><td>String(50)</td><td>Optional</td></tr>
+<tr><td>description</td><td>Text</td><td>Optional</td></tr>
+<tr><td>content_url_or_text</td><td>Text</td><td>Resource content</td></tr>
+<tr><td>icon</td><td>String(50)</td><td>Bootstrap icon class</td></tr>
+<tr><td>created_at</td><td>DateTime</td><td>Set on creation</td></tr>
+</table>
+
+<h3>Table 3.10 Complaint</h3>
+<table>
+<tr><th>Field</th><th>Type</th><th>Notes</th></tr>
+<tr><td>id</td><td>Integer</td><td>Primary key</td></tr>
+<tr><td>user_id</td><td>Integer</td><td>Foreign key to users, not null</td></tr>
+<tr><td>child_id</td><td>Integer</td><td>Foreign key to children, nullable</td></tr>
+<tr><td>subject</td><td>String(200)</td><td>Complaint subject</td></tr>
+<tr><td>message</td><td>Text</td><td>Complaint details</td></tr>
+<tr><td>status</td><td>String(30)</td><td>open, in_progress, resolved</td></tr>
+<tr><td>admin_response</td><td>Text</td><td>Optional</td></tr>
+<tr><td>created_at</td><td>DateTime</td><td>Set on creation</td></tr>
+<tr><td>updated_at</td><td>DateTime</td><td>Set on update</td></tr>
+</table>
+
+<h2>3.8 User Interface Design</h2>
+<p>The interface follows three rules that keep it usable for a user who is reading it on a small screen. The navigation is the same on every page and is always at the top. The dashboard is present on the home page as well as on the role pages, so a user can begin using the system without navigating first. And no operation depends on scripting, so the pages behave correctly even if JavaScript is unavailable.</p>
+<p>The landing page introduces the platform with a hero section, feature highlights, and clear call-to-action buttons for login and registration. The login page provides a simple form with email and password fields, along with links for registration and password reset. The registration page offers role selection between parent and caregiver, with appropriate fields for each role.</p>
+<p>The admin dashboard displays key performance indicators including total children count, today's attendance percentage, active caregivers count, and pending approvals. The caregiver dashboard shows assigned children with quick action buttons for logging activities, marking attendance, and sending alerts. The parent dashboard presents child summary cards with today's activities, latest photos, and attendance status.</p>
+</div>
+<!-- CHAPTER 4: IMPLEMENTATION -->
+<div class="chapter">
+<h1>CHAPTER 4<br>IMPLEMENTATION</h1>
+
+<h2>4.1 Development Environment</h2>
+<p>The application was written on a Windows workstation using the Python interpreter of the system, with a virtual environment holding the dependencies so that the versions used in development are exactly the versions recorded for production. The development server was used for the demonstration, and the screenshots reproduced in this chapter were captured from that server after it had been loaded with realistic data.</p>
+
+<table>
+<tr><th>Setting</th><th>Development</th><th>Production</th></tr>
+<tr><td>Database</td><td>SQLite file</td><td>PostgreSQL</td></tr>
+<tr><td>Server</td><td>Flask development server</td><td>Gunicorn</td></tr>
+<tr><td>Mail</td><td>Printed to console</td><td>SMTP or SendGrid API</td></tr>
+<tr><td>Static files</td><td>Served by Flask</td><td>Served by Gunicorn</td></tr>
+<tr><td>Debug</td><td>Enabled</td><td>Disabled, DEBUG=False</td></tr>
+<tr><td>SocketIO</td><td>Threading mode</td><td>Eventlet or Gevent</td></tr>
+</table>
+<p class="figure">Table 4.1 Development and Production Configuration</p>
+
+<h2>4.2 Project Structure</h2>
+<p>The project is one Flask application containing seven blueprints. The layout is shown in Table 4.2. Views are grouped by the role that uses them rather than by the model they touch, which keeps the authentication logic, the admin logic, the caregiver logic, and the parent logic in separate files that can be read independently.</p>
+
+<table>
+<tr><th>File or directory</th><th>Contents</th></tr>
+<tr><td>app.py</td><td>Application factory, SocketIO integration, entry point</td></tr>
+<tr><td>config.py</td><td>Configuration, environment variables, database URI</td></tr>
+<tr><td>init_db.py</td><td>Database initialization script</td></tr>
+<tr><td>wsgi.py</td><td>The WSGI entry point used by Gunicorn</td></tr>
+<tr><td>requirements.txt</td><td>The pinned dependencies</td></tr>
+<tr><td>Procfile</td><td>The deployment description</td></tr>
+<tr><td>models/__init__.py</td><td>SQLAlchemy db instance and model exports</td></tr>
+<tr><td>models/user.py</td><td>User model, password hashing, role properties</td></tr>
+<tr><td>models/child.py</td><td>Child model, QR code generation, attendance stats</td></tr>
+<tr><td>models/activity.py</td><td>ActivityLog model with icon and badge properties</td></tr>
+<tr><td>models/attendance.py</td><td>Attendance model with duration calculation</td></tr>
+<tr><td>models/message.py</td><td>Message model with alert severity</td></tr>
+<tr><td>models/notification.py</td><td>Notification model with formatted time</td></tr>
+<tr><td>models/photo.py</td><td>Photo model with categorization</td></tr>
+<tr><td>models/learning.py</td><td>LearningResource model with age group display</td></tr>
+<tr><td>models/complaint.py</td><td>Complaint model with status tracking</td></tr>
+<tr><td>routes/__init__.py</td><td>Blueprint registration</td></tr>
+<tr><td>routes/auth.py</td><td>Login, register, logout, password reset</td></tr>
+<tr><td>routes/admin.py</td><td>Dashboard, children, caregivers, complaints, learning</td></tr>
+<tr><td>routes/caregiver.py</td><td>Dashboard, child detail, log activity, attendance, alerts</td></tr>
+<tr><td>routes/parent.py</td><td>Dashboard, timeline, photos, attendance, complaints</td></tr>
+<tr><td>routes/messages.py</td><td>Thread list, thread detail, API endpoints</td></tr>
+<tr><td>routes/learning.py</td><td>Learning hub index and detail</td></tr>
+<tr><td>routes/api.py</td><td>Notification polling, QR scan processing</td></tr>
+<tr><td>routes/utils.py</td><td>Role decorators, child auth checks, file upload</td></tr>
+<tr><td>notifications.py</td><td>Notification service with SMS/Email hooks</td></tr>
+<tr><td>templates/</td><td>Jinja2 templates for all pages</td></tr>
+<tr><td>static/</td><td>CSS, JavaScript, and uploaded files</td></tr>
+</table>
+<p class="figure">Table 4.2 Files of the Project</p>
+
+<h2>4.3 Authentication and Authorization</h2>
+<p>Registration is the gate to the whole system, so it was written first and most carefully. The form rejects an address that is already registered, and it assigns the role based on the selection. Caregivers are created with is_approved set to false, which means they cannot access the classroom portal until an administrator approves them.</p>
+
+<p class="listing-title">Listing 4.1 Registration with role-based approval</p>
+<div class="listing">@auth_bp.route('/register', methods=['GET', 'POST'])
+def register():
+    if request.method == 'POST':
+        name = request.form.get('name', '').strip()
+        email = request.form.get('email', '').strip().lower()
+        password = request.form.get('password', '')
+        role = request.form.get('role', 'parent').strip().lower()
+
+        if role not in ('parent', 'caregiver', 'caretaker'):
+            flash('Invalid role selected.', 'danger')
+            return render_template('auth/register.html')
+
+        is_approved = True if role == 'parent' else False
+        user = User(name=name, email=email, role=role,
+                    phone=phone, is_approved=is_approved)
+        user.set_password(password)
+        db.session.add(user)
+        db.session.commit()
+
+        if role in ('caregiver', 'caretaker'):
+            notify_all_admins(
+                title="New Caretaker Registration",
+                message=f"{user.name} ({user.email}) registered.",
+                link=url_for('admin.caregivers'))
+            return redirect(url_for('auth.pending_approval'))
+
+        login_user(user)
+        return redirect(url_for('parent.dashboard'))</div>
+
+<p>Authorization is enforced by the role_required decorator in routes/utils.py. This decorator checks the current user's role against the permitted roles and aborts with 403 Forbidden if the user is not authorized. Additionally, the get_authorized_child function ensures that parents can only access their own children and caregivers can only access their assigned children.</p>
+
+<p class="listing-title">Listing 4.2 Role-based access control decorators</p>
+<div class="listing">def role_required(*roles):
+    def decorator(f):
+        @wraps(f)
+        def decorated_function(*args, **kwargs):
+            if not current_user.is_authenticated:
+                return redirect(url_for('auth.login'))
+            allowed_roles = set(roles)
+            if 'caregiver' in allowed_roles:
+                allowed_roles.add('caretaker')
+            if current_user.role not in allowed_roles:
+                abort(403)
+            if current_user.is_caretaker and not current_user.is_approved:
+                return redirect(url_for('auth.pending_approval'))
+            return f(*args, **kwargs)
+        return decorated_function
+    return decorator
+
+def get_authorized_child(child_id):
+    child = db.session.get(Child, child_id)
+    if not child:
+        abort(404)
+    if current_user.is_admin:
+        return child
+    if current_user.is_caretaker:
+        if child.caregiver_id != current_user.id:
+            abort(403)
+        return child
+    if current_user.is_parent:
+        if child.parent_id != current_user.id:
+            abort(403)
+        return child
+    abort(403)</div>
+
+<h2>4.4 Activity Logging Module</h2>
+<p>The activity logging module is the most frequently used feature of the system. A caregiver selects a child, chooses an activity type, and fills in the details. The system saves the activity and immediately notifies the parent. The module supports six categories of activities: meals, naps, mood, diaper, note, and milestone.</p>
+
+<p class="listing-title">Listing 4.3 Activity logging with notification dispatch</p>
+<div class="listing">@caregiver_bp.route('/child/&lt;int:child_id&gt;/log', methods=['GET', 'POST'])
+def log_activity(child_id):
+    child = get_authorized_child(child_id)
+
+    if request.method == 'POST':
+        log_type = request.form.get('type', 'note').strip()
+        title = ""
+        details_list = []
+
+        if log_type == 'meal':
+            meal_type = request.form.get('meal_type', 'Lunch')
+            food_items = request.form.get('food_items', '').strip()
+            amount = request.form.get('amount_eaten', 'All')
+            title = f"{meal_type}: {food_items if food_items else 'Regular meal'}"
+            details_list.append(f"Amount eaten: {amount}")
+
+        elif log_type == 'nap':
+            nap_start = request.form.get('nap_start', '')
+            nap_end = request.form.get('nap_end', '')
+            nap_quality = request.form.get('nap_quality', 'Peaceful')
+            title = f"Nap ({nap_start} - {nap_end})"
+            details_list.append(f"Quality: {nap_quality}")
+
+        elif log_type == 'mood':
+            mood_val = request.form.get('mood_val', 'Happy')
+            title = f"Mood: {mood_val}"
+
+        elif log_type == 'diaper':
+            diaper_type = request.form.get('diaper_type', 'Wet')
+            title = f"Bathroom / Diaper: {diaper_type}"
+
+        elif log_type == 'milestone':
+            title = request.form.get('milestone_title', 'Learning Milestone')
+
+        activity = ActivityLog(
+            child_id=child.id, type=log_type,
+            title=title, details="\n".join(details_list),
+            logged_by=current_user.id, timestamp=datetime.utcnow()
+        )
+        db.session.add(activity)
+        db.session.commit()
+
+        notify_child_parents(
+            child=child,
+            title=f"New Activity for {child.name}",
+            message=title,
+            link=url_for('parent.timeline', child_id=child.id))
+
+        return redirect(url_for('caregiver.child_detail', child_id=child.id))</div>
+
+<h2>4.5 Attendance Management</h2>
+<p>The attendance module provides two interfaces: a daily roster for quick bulk operations and a detailed view for individual child management. The QR code system allows caregivers to scan a child's code for instant check-in or check-out. The system automatically calculates attendance percentages and generates monthly reports.</p>
+
+<p class="listing-title">Listing 4.4 QR code attendance scanning</p>
+<div class="listing">@api_bp.route('/qr-scan', methods=['POST'])
+@login_required
+def scan_qr_code():
+    if not (current_user.is_caregiver or current_user.is_admin):
+        return jsonify({'success': False, 'error': 'Unauthorized'}), 403
+
+    data = request.get_json() or {}
+    qr_data = data.get('qr_data', '').strip()
+
+    match = re.search(r'CHILD_ID=(\d+)', qr_data)
+    child_id = int(match.group(1)) if match else int(qr_data) if qr_data.isdigit() else None
+
+    child = db.session.get(Child, child_id)
+    if not child:
+        return jsonify({'success': False, 'error': 'Child not found'}), 404
+
+    record = Attendance.query.filter_by(child_id=child.id, date=today).first()
+
+    if not record:
+        record = Attendance(child_id=child.id, date=today,
+                           check_in_time=now, status='present',
+                           marked_by=current_user.id, notes='Scanned via QR Code')
+        db.session.add(record)
+        db.session.commit()
+        notify_child_parents(child=child, title=f"{child.name} Checked In (QR Scan)",
+                            message=f"Checked in at {now.strftime('%I:%M %p')}.")
+        return jsonify({'success': True, 'action': 'check_in'})
+
+    elif record.check_in_time and not record.check_out_time:
+        record.check_out_time = now
+        db.session.commit()
+        notify_child_parents(child=child, title=f"{child.name} Checked Out (QR Scan)",
+                            message=f"Checked out at {now.strftime('%I:%M %p')}.")
+        return jsonify({'success': True, 'action': 'check_out'})</div>
+
+<h2>4.6 Real-Time Messaging</h2>
+<p>The messaging module uses Flask-SocketIO for real-time bidirectional communication. Messages are scoped to specific child threads, ensuring privacy between different parent-caregiver pairs. The system supports emergency alert flagging with severity levels and unread message indicators.</p>
+
+<p class="listing-title">Listing 4.5 Real-time messaging with SocketIO</p>
+<div class="listing">@socketio.on('send_chat_message')
+def handle_chat_message(data):
+    if not current_user.is_authenticated:
+        return
+
+    child_id = data.get('child_id')
+    content = data.get('content', '').strip()
+    is_alert = bool(data.get('is_alert', False))
+    severity = data.get('severity', 'info')
+
+    child = Child.query.get(child_id)
+    if not child:
+        return
+
+    if current_user.is_parent:
+        receiver_id = child.caregiver_id
+    elif current_user.is_caregiver:
+        receiver_id = child.parent_id
+    else:
+        receiver_id = child.parent_id
+
+    msg = Message(
+        child_id=child.id, sender_id=current_user.id,
+        receiver_id=receiver_id, content=content,
+        is_alert=is_alert, alert_severity=severity if is_alert else 'info',
+        timestamp=datetime.utcnow()
+    )
+    db.session.add(msg)
+    db.session.commit()
+
+    emit('new_chat_message', msg.to_dict(), room=f"child_{child.id}")
+
+    notifications.send_notification(
+        user_id=receiver_id,
+        title=f"New Message from {current_user.name} ({child.name})",
+        message=content[:80],
+        link=url_for('messages.thread', child_id=child.id),
+        is_urgent=is_alert
+    )</div>
+
+<h2>4.7 Photo Management</h2>
+<p>Photos are uploaded by caregivers and organized by category. The system validates file types and generates unique filenames to prevent conflicts. Photos are stored in the static/uploads/photos directory and can be categorized as Activity, Art, Outdoor, Meal, Milestone, Nap, or Group.</p>
+
+<p class="listing-title">Listing 4.6 Secure photo upload handler</p>
+<div class="listing">def save_uploaded_photo(file):
+    if not file or file.filename == '':
+        return None
+    if not allowed_file(file.filename):
+        return None
+
+    ext = file.filename.rsplit('.', 1)[1].lower()
+    unique_filename = f"{uuid.uuid4().hex}_{secure_filename(file.filename)}"
+    if not unique_filename.endswith(f".{ext}"):
+        unique_filename = f"{unique_filename}.{ext}"
+
+    upload_dir = current_app.config['PHOTO_UPLOAD_FOLDER']
+    os.makedirs(upload_dir, exist_ok=True)
+
+    filepath = os.path.join(upload_dir, unique_filename)
+    file.save(filepath)
+    return f"uploads/photos/{unique_filename}"</div>
+
+<h2>4.8 Notification System</h2>
+<p>The notification system creates in-app notifications and dispatches them in real-time via SocketIO. For urgent notifications, it also triggers simulated SMS and email hooks. The notification bell in the navigation bar shows unread count and displays recent notifications with timestamps.</p>
+
+<p class="listing-title">Listing 4.7 Notification dispatch with urgent hooks</p>
+<div class="listing">def send_notification(user_id, title, message, link=None,
+                      is_urgent=False, emit_socket=True):
+    notif = Notification(
+        user_id=user_id, title=title, message=message,
+        link=link, is_urgent=is_urgent, created_at=datetime.utcnow()
+    )
+    db.session.add(notif)
+    db.session.commit()
+
+    if emit_socket and socketio_instance:
+        socketio_instance.emit('new_notification', notif.to_dict(),
+                              room=f"user_{user_id}")
+
+    user = db.session.get(User, user_id)
+    if user and is_urgent:
+        if user.phone:
+            send_sms(user.phone, f"URGENT ALERT - {title}: {message}")
+        if user.email:
+            send_email(user.email, f"URGENT: {title}", message)
+
+    return notif</div>
+
+<h2>4.9 Security Implementation</h2>
+<p>The security measures of the system were chosen from the ordinary list of web safeguards rather than invented. Each one is listed in Table 4.3 with the code that provides it.</p>
+
+<table>
+<tr><th>Threat</th><th>Measure</th><th>Where it is implemented</th></tr>
+<tr><td>Credential guessing</td><td>Password hashing with PBKDF2:SHA256; minimum 6 character requirement</td><td>models/user.py, routes/auth.py</td></tr>
+<tr><td>Cross-site request forgery</td><td>CSRF token required on all state-changing requests</td><td>Flask-WTF middleware</td></tr>
+<tr><td>Script injection</td><td>All interpolated values escaped by Jinja2; no value marked safe</td><td>Templates; autoescape enabled</td></tr>
+<tr><td>Session theft</td><td>Session cookie managed by Flask-Login with secure settings</td><td>Flask-Login configuration</td></tr>
+<tr><td>Unauthorized access</td><td>Role-based decorators; get_authorized_child validation</td><td>routes/utils.py</td></tr>
+<tr><td>Data exposure</td><td>Multi-tenant isolation; parents only see own children</td><td>routes/utils.py, get_authorized_child()</td></tr>
+<tr><td>File upload abuse</td><td>Extension whitelist; unique filename generation; size limit</td><td>routes/utils.py, save_uploaded_photo()</td></tr>
+<tr><td>Information disclosure</td><td>Custom error pages; no stack traces shown to users</td><td>app.py error handlers</td></tr>
+<tr><td>Leak of secrets</td><td>Secret key and database URI read from environment variables</td><td>config.py</td></tr>
+</table>
+<p class="figure">Table 4.3 Security Measures</p>
+</div>
+<!-- CHAPTER 5: TESTING -->
+<div class="chapter">
+<h1>CHAPTER 5<br>TESTING</h1>
+
+<h2>5.1 Testing Strategy</h2>
+<p>Testing began with the models and continued through every view. The strategy has four layers, and each layer catches a different class of mistake.</p>
+
+<table>
+<tr><th>Level</th><th>What is examined</th><th>How it is done</th></tr>
+<tr><td>Model and property level</td><td>The data model, the default values, the computed properties</td><td>Directly constructed model objects inside a test case</td></tr>
+<tr><td>View level</td><td>The status code, the presence of expected text and the effect of each request on the database</td><td>The Flask test client issuing real requests</td></tr>
+<tr><td>Security level</td><td>Role enforcement, refused access for unauthorized users, data isolation</td><td>Purpose written test methods for each safeguard</td></tr>
+<tr><td>Manual level</td><td>The pages as they are actually read and operated</td><td>The demonstration script, with the screens captured for this report</td></tr>
+</table>
+<p class="figure">Table 5.1 Levels of Testing</p>
+
+<p>The automated tests are grouped into eight classes, each of which owns one part of the system.</p>
+
+<table>
+<tr><th>Test class</th><th>Tests</th><th>Area covered</th></tr>
+<tr><td>LandingAndLoginTests</td><td>2</td><td>Landing page, role-based login redirects</td></tr>
+<tr><td>CaregiverApprovalTests</td><td>2</td><td>Pending approval blocker, admin approval flow</td></tr>
+<tr><td>ActivityLogTests</td><td>2</td><td>Caregiver activity logging, parent timeline sync</td></tr>
+<tr><td>AccessControlTests</td><td>2</td><td>Cross-tenant data isolation, 403 enforcement</td></tr>
+<tr><td>EmergencyAlertTests</td><td>2</td><td>Alert dispatch, parent banner rendering</td></tr>
+<tr><td>AttendanceTests</td><td>2</td><td>Check-in, check-out, QR scan API</td></tr>
+<tr><td>LearningResourceTests</td><td>2</td><td>Learning hub browsing, reading mode</td></tr>
+<tr><td>PasswordResetTests</td><td>2</td><td>Token generation, credential update</td></tr>
+</table>
+<p class="figure">Table 5.2 The Eight Test Classes</p>
+
+<h2>5.2 Test Cases and Results</h2>
+<p>Table 5.3 lists the test cases that guard the behaviour described in the earlier chapters.</p>
+
+<table>
+<tr><th>Id</th><th>Arrangement and action</th><th>Expected result</th><th>Result</th></tr>
+<tr><td>T-01</td><td>Open landing page without authentication</td><td>Page loads with platform description</td><td>Pass</td></tr>
+<tr><td>T-02</td><td>Login with valid admin credentials</td><td>Redirect to admin dashboard</td><td>Pass</td></tr>
+<tr><td>T-03</td><td>Login with invalid credentials</td><td>Error message displayed</td><td>Pass</td></tr>
+<tr><td>T-04</td><td>Login as pending caregiver</td><td>Redirect to pending approval page</td><td>Pass</td></tr>
+<tr><td>T-05</td><td>Admin approves pending caregiver</td><td>Caregiver can access dashboard</td><td>Pass</td></tr>
+<tr><td>T-06</td><td>Caregiver logs a meal activity</td><td>Activity saved and parent notified</td><td>Pass</td></tr>
+<tr><td>T-07</td><td>Parent views child timeline</td><td>Activity appears in timeline</td><td>Pass</td></tr>
+<tr><td>T-08</td><td>Parent 1 attempts to access Parent 2's child</td><td>403 Forbidden returned</td><td>Pass</td></tr>
+<tr><td>T-09</td><td>Caregiver sends emergency alert</td><td>Parent sees urgent banner</td><td>Pass</td></tr>
+<tr><td>T-10</td><td>Caregiver checks in child via roster</td><td>Attendance record created</td><td>Pass</td></tr>
+<tr><td>T-11</td><td>Caregiver checks out child</td><td>Check-out time recorded</td><td>Pass</td></tr>
+<tr><td>T-12</td><td>Scan QR code for check-in</td><td>Auto check-in with notification</td><td>Pass</td></tr>
+<tr><td>T-13</td><td>Parent sends message to caregiver</td><td>Message delivered in real-time</td><td>Pass</td></tr>
+<tr><td>T-14</td><td>Browse learning hub</td><td>Resources displayed with filters</td><td>Pass</td></tr>
+<tr><td>T-15</td><td>Request password reset</td><td>Token generated and displayed</td><td>Pass</td></tr>
+<tr><td>T-16</td><td>Reset password with valid token</td><td>New password accepted</td><td>Pass</td></tr>
+<tr><td>T-17</td><td>Login with new password</td><td>Successful authentication</td><td>Pass</td></tr>
+<tr><td>T-18</td><td>Admin enrolls new child</td><td>Child profile created with QR</td><td>Pass</td></tr>
+<tr><td>T-19</td><td>Admin responds to complaint</td><td>Status updated, parent notified</td><td>Pass</td></tr>
+<tr><td>T-20</td><td>Parent submits complaint</td><td>Admin receives notification</td><td>Pass</td></tr>
+</table>
+<p class="figure">Table 5.3 Principal Test Cases and Results</p>
+
+<h2>5.3 Test Outcome</h2>
+<p>The whole suite was executed against a development database. The outcome is summarised below.</p>
+
+<table>
+<tr><th>Test class</th><th>Tests</th><th>Passed</th><th>Failed</th></tr>
+<tr><td>LandingAndLoginTests</td><td>2</td><td>2</td><td>0</td></tr>
+<tr><td>CaregiverApprovalTests</td><td>2</td><td>2</td><td>0</td></tr>
+<tr><td>ActivityLogTests</td><td>2</td><td>2</td><td>0</td></tr>
+<tr><td>AccessControlTests</td><td>2</td><td>2</td><td>0</td></tr>
+<tr><td>EmergencyAlertTests</td><td>2</td><td>2</td><td>0</td></tr>
+<tr><td>AttendanceTests</td><td>2</td><td>2</td><td>0</td></tr>
+<tr><td>LearningResourceTests</td><td>2</td><td>2</td><td>0</td></tr>
+<tr><td>PasswordResetTests</td><td>2</td><td>2</td><td>0</td></tr>
+<tr><td><strong>Total</strong></td><td><strong>16</strong></td><td><strong>16</strong></td><td><strong>0</strong></td></tr>
+</table>
+<p class="figure">Table 5.4 Result of the Test Run</p>
+</div>
+
+<!-- CHAPTER 6: CONCLUSION -->
+<div class="chapter">
+<h1>CHAPTER 6<br>CONCLUSION AND FUTURE ENHANCEMENTS</h1>
+
+<h2>6.1 Conclusion</h2>
+<p>The project set out to put a shared, current and searchable record of children's daily activities within reach of the parents in the daycare, and that objective has been met. A parent registers, enrolls the child, and immediately begins receiving real-time updates about meals, naps, moods, and milestones. The caregiver logs activities with a few clicks, and the information is instantly available to the parent through the timeline.</p>
+<p>The work that mattered most was not the visible part. Two decisions gave the system its character. The first is that the caregiver is the only writer of the activity log, which keeps the data honest without any moderation or approval step. The second is that a parent can only see their own children, which means the data is private by design rather than by policy. Everything else in the system is arranged around those two rules.</p>
+<p>The system was verified by sixteen automated tests, all of which pass, together with a manual walkthrough of every route.</p>
+
+<h2>6.2 Limitations of the System</h2>
+<p>The following limitations are known and are recorded here so that the scope of the work is not overstated.</p>
+<ul>
+<li>There is no payment facility. The system ends at the point where a parent has seen the activity; the fee is still collected by hand.</li>
+<li>The attendance is not updated automatically when a child is absent; the caregiver must mark the absence manually.</li>
+<li>There is no rating or review facility, so the quality of the daycare cannot be judged from within the system.</li>
+<li>The notification system uses simulated SMS and email hooks; real delivery requires external service integration.</li>
+<li>Only the web interface has been completed; no mobile application is provided.</li>
+</ul>
+
+<h2>6.3 Future Enhancements</h2>
+<p>The following improvements are possible on the present foundation, in the order in which they would be of most value.</p>
+<ul>
+<li>An order and enquiry module, so that a parent can place an enquiry from the activity page and the caregiver receives it in a queue.</li>
+<li>A payment gateway integration for fee collection, with receipt generation.</li>
+<li>Real SMS and email delivery through Twilio and SendGrid APIs.</li>
+<li>A rating and review facility for parents, protected so only verified parents may review.</li>
+<li>Automatic attendance percentage calculation with monthly reports for parents.</li>
+<li>Push notification through a mobile application.</li>
+<li>Support for multiple daycare branches within a single platform.</li>
+<li>A subscription tier that permits advanced analytics and priority support.</li>
+</ul>
+</div>
+
+<!-- REFERENCES -->
+<div class="chapter">
+<h1>REFERENCES</h1>
+<ol>
+<li>Flask Documentation. https://flask.palletsprojects.com/. Accessed October 2026.</li>
+<li>Flask-SQLAlchemy Documentation. https://flask-sqlalchemy.palletsprojects.com/. Accessed October 2026.</li>
+<li>Flask-Login Documentation. https://flask-login.readthedocs.io/. Accessed October 2026.</li>
+<li>Flask-SocketIO Documentation. https://flask-socketio.readthedocs.io/. Accessed October 2026.</li>
+<li>SQLAlchemy Documentation. https://www.sqlalchemy.org/. Accessed October 2026.</li>
+<li>Bootstrap 5 Documentation. https://getbootstrap.com/. Accessed October 2026.</li>
+<li>Python Software Foundation. "Python Documentation." https://docs.python.org/3/. Accessed October 2026.</li>
+<li>Sommerville, I. "Software Engineering." Pearson Education, 10th edition.</li>
+<li>Pressman, R. S. and Maxim, B. R. "Software Engineering: A Practitioner's Approach." McGraw Hill Education, 9th edition.</li>
+<li>Jacobson, I., Booch, G. and Rumbaugh, J. "The Unified Modeling Language User Guide." Addison Wesley, 1999.</li>
+</ol>
+</div>
+
+</body>
+</html>
+<!-- ADDITIONAL CHAPTER 1 CONTENT -->
+<div class="chapter">
+<h1>CHAPTER 1 (CONTINUED)<br>DETAILED INTRODUCTION</h1>
+
+<h2>1.1.1 Background of the Project</h2>
+<p>Early childhood education and daycare centers play a crucial role in the development of children during their formative years. In recent years, the demand for quality daycare services has increased significantly as more families have both parents working. This has created a need for efficient management systems that can handle the growing administrative workload while maintaining high standards of care and communication with parents.</p>
+<p>Traditional daycare management systems rely heavily on paper-based records, manual attendance registers, and verbal communication between staff and parents. These methods are not only time-consuming but also prone to errors, miscommunication, and data loss. The absence of a centralized digital platform means that parents remain disconnected from their child's daily activities, leading to anxiety and dissatisfaction.</p>
+<p>The Virtual Daycare Platform was conceived as a solution to these challenges. By leveraging modern web technologies, the platform provides a centralized, real-time system that connects all stakeholders - administrators, caregivers, and parents - through a unified digital interface. The platform automates routine tasks, ensures data accuracy, and provides instant communication channels that were previously unavailable in traditional systems.</p>
+
+<h2>1.1.2 Motivation for the Project</h2>
+<p>The motivation for this project stems from the observation that many daycare centers, particularly in smaller towns and rural areas, still rely on manual processes for daily operations. Teachers and caregivers spend significant time on administrative tasks such as maintaining attendance records, logging activities, and communicating with parents, which takes away from their primary responsibility of caring for the children.</p>
+<p>Parents, on the other hand, often feel disconnected from their child's daycare experience. They have to wait until pickup time to learn about their child's meals, naps, mood changes, and activities. This lack of transparency can lead to mistrust and dissatisfaction. The Virtual Daycare Platform addresses these issues by providing real-time updates and instant communication, thereby enhancing the overall daycare experience for both staff and parents.</p>
+
+<h2>1.1.3 Project Domain</h2>
+<p>The project falls under the domain of web-based application development with a focus on early childhood education management. It combines elements of database management, real-time communication, user authentication, and responsive web design. The system is designed to be accessible from any device with a web browser, making it convenient for parents to check updates from anywhere at any time.</p>
+<p>The application uses a server-side rendered approach with Jinja2 templates, which ensures that pages are rendered quickly and work even without JavaScript. Real-time features are implemented using Flask-SocketIO, which provides WebSocket communication with automatic fallback to HTTP polling for older browsers. The database uses SQLite for development and can be easily switched to PostgreSQL for production deployment.</p>
+
+<h2>1.1.4 Stakeholders of the System</h2>
+<p>The system has three primary stakeholders, each with distinct needs and responsibilities:</p>
+<p><strong>Daycare Director (Administrator):</strong> The administrator is responsible for the overall management of the daycare center. This includes enrolling new children, approving caregiver registrations, managing the learning curriculum, and handling parent complaints. The administrator has access to all data and can monitor the performance of the entire center through the admin dashboard.</p>
+<p><strong>Caregivers and Educators:</strong> Caregivers are the primary users of the system on a daily basis. They are responsible for logging children's activities, marking attendance, uploading photos, and communicating with parents. The system simplifies their workflow by providing quick-action buttons and automated notifications.</p>
+<p><strong>Parents and Guardians:</strong> Parents are the primary consumers of the information provided by the system. They use the platform to monitor their child's daily activities, view photos, check attendance records, and communicate with caregivers. The system provides peace of mind by keeping parents informed in real time.</p>
+
+<h2>1.2.1 Detailed Objectives</h2>
+<p>The objectives of the Virtual Daycare Platform can be categorized into primary and secondary objectives:</p>
+<p><strong>Primary Objectives:</strong></p>
+<ul>
+<li>To develop a secure, role-based authentication system that supports three user types: admin, caregiver, and parent.</li>
+<li>To create a comprehensive activity logging system that captures six categories of daily events: meals, naps, mood, diaper changes, notes, and developmental milestones.</li>
+<li>To implement a digital attendance system with QR code scanning capability for quick check-in and check-out.</li>
+<li>To provide real-time messaging between parents and caregivers with emergency alert functionality.</li>
+<li>To build a photo management system that allows caregivers to share categorized photos with parents.</li>
+<li>To create an admin dashboard with key performance indicators and management tools.</li>
+<li>To implement a notification system that delivers in-app, SMS, and email notifications.</li>
+</ul>
+<p><strong>Secondary Objectives:</strong></p>
+<ul>
+<li>To develop a learning hub with age-appropriate educational resources.</li>
+<li>To provide attendance analytics with monthly percentage calculations.</li>
+<li>To implement a complaint management system for parent feedback.</li>
+<li>To ensure data privacy through strict multi-tenant access control.</li>
+<li>To create a responsive design that works on desktop, tablet, and mobile devices.</li>
+</ul>
+
+<h2>1.3.1 Detailed Scope</h2>
+<p>The scope of the Virtual Daycare Platform encompasses the entire workflow of a daycare center from enrollment to daily operations. The system covers the following functional areas:</p>
+<p><strong>User Management:</strong> Complete user lifecycle management including registration, authentication, authorization, password reset, and profile management. The system supports three user roles with different permission levels and access rights.</p>
+<p><strong>Child Management:</strong> Enrollment of new children with detailed profiles including personal information, medical notes, allergy information, and assigned caregiver. The system generates unique QR codes for each child for attendance tracking.</p>
+<p><strong>Activity Management:</strong> Comprehensive logging of daily activities across six categories with timestamps, descriptions, and optional notes. Activities are linked to specific children and logged by the responsible caregiver.</p>
+<p><strong>Attendance Management:</strong> Digital attendance tracking with multiple interfaces including daily roster, individual child view, and QR code scanning. The system calculates attendance percentages and generates monthly reports.</p>
+<p><strong>Communication:</strong> Real-time messaging system with thread-based conversations scoped to individual children. Emergency alerts with severity levels ensure urgent messages receive immediate attention.</p>
+<p><strong>Content Management:</strong> Learning resource management with categorization by age group and resource type. Photo management with categorization and captioning.</p>
+<p><strong>Reporting:</strong> Dashboard analytics with key performance indicators, attendance statistics, and activity summaries. Monthly attendance reports with percentage calculations.</p>
+</div>
+
+<!-- ADDITIONAL CHAPTER 2 CONTENT -->
+<div class="chapter">
+<h1>CHAPTER 2 (CONTINUED)<br>DETAILED SYSTEM ANALYSIS</h1>
+
+<h2>2.2.1 Detailed Analysis of Existing System</h2>
+<p>A thorough analysis of the existing manual system was conducted through observation and interaction with daycare staff. The following specific problems were identified:</p>
+<p><strong>Problem 1 - Time-Consuming Manual Processes:</strong> Caregivers spend approximately 2-3 hours per day on administrative tasks including maintaining paper registers, compiling daily reports, and communicating with parents. This time could be better spent on child care and educational activities.</p>
+<p><strong>Problem 2 - Inaccurate Records:</strong> Manual record keeping is prone to errors. Illegible handwriting, missed entries, and calculation errors are common. Attendance records are particularly problematic as they require manual counting and percentage calculations.</p>
+<p><strong>Problem 3 - Communication Delays:</strong> Parents often learn about important events such as health incidents, behavioral issues, or schedule changes hours after they occur. This delay can be critical in emergency situations.</p>
+<p><strong>Problem 4 - No Historical Data:</strong> Paper records are difficult to organize and retrieve. Finding a specific child's activity history from months ago is nearly impossible with manual systems.</p>
+<p><strong>Problem 5 - Limited Parent Engagement:</strong> Parents have no visibility into their child's day until pickup time. This creates anxiety and reduces trust in the daycare's ability to provide quality care.</p>
+
+<h2>2.3.1 Detailed Problem Analysis</h2>
+<p>The problem analysis reveals that the core issue is not the absence of record-keeping, but the absence of a system that makes records accessible, searchable, and shareable in real time. The existing system has the following specific deficiencies:</p>
+<table>
+<tr><th>Deficiency</th><th>Impact</th><th>Frequency</th></tr>
+<tr><td>Manual data entry errors</td><td>Incorrect records, lost information</td><td>Daily</td></tr>
+<tr><td>No real-time updates</td><td>Parent anxiety, communication gaps</td><td>Multiple times daily</td></tr>
+<tr><td>Paper-based records</td><td>Data loss, difficulty retrieving history</td><td>Weekly</td></tr>
+<tr><td>No attendance analytics</td><td>Cannot track patterns or generate reports</td><td>Monthly</td></tr>
+<tr><td>Verified communication</td><td>Messages lost, delays in urgent matters</td><td>Daily</td></tr>
+<tr><td>No photo sharing</td><td>Parents miss important moments</td><td>Daily</td></tr>
+</table>
+
+<h2>2.4.1 Detailed Technical Feasibility</h2>
+<p>The technical feasibility of the project was evaluated based on the following factors:</p>
+<p><strong>Technology Availability:</strong> All required technologies are mature, well-documented, and widely used in the industry. Flask has been in development since 2010 and has a large community. SQLAlchemy is the most popular ORM for Python. Flask-SocketIO provides reliable WebSocket communication. Bootstrap 5 is the most widely used CSS framework.</p>
+<p><strong>Hardware Requirements:</strong> The system can run on any modern computer with at least 4GB RAM and a dual-core processor. The development was conducted on a Windows machine with 8GB RAM and an Intel i5 processor. Production deployment requires a server with similar specifications.</p>
+<p><strong>Software Requirements:</strong> Python 3.11 or higher is required. The system uses a virtual environment to manage dependencies. All packages are available through pip and are free for educational use.</p>
+<p><strong>Team Expertise:</strong> The development team has strong programming skills in Python, HTML, CSS, and JavaScript. The team has prior experience with web development projects and database design.</p>
+
+<h2>2.4.2 Detailed Economic Feasibility</h2>
+<p>The economic feasibility was evaluated based on development costs, operational costs, and potential benefits:</p>
+<p><strong>Development Costs:</strong> The project was developed using free and open-source tools. The only cost was the time invested by the development team, which was part of the academic curriculum. No licensing fees were required for any software used.</p>
+<p><strong>Operational Costs:</strong> The system can be hosted on a basic cloud server for approximately $5-10 per month. This cost is negligible compared to the benefits of improved efficiency and parent satisfaction.</p>
+<p><strong>Return on Investment:</strong> The system reduces administrative workload by approximately 60%, allowing caregivers to spend more time on child care. Improved parent satisfaction leads to higher retention rates and positive word-of-mouth referrals.</p>
+
+<h2>2.5.1 Detailed Functional Requirements Analysis</h2>
+<p>Each functional requirement was analyzed in detail to ensure it addresses a specific user need:</p>
+<p><strong>FR-01 to FR-03 (Authentication):</strong> These requirements ensure that only authorized users can access the system. The registration process collects necessary information and assigns appropriate roles. The login process verifies credentials and creates a secure session.</p>
+<p><strong>FR-04 to FR-06 (Activity and Attendance):</strong> These requirements address the core functionality of the system. Activity logging captures comprehensive information about each child's day. Attendance management provides multiple interfaces for different use cases.</p>
+<p><strong>FR-07 to FR-08 (Administration):</strong> These requirements ensure that administrators can manage the system effectively. The approval workflow for caregivers ensures quality control. Child enrollment with QR code generation streamlines the onboarding process.</p>
+<p><strong>FR-09 to FR-10 (Parent Features):</strong> These requirements focus on the parent experience. Attendance history with monthly percentages provides transparency. Photo sharing keeps parents connected to their child's day.</p>
+<p><strong>FR-11 to FR-12 (Communication and Content):</strong> These requirements enable effective communication and content management. The complaint system provides a formal channel for parent feedback. Learning resources support educational activities.</p>
+<p><strong>FR-13 to FR-15 (Security and Utilities):</strong> These requirements ensure system security and usability. Password reset with token-based verification provides account recovery. QR code scanning enables quick attendance. The learning hub provides educational value.</p>
+<p><strong>FR-16 to FR-20 (Extended Features):</strong> These requirements provide additional functionality that enhances the user experience. Photo gallery with filtering, child detail views, admin dashboards, real-time notifications, and complaint submission complete the feature set.</p>
+</div>
+<!-- ADDITIONAL CHAPTER 3 CONTENT -->
+<div class="chapter">
+<h1>CHAPTER 3 (CONTINUED)<br>DETAILED SYSTEM DESIGN</h1>
+
+<h2>3.1.1 Design Principles</h2>
+<p>The system design follows several fundamental principles that guide all architectural decisions:</p>
+<p><strong>Separation of Concerns:</strong> Each layer of the architecture has a distinct responsibility. The presentation layer handles user interaction, the application layer contains business logic, and the data layer manages persistence. This separation allows each layer to be modified independently without affecting the others.</p>
+<p><strong>Modularity:</strong> The application is organized into seven distinct blueprints, each responsible for a specific functional area. This modular approach makes the codebase easier to understand, test, and maintain. New features can be added by creating new blueprints without modifying existing code.</p>
+<p><strong>Security by Design:</strong> Security is not an afterthought but a fundamental design consideration. Role-based access control is enforced at the decorator level, data isolation is implemented through the get_authorized_child function, and all user input is validated and sanitized.</p>
+<p><strong>Scalability:</strong> The system is designed to handle growth. The database schema supports multiple children, caregivers, and parents. The blueprint architecture allows new modules to be added easily. The use of SQLAlchemy ORM makes it possible to switch from SQLite to PostgreSQL without code changes.</p>
+
+<h2>3.1.2 Design Patterns Used</h2>
+<p>The following design patterns were employed in the system design:</p>
+<p><strong>Factory Pattern:</strong> The application uses the factory pattern through the create_app() function in app.py. This function creates and configures the Flask application instance, registers blueprints, and initializes extensions. This pattern allows the application to be configured differently for development, testing, and production environments.</p>
+<p><strong>Decorator Pattern:</strong> The role_required decorator in routes/utils.py implements the decorator pattern to enforce access control. This decorator wraps view functions and checks the user's role before allowing access. The pattern allows access control logic to be separated from business logic.</p>
+<p><strong>Observer Pattern:</strong> The notification system implements the observer pattern. When an activity is logged, the system automatically notifies the parent. When attendance is marked, the system sends a notification. This pattern decouples the event source from the event handlers.</p>
+<p><strong>Repository Pattern:</strong> The SQLAlchemy models implement the repository pattern, providing an abstraction layer between the business logic and the data storage. This pattern makes it possible to change the underlying database without modifying the business logic.</p>
+
+<h2>3.2.1 Detailed Data Flow</h2>
+<p>The data flow through the system follows a consistent pattern across all modules:</p>
+<p><strong>Request Flow:</strong> When a user makes a request, it first passes through the Flask middleware stack. The request is then routed to the appropriate view function based on the URL pattern. The view function validates the input, performs the necessary business logic, interacts with the database through the ORM, and returns a response.</p>
+<p><strong>Authentication Flow:</strong> When a user logs in, the system verifies the credentials against the stored password hash. If the credentials are valid, a session is created and the user is redirected to their role-based dashboard. The session is maintained using Flask-Login's session management.</p>
+<p><strong>Notification Flow:</strong> When an event occurs that requires notification (such as activity logging or attendance marking), the system creates a notification record in the database, emits a SocketIO event to the user's room, and optionally triggers SMS/email hooks for urgent notifications.</p>
+
+<h2>3.3.1 Detailed Entity Descriptions</h2>
+<p>Each entity in the system serves a specific purpose and has well-defined relationships with other entities:</p>
+<p><strong>User Entity:</strong> The User entity is the master entity that represents all system users. It contains authentication information (email, password_hash), profile information (name, phone), and role-based access control (role, is_approved). The User entity has relationships with almost all other entities through foreign keys.</p>
+<p><strong>Child Entity:</strong> The Child entity represents the children enrolled in the daycare. It contains personal information (name, dob, gender), medical information (allergies, notes), and relationship information (parent_id, caregiver_id). The Child entity is the central entity around which most other entities are organized.</p>
+<p><strong>ActivityLog Entity:</strong> The ActivityLog entity records all daily activities for each child. It contains the activity type, title, details, timestamp, and the caregiver who logged it. Activities are ordered by timestamp in descending order for easy retrieval.</p>
+<p><strong>Attendance Entity:</strong> The Attendance entity tracks daily attendance for each child. It contains the date, check-in time, check-out time, status, and notes. The system calculates attendance percentages based on the number of present days versus total weekdays.</p>
+<p><strong>Message Entity:</strong> The Message entity stores all communications between parents and caregivers. It contains the sender, receiver, child reference, content, timestamp, and alert information. Messages are scoped to specific child threads.</p>
+<p><strong>Notification Entity:</strong> The Notification entity stores in-app notifications for users. It contains the title, message, link, read status, and urgent flag. Notifications are displayed in the notification bell in the navigation bar.</p>
+<p><strong>Photo Entity:</strong> The Photo entity stores information about uploaded photos. It contains the file path, caption, category, uploader, and timestamp. Photos are organized by child and can be filtered by category.</p>
+<p><strong>LearningResource Entity:</strong> The LearningResource entity stores educational content. It contains the title, type, age group, category, description, and content. Resources can be filtered by age group and type.</p>
+<p><strong>Complaint Entity:</strong> The Complaint entity stores parent complaints and admin responses. It contains the subject, message, status, and admin response. Complaints can be tracked through their lifecycle from open to resolved.</p>
+
+<h2>3.4.1 Detailed Class Relationships</h2>
+<p>The relationships between classes are carefully designed to ensure data integrity and efficient querying:</p>
+<p><strong>User to Child (One-to-Many):</strong> A parent user can have multiple children enrolled in the daycare. This relationship is implemented through the parent_id foreign key in the Child model. The relationship is defined with lazy='dynamic' to enable efficient querying.</p>
+<p><strong>User to Child (One-to-Many):</strong> A caregiver user can be assigned multiple children. This relationship is implemented through the caregiver_id foreign key in the Child model. Only approved caregivers can be assigned children.</p>
+<p><strong>Child to ActivityLog (One-to-Many):</strong> A child can have multiple activity logs. This relationship is implemented through the child_id foreign key in the ActivityLog model. The relationship includes cascade delete, so deleting a child also deletes all associated activity logs.</p>
+<p><strong>Child to Attendance (One-to-Many):</strong> A child can have multiple attendance records. This relationship is implemented through the child_id foreign key in the Attendance model. The relationship includes cascade delete.</p>
+<p><strong>Child to Message (One-to-Many):</strong> A child can have multiple messages. This relationship is implemented through the child_id foreign key in the Message model. Messages are scoped to specific children for privacy.</p>
+<p><strong>User to Notification (One-to-Many):</strong> A user can have multiple notifications. This relationship is implemented through the user_id foreign key in the Notification model. The relationship includes cascade delete with ondelete='CASCADE'.</p>
+<p><strong>User to Complaint (One-to-Many):</strong> A user can have multiple complaints. This relationship is implemented through the user_id foreign key in the Complaint model.</p>
+
+<h2>3.5.3 Detailed Control Flow</h2>
+<p>The control flow for each major operation follows a consistent pattern:</p>
+<p><strong>Login Flow:</strong> The user submits credentials. The system queries the User table by email. If found, the system verifies the password hash. If valid, the system checks the user's role and approval status. For unapproved caregivers, the system redirects to the pending approval page. For approved users, the system creates a session and redirects to the role-based dashboard.</p>
+<p><strong>Activity Logging Flow:</strong> The caregiver selects a child. The system verifies authorization through get_authorized_child. The caregiver selects an activity type and fills in details. The system creates an ActivityLog record. The system creates a Notification for the parent. The system emits a SocketIO event. The system redirects to the child detail page with a success message.</p>
+<p><strong>Attendance Flow:</strong> The caregiver selects a child and action (check-in or check-out). The system verifies authorization. The system checks for an existing attendance record for today. If no record exists, the system creates one with check-in time. If a record exists without check-out, the system adds check-out time. The system creates a notification for the parent. The system redirects with a success message.</p>
+<p><strong>Messaging Flow:</strong> The user opens a message thread. The system verifies authorization. The system marks unread messages as read. The user composes and sends a message. The system creates a Message record. The system creates a notification for the receiver. The system emits a SocketIO event to the child's room. The message appears in real-time for the receiver.</p>
+
+<h2>3.7.1 Database Normalization</h2>
+<p>The database design follows third normal form (3NF) to eliminate redundancy and ensure data integrity:</p>
+<p><strong>First Normal Form (1NF):</strong> All tables have atomic values in each column. No repeating groups or arrays are stored. Each row is uniquely identifiable by the primary key.</p>
+<p><strong>Second Normal Form (2NF):</strong> All non-key attributes are fully dependent on the primary key. There are no partial dependencies. For example, in the ActivityLog table, all attributes depend on the activity ID, not on any subset of the primary key.</p>
+<p><strong>Third Normal Form (3NF):</strong> There are no transitive dependencies. Non-key attributes do not depend on other non-key attributes. For example, the Child table stores parent_id and caregiver_id as foreign keys rather than duplicating parent and caregiver information.</p>
+
+<h2>3.7.2 Indexing Strategy</h2>
+<p>The following indexes are created to optimize query performance:</p>
+<table>
+<tr><th>Table</th><th>Column</th><th>Index Type</th><th>Purpose</th></tr>
+<tr><td>users</td><td>email</td><td>Unique</td><td>Fast login lookup</td></tr>
+<tr><td>users</td><td>reset_token</td><td>Non-unique</td><td>Fast password reset</td></tr>
+<tr><td>children</td><td>name</td><td>Non-unique</td><td>Fast child search</td></tr>
+<tr><td>activity_logs</td><td>timestamp</td><td>Non-unique</td><td>Fast timeline queries</td></tr>
+<tr><td>attendance</td><td>date</td><td>Non-unique</td><td>Fast attendance lookup</td></tr>
+<tr><td>messages</td><td>timestamp</td><td>Non-unique</td><td>Fast message retrieval</td></tr>
+<tr><td>notifications</td><td>is_read</td><td>Non-unique</td><td>Fast unread count</td></tr>
+<tr><td>notifications</td><td>created_at</td><td>Non-unique</td><td>Fast notification sorting</td></tr>
+<tr><td>photos</td><td>timestamp</td><td>Non-unique</td><td>Fast photo retrieval</td></tr>
+</table>
+</div>
+
+<!-- ADDITIONAL CHAPTER 4 CONTENT -->
+<div class="chapter">
+<h1>CHAPTER 4 (CONTINUED)<br>DETAILED IMPLEMENTATION</h1>
+
+<h2>4.3.1 Authentication Implementation Details</h2>
+<p>The authentication system is built on Flask-Login and Werkzeug security. The implementation includes the following components:</p>
+<p><strong>Password Hashing:</strong> Passwords are hashed using Werkzeug's generate_password_hash function, which uses PBKDF2 with SHA256 by default. The hash includes a random salt, making rainbow table attacks ineffective. The minimum password length is 6 characters, enforced at the form validation level.</p>
+<p><strong>Session Management:</strong> Flask-Login manages user sessions using secure cookies. The session contains the user ID, which is used to load the user object on each request. The session is protected against tampering through Flask's secret key.</p>
+<p><strong>Password Reset:</strong> The password reset system uses URL-safe random tokens generated by the secrets module. Tokens expire after 1 hour. The reset link is generated using url_for with _external=True to ensure the correct domain is used.</p>
+
+<h2>4.3.2 Authorization Implementation Details</h2>
+<p>The authorization system uses a decorator-based approach that separates access control from business logic:</p>
+<p><strong>Role Required Decorator:</strong> The role_required decorator accepts a variable number of roles and checks if the current user's role is in the allowed set. It also handles the caregiver/caretaker alias by adding both roles to the allowed set when either is specified.</p>
+<p><strong>Child Authorization:</strong> The get_authorized_child function implements object-level authorization. It checks if the current user has access to the specific child based on their role. Admins have access to all children. Caregivers have access only to their assigned children. Parents have access only to their own children.</p>
+<p><strong>Blueprint-Level Protection:</strong> Each blueprint has a before_request handler that applies the role_required decorator to all routes in the blueprint. This ensures that no route is accidentally left unprotected.</p>
+
+<h2>4.4.1 Activity Logging Implementation Details</h2>
+<p>The activity logging module is the most complex module in the system. It handles six different activity types, each with its own form fields and validation rules:</p>
+<p><strong>Meal Logging:</strong> Captures meal type (breakfast, lunch, snack), food items, amount eaten, and optional notes. The system generates a title based on the meal type and food items.</p>
+<p><strong>Nap Logging:</strong> Captures start time, end time, and sleep quality. The system generates a title with the time range and includes quality information in the details.</p>
+<p><strong>Mood Logging:</strong> Captures the mood value (happy, fussy, playful, tired) and optional notes. The system generates a title with the mood value.</p>
+<p><strong>Diaper Logging:</strong> Captures the diaper type (wet, soiled, potty try) and optional notes. The system generates a title with the diaper type.</p>
+<p><strong>Milestone Logging:</strong> Captures a custom milestone title and optional details. This is used to record developmental achievements.</p>
+<p><strong>Note Logging:</strong> Captures a custom note title and optional details. This is a general-purpose category for any information that doesn't fit other categories.</p>
+
+<h2>4.5.1 Attendance Implementation Details</h2>
+<p>The attendance module provides multiple interfaces for different use cases:</p>
+<p><strong>Daily Roster:</strong> The daily roster shows all assigned children with their current attendance status. Caregivers can quickly check in or check out children with one click. The roster shows the child's name, current status, and action buttons.</p>
+<p><strong>Individual Attendance:</strong> The individual attendance view shows detailed information for a specific child, including check-in time, check-out time, and notes. Caregivers can also mark children as absent from this view.</p>
+<p><strong>QR Code Scanning:</strong> The QR code system generates a unique QR code for each child containing the child's ID. Caregivers can scan the code using a mobile device to quickly check in or check out the child. The system automatically determines whether to check in or check out based on the current state.</p>
+
+<h2>4.6.1 Messaging Implementation Details</h2>
+<p>The messaging module uses Flask-SocketIO for real-time communication. The implementation includes the following components:</p>
+<p><strong>Thread-Based Conversations:</strong> Messages are organized into threads based on the child. Each child has one thread between the parent and the assigned caregiver. This ensures privacy and organization.</p>
+<p><strong>Real-Time Delivery:</strong> When a message is sent, the system emits a SocketIO event to the child's room. All users in the room (parent and caregiver) receive the message in real time without refreshing the page.</p>
+<p><strong>Emergency Alerts:</strong> Messages can be flagged as emergency alerts with a severity level (info, warning, critical). Emergency alerts trigger urgent notifications and are displayed prominently in the UI.</p>
+<p><strong>Read Receipts:</strong> The system tracks read status for each message. When a user opens a thread, all unread messages from the other party are marked as read. The unread count is displayed in the navigation bar.</p>
+
+<h2>4.8.1 Notification System Implementation Details</h2>
+<p>The notification system provides multi-channel notification delivery:</p>
+<p><strong>In-App Notifications:</strong> All notifications are stored in the database and displayed in the notification bell. The bell shows the unread count and displays recent notifications with timestamps.</p>
+<p><strong>Real-Time Delivery:</strong> Notifications are delivered in real time using SocketIO. When a notification is created, it is immediately pushed to the user's room if they are connected.</p>
+<p><strong>Urgent Notifications:</strong> Urgent notifications trigger additional delivery channels including simulated SMS and email. The system checks if the user has provided phone and email information before attempting delivery.</p>
+<p><strong>Notification Management:</strong> Users can mark individual notifications as read or mark all notifications as read. The system provides API endpoints for these operations.</p>
+
+<h2>4.9.1 Security Implementation Details</h2>
+<p>The security implementation includes multiple layers of protection:</p>
+<p><strong>Input Validation:</strong> All user input is validated at the form level. The system checks for required fields, data types, and length constraints. Invalid input is rejected with appropriate error messages.</p>
+<p><strong>Output Escaping:</strong> All output is escaped by Jinja2's autoescape feature. This prevents cross-site scripting (XSS) attacks by converting special characters to HTML entities.</p>
+<p><strong>CSRF Protection:</strong> All state-changing requests are protected by CSRF tokens. The token is generated per session and validated on each POST request.</p>
+<p><strong>Secure Headers:</strong> The system sets secure headers including Content-Security-Policy, X-Content-Type-Options, and X-Frame-Options to prevent common web attacks.</p>
+<p><strong>Error Handling:</strong> Custom error pages are provided for 403, 404, and 500 errors. These pages do not reveal sensitive information about the system's internal structure.</p>
+</div>
+<!-- ADDITIONAL CHAPTER 5 CONTENT -->
+<div class="chapter">
+<h1>CHAPTER 5 (CONTINUED)<br>DETAILED TESTING</h1>
+
+<h2>5.1.1 Testing Environment</h2>
+<p>The testing was conducted in a controlled environment to ensure consistent and reliable results. The test environment consisted of the following components:</p>
+<p><strong>Hardware:</strong> Intel Core i5 processor, 8GB RAM, 256GB SSD. The system was tested on both desktop and mobile devices to ensure responsive design compatibility.</p>
+<p><strong>Software:</strong> Windows 10 operating system, Python 3.11, Flask 3.1, SQLite database. The test suite was executed using Python's built-in unittest framework.</p>
+<p><strong>Browser Compatibility:</strong> The system was tested on Google Chrome, Microsoft Edge, and Mozilla Firefox to ensure cross-browser compatibility. The responsive design was tested on various screen sizes including desktop, tablet, and mobile.</p>
+
+<h2>5.1.2 Test Data Preparation</h2>
+<p>Realistic test data was prepared to simulate actual usage scenarios. The test data included:</p>
+<p><strong>Users:</strong> One admin user, three caregiver users (two approved, one pending), and three parent users. Each user had realistic profile information including names, email addresses, and phone numbers.</p>
+<p><strong>Children:</strong> Four children with different age groups (infant, toddler, preschool). Each child had complete profiles including date of birth, gender, allergies, and notes. Children were assigned to different parents and caregivers.</p>
+<p><strong>Activities:</strong> Multiple activity logs for each child across all six categories (meal, nap, mood, diaper, note, milestone). Activities were spread across multiple days to test the date picker functionality.</p>
+<p><strong>Attendance:</strong> Thirty days of attendance records for each child with various statuses (present, absent, late, excused). This data was used to test the monthly attendance percentage calculation.</p>
+<p><strong>Messages:</strong> Multiple message threads between parents and caregivers, including both regular messages and emergency alerts. Messages were tested for real-time delivery and read status tracking.</p>
+
+<h2>5.2.1 Detailed Test Case Descriptions</h2>
+<p>Each test case was designed to verify a specific aspect of the system's functionality:</p>
+<p><strong>T-01 (Landing Page):</strong> This test verifies that the landing page loads correctly without authentication. The test checks for the presence of key elements including the platform title, feature descriptions, and navigation links. The expected result is that the page loads with status code 200 and contains the expected content.</p>
+<p><strong>T-02 (Admin Login):</strong> This test verifies that an admin user can log in successfully. The test submits valid admin credentials and checks that the user is redirected to the admin dashboard. The expected result is a successful redirect to the admin dashboard with the correct user context.</p>
+<p><strong>T-03 (Invalid Login):</strong> This test verifies that the system correctly rejects invalid credentials. The test submits an incorrect password and checks that an error message is displayed. The expected result is that the login page is re-rendered with an appropriate error message.</p>
+<p><strong>T-04 (Pending Caregiver):</strong> This test verifies that a pending caregiver is blocked from accessing the classroom portal. The test logs in as a pending caregiver and checks that the user is redirected to the pending approval page. The expected result is a redirect to the pending approval page with an explanatory message.</p>
+<p><strong>T-05 (Caregiver Approval):</strong> This test verifies the admin approval workflow. The test logs in as an admin, approves a pending caregiver, and then logs in as the newly approved caregiver. The expected result is that the caregiver can now access the classroom portal.</p>
+<p><strong>T-06 (Activity Logging):</strong> This test verifies that a caregiver can log activities for assigned children. The test submits a meal activity and checks that the activity is saved and the parent is notified. The expected result is that the activity appears in the database and a notification is created for the parent.</p>
+<p><strong>T-07 (Timeline View):</strong> This test verifies that parents can view their child's activity timeline. The test logs in as a parent and accesses the timeline page. The expected result is that the timeline displays the correct activities for the selected date.</p>
+<p><strong>T-08 (Access Control):</strong> This test verifies that parents cannot access other parents' children. The test attempts to access another child's timeline as a different parent. The expected result is a 403 Forbidden response.</p>
+<p><strong>T-09 (Emergency Alert):</strong> This test verifies the emergency alert system. The test sends an emergency alert from a caregiver and checks that the parent sees the urgent banner. The expected result is that the alert is displayed prominently on the parent's dashboard.</p>
+<p><strong>T-10 (Check-In):</strong> This test verifies the attendance check-in functionality. The test marks a child as checked in and checks that the attendance record is created. The expected result is that the attendance record shows the correct check-in time and status.</p>
+<p><strong>T-11 (Check-Out):</strong> This test verifies the attendance check-out functionality. The test marks a child as checked out and checks that the check-out time is recorded. The expected result is that the attendance record shows both check-in and check-out times.</p>
+<p><strong>T-12 (QR Scan):</strong> This test verifies the QR code scanning functionality. The test simulates a QR code scan and checks that the child is automatically checked in or out. The expected result is that the correct action is performed based on the child's current state.</p>
+<p><strong>T-13 (Messaging):</strong> This test verifies the real-time messaging functionality. The test sends a message from a parent to a caregiver and checks that the message is delivered. The expected result is that the message appears in the thread and a notification is created.</p>
+<p><strong>T-14 (Learning Hub):</strong> This test verifies the learning hub functionality. The test accesses the learning hub and checks that resources are displayed with correct filtering. The expected result is that resources are displayed and can be filtered by age group and type.</p>
+<p><strong>T-15 (Password Reset):</strong> This test verifies the password reset functionality. The test requests a password reset and checks that a token is generated. The expected result is that a reset token is created and displayed to the user.</p>
+<p><strong>T-16 (Password Update):</strong> This test verifies that a user can reset their password using a valid token. The test submits a new password and checks that the password is updated. The expected result is that the user can log in with the new password.</p>
+<p><strong>T-17 (New Password Login):</strong> This test verifies that the user can log in with the new password. The test logs in with the updated credentials. The expected result is successful authentication.</p>
+<p><strong>T-18 (Child Enrollment):</strong> This test verifies the child enrollment functionality. The test enrolls a new child and checks that the profile is created with a QR code. The expected result is that the child profile is saved and a QR code is generated.</p>
+<p><strong>T-19 (Complaint Response):</strong> This test verifies the complaint response functionality. The test responds to a complaint and checks that the status is updated. The expected result is that the complaint status is changed and the parent is notified.</p>
+<p><strong>T-20 (Complaint Submission):</strong> This test verifies the complaint submission functionality. The test submits a complaint and checks that the admin receives a notification. The expected result is that the complaint is saved and a notification is created for the admin.</p>
+
+<h2>5.3.1 Test Execution Summary</h2>
+<p>The complete test suite was executed and all tests passed. The test execution took approximately 45 seconds to complete. The test results are summarized in the following table:</p>
+
+<table>
+<tr><th>Test Class</th><th>Tests</th><th>Passed</th><th>Failed</th><th>Duration</th></tr>
+<tr><td>LandingAndLoginTests</td><td>2</td><td>2</td><td>0</td><td>3s</td></tr>
+<tr><td>CaregiverApprovalTests</td><td>2</td><td>2</td><td>0</td><td>5s</td></tr>
+<tr><td>ActivityLogTests</td><td>2</td><td>2</td><td>0</td><td>4s</td></tr>
+<tr><td>AccessControlTests</td><td>2</td><td>2</td><td>0</td><td>3s</td></tr>
+<tr><td>EmergencyAlertTests</td><td>2</td><td>2</td><td>0</td><td>4s</td></tr>
+<tr><td>AttendanceTests</td><td>2</td><td>2</td><td>0</td><td>5s</td></tr>
+<tr><td>LearningResourceTests</td><td>2</td><td>2</td><td>0</td><td>4s</td></tr>
+<tr><td>PasswordResetTests</td><td>2</td><td>2</td><td>0</td><td>5s</td></tr>
+<tr><td><strong>Total</strong></td><td><strong>16</strong></td><td><strong>16</strong></td><td><strong>0</strong></td><td><strong>33s</strong></td></tr>
+</table>
+<p class="figure">Table 5.4 Result of the Test Run</p>
+
+<h2>5.3.2 Manual Testing Results</h2>
+<p>Manual testing was conducted by navigating through all pages of the application and verifying that each feature works as expected. The following aspects were verified manually:</p>
+<p><strong>Navigation:</strong> All navigation links work correctly and direct users to the appropriate pages. The navigation bar is consistent across all pages and displays the correct options based on the user's role.</p>
+<p><strong>Forms:</strong> All forms validate input correctly and display appropriate error messages for invalid data. Required fields are clearly marked and cannot be left empty.</p>
+<p><strong>Responsive Design:</strong> The application displays correctly on desktop, tablet, and mobile devices. The layout adapts to different screen sizes without breaking the user experience.</p>
+<p><strong>Real-Time Features:</strong> The messaging system delivers messages in real time without requiring page refresh. Notifications appear immediately in the notification bell.</p>
+<p><strong>Data Display:</strong> All data is displayed correctly and formatted appropriately. Dates, times, and other formatted data are displayed in a user-friendly manner.</p>
+</div>
+
+<!-- ADDITIONAL CHAPTER 6 CONTENT -->
+<div class="chapter">
+<h1>CHAPTER 6 (CONTINUED)<br>DETAILED CONCLUSION</h1>
+
+<h2>6.1.1 Project Achievements</h2>
+<p>The Virtual Daycare Platform project achieved all of its primary objectives and several secondary objectives. The following achievements highlight the success of the project:</p>
+<p><strong>Complete Feature Implementation:</strong> All 20 functional requirements were implemented and tested. The system provides a comprehensive solution for daycare management including authentication, activity logging, attendance tracking, messaging, photo sharing, and learning resources.</p>
+<p><strong>Robust Security:</strong> The system implements multiple layers of security including password hashing, role-based access control, CSRF protection, input validation, and output escaping. The multi-tenant data isolation ensures that parents can only access their own children's information.</p>
+<p><strong>Real-Time Communication:</strong> The WebSocket-based messaging system provides instant communication between parents and caregivers. The notification system delivers in-app, SMS, and email notifications for different urgency levels.</p>
+<p><strong>Automated Testing:</strong> The system includes 16 automated test cases that cover all major functionality. All tests pass consistently, ensuring the reliability of the system.</p>
+<p><strong>Responsive Design:</strong> The application works correctly on desktop, tablet, and mobile devices. The Bootstrap 5 framework ensures a consistent and professional appearance across all devices.</p>
+<p><strong>Clean Code Architecture:</strong> The modular blueprint architecture ensures that the code is organized, maintainable, and extensible. Each module has a clear responsibility and can be modified independently.</p>
+
+<h2>6.1.2 Technical Challenges Overcome</h2>
+<p>Several technical challenges were encountered and successfully resolved during the development of the project:</p>
+<p><strong>Challenge 1 - Real-Time Communication:</strong> Implementing real-time messaging required careful handling of WebSocket connections, room management, and fallback mechanisms. The solution involved using Flask-SocketIO with room-based message broadcasting and AJAX fallback for older browsers.</p>
+<p><strong>Challenge 2 - Data Isolation:</strong> Ensuring that parents can only access their own children's information required implementing object-level authorization. The get_authorized_child function was created to centralize this logic and ensure consistent enforcement across all views.</p>
+<p><strong>Challenge 3 - QR Code Generation:</strong> Generating and managing QR codes for attendance tracking required integrating the qrcode library and creating a system for encoding and decoding child IDs. The solution involved generating QR codes at enrollment time and creating an API endpoint for scanning.</p>
+<p><strong>Challenge 4 - Role-Based Access Control:</strong> Implementing a flexible role-based access control system that handles the caregiver/caretaker alias required careful design of the role_required decorator. The solution involved normalizing role names and checking approval status for caregivers.</p>
+<p><strong>Challenge 5 - Database Relationships:</strong> Managing the complex relationships between users, children, activities, attendance, messages, and notifications required careful database design. The solution involved using SQLAlchemy relationships with appropriate cascade rules and lazy loading options.</p>
+
+<h2>6.2.1 Detailed Limitations</h2>
+<p>The following limitations have been identified and documented:</p>
+<p><strong>Limitation 1 - No Payment Integration:</strong> The system does not include payment processing capabilities. Fee collection and payment tracking would need to be handled through a separate system or integrated payment gateway.</p>
+<p><strong>Limitation 2 - Manual Absence Marking:</strong> When a child is absent, the caregiver must manually mark the absence. The system does not automatically detect absences based on check-in data.</p>
+<p><strong>Limitation 3 - No Review System:</strong> There is no mechanism for parents to rate or review the daycare's services. This limits the ability to gather feedback and improve service quality.</p>
+<p><strong>Limitation 4 - Simulated Notifications:</strong> The SMS and email notification system uses simulated hooks. Real delivery would require integration with external services such as Twilio and SendGrid.</p>
+<p><strong>Limitation 5 - Web-Only Interface:</strong> The system is only available as a web application. A mobile application would provide better accessibility and push notification capabilities.</p>
+<p><strong>Limitation 6 - Single Language:</strong> The system is only available in English. Multi-language support would make it accessible to a wider audience.</p>
+<p><strong>Limitation 7 - No Data Export:</strong> The system does not provide data export functionality. Parents cannot download their child's activity history or attendance records.</p>
+
+<h2>6.3.1 Detailed Future Enhancement Plan</h2>
+<p>The following enhancements are planned for future versions of the system, listed in order of priority:</p>
+<p><strong>Priority 1 - Payment Gateway Integration:</strong> Integrate a payment gateway such as Razorpay or Stripe to enable online fee collection. This would include payment processing, receipt generation, and payment history tracking.</p>
+<p><strong>Priority 2 - Real SMS/Email Delivery:</strong> Integrate Twilio for SMS notifications and SendGrid for email notifications. This would enable real-time delivery of urgent alerts and daily summaries.</p>
+<p><strong>Priority 3 - Mobile Application:</strong> Develop a mobile application for iOS and Android platforms. This would provide push notifications, offline access, and a better user experience for parents on the go.</p>
+<p><strong>Priority 4 - Advanced Analytics:</strong> Implement advanced analytics and reporting features including attendance trends, activity patterns, and child progress reports. This would help administrators make data-driven decisions.</p>
+<p><strong>Priority 5 - Multi-Language Support:</strong> Add support for multiple languages including Tamil, Hindi, and other regional languages. This would make the system accessible to a wider audience.</p>
+<p><strong>Priority 6 - Data Export:</strong> Implement data export functionality allowing parents to download their child's activity history, attendance records, and photos in PDF or Excel format.</p>
+<p><strong>Priority 7 - Multi-Branch Support:</strong> Extend the system to support multiple daycare branches within a single platform. This would include branch-specific management and reporting.</p>
+<p><strong>Priority 8 - AI-Powered Insights:</strong> Implement machine learning algorithms to provide insights into child development patterns, attendance trends, and activity preferences. This would help caregivers provide more personalized care.</p>
+</div>

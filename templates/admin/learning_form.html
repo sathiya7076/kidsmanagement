@@ -1,0 +1,82 @@
+{% extends "base.html" %}
+
+{% block title %}{% if resource %}Edit Learning Resource{% else %}Add Learning Resource{% endif %}{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+  <div class="row justify-content-center">
+    <div class="col-md-8">
+      <div class="card card-custom p-4 shadow-sm">
+        <div class="d-flex justify-content-between align-items-center mb-4 pb-2 border-bottom">
+          <h4 class="fw-bold text-dark mb-0">
+            {% if resource %}
+              <i class="bi bi-pencil-square text-primary me-2"></i> Edit Resource: {{ resource.title }}
+            {% else %}
+              <i class="bi bi-plus-circle-fill text-primary me-2"></i> Add New Learning Resource
+            {% endif %}
+          </h4>
+          <a href="{{ url_for('admin.learning') }}" class="btn btn-outline-secondary btn-sm rounded-pill">
+            &larr; Cancel
+          </a>
+        </div>
+
+        <form method="POST" action="{% if resource %}{{ url_for('admin.edit_learning_resource', res_id=resource.id) }}{% else %}{{ url_for('admin.new_learning_resource') }}{% endif %}">
+          <div class="row g-3 mb-3">
+            <div class="col-md-8">
+              <label for="title" class="form-label fw-semibold small text-secondary">Title *</label>
+              <input type="text" class="form-control" id="title" name="title" value="{{ resource.title if resource else '' }}" placeholder="e.g. Itsy Bitsy Spider" required>
+            </div>
+            <div class="col-md-4">
+              <label for="type" class="form-label fw-semibold small text-secondary">Resource Type *</label>
+              <select class="form-select" id="type" name="type" required>
+                <option value="rhyme" {% if resource and resource.type == 'rhyme' %}selected{% endif %}>Nursery Rhyme</option>
+                <option value="story" {% if resource and resource.type == 'story' %}selected{% endif %}>Story / Tale</option>
+                <option value="activity" {% if resource and resource.type == 'activity' %}selected{% endif %}>Development Activity</option>
+                <option value="game" {% if resource and resource.type == 'game' %}selected{% endif %}>Learning Game</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="row g-3 mb-3">
+            <div class="col-md-6">
+              <label for="age_group" class="form-label fw-semibold small text-secondary">Target Age Group *</label>
+              <select class="form-select" id="age_group" name="age_group" required>
+                <option value="all" {% if not resource or resource.age_group == 'all' %}selected{% endif %}>All Ages</option>
+                <option value="infant" {% if resource and resource.age_group == 'infant' %}selected{% endif %}>Infant (0-1 yr)</option>
+                <option value="toddler" {% if resource and resource.age_group == 'toddler' %}selected{% endif %}>Toddler (1-3 yrs)</option>
+                <option value="preschool" {% if resource and resource.age_group == 'preschool' %}selected{% endif %}>Preschool (3-5 yrs)</option>
+              </select>
+            </div>
+            <div class="col-md-6">
+              <label for="category" class="form-label fw-semibold small text-secondary">Category / Domain</label>
+              <input type="text" class="form-control" id="category" name="category" value="{{ resource.category if resource else 'Language & Movement' }}" placeholder="e.g. Music, Sensory, Math">
+            </div>
+          </div>
+
+          <div class="mb-3">
+            <label for="description" class="form-label fw-semibold small text-secondary">Short Description / Learning Benefit</label>
+            <input type="text" class="form-control" id="description" name="description" value="{{ resource.description if resource else '' }}" placeholder="e.g. Teaches rhythm, fine motor coordination, and counting">
+          </div>
+
+          <div class="mb-3">
+            <label for="icon" class="form-label fw-semibold small text-secondary">Bootstrap Icon Class</label>
+            <input type="text" class="form-control" id="icon" name="icon" value="{{ resource.icon if resource else 'bi-music-note-beamed' }}" placeholder="e.g. bi-book, bi-star, bi-palette">
+          </div>
+
+          <div class="mb-4">
+            <label for="content" class="form-label fw-semibold small text-secondary">Content / Lyrics / Step-by-Step Instructions *</label>
+            <textarea class="form-control" id="content" name="content" rows="8" placeholder="Type or paste the rhyme verses, story text, or activity steps..." required>{{ resource.content_url_or_text if resource else '' }}</textarea>
+          </div>
+
+          <div class="d-flex justify-content-end gap-2">
+            <a href="{{ url_for('admin.learning') }}" class="btn btn-outline-secondary px-4 rounded-pill">Cancel</a>
+            <button type="submit" class="btn btn-primary px-4 rounded-pill fw-semibold shadow-sm">
+              {% if resource %}Save Resource{% else %}Add to Library{% endif %}
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

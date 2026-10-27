@@ -1,0 +1,125 @@
+{% extends "base.html" %}
+
+{% block title %}Caretaker Dashboard{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+  <div class="d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-center gap-2 mb-4 pb-2 border-bottom">
+    <div>
+      <h2 class="fw-bold text-dark mb-1">Caretaker Classroom Portal</h2>
+      <p class="text-muted small mb-0">Welcome, {{ current_user.name }}! Manage your assigned children, record daily updates, and communicate with parents.</p>
+    </div>
+    <div class="d-flex flex-wrap gap-2">
+      <a href="{{ url_for('caregiver.roster_attendance') }}" class="btn btn-primary rounded-pill btn-sm px-3 shadow-sm">
+        <i class="bi bi-calendar-check me-1"></i> Today's Attendance Roster
+      </a>
+    </div>
+  </div>
+
+  {% if children %}
+    <div class="row g-4">
+      {% for child in children %}
+        {% set today_att = child.today_attendance %}
+        {% set active_alert = child.active_emergency_alert %}
+
+        <div class="col-md-6 col-lg-4">
+          <div class="card card-custom h-100 position-relative {% if active_alert %}border-danger border-2{% endif %}">
+            
+            <!-- Urgent Alert Badge if present -->
+            {% if active_alert %}
+              <div class="p-2 bg-danger text-white small fw-bold text-center rounded-top">
+                <i class="bi bi-exclamation-triangle-fill me-1"></i> Active Alert: {{ active_alert.content[:40] }}...
+              </div>
+            {% endif %}
+
+            <div class="card-body p-4">
+              <div class="d-flex align-items-center gap-3 mb-3">
+                <div class="rounded-circle bg-primary-subtle text-primary fw-bold fs-4 d-flex align-items-center justify-content-center" style="width: 56px; height: 56px;">
+                  {{ child.name[:1] }}
+                </div>
+                <div>
+                  <h5 class="fw-bold text-dark mb-0">
+                    <a href="{{ url_for('caregiver.child_detail', child_id=child.id) }}" class="text-decoration-none text-dark hover-primary">
+                      {{ child.name }}
+                    </a>
+                  </h5>
+                  <small class="text-muted">{{ child.age_string }} &bull; <span class="text-uppercase fw-semibold">{{ child.age_group }}</span></small>
+                </div>
+              </div>
+
+              <!-- Today's Attendance Pill -->
+              <div class="mb-3 d-flex align-items-center justify-content-between p-2 bg-light rounded-3 border">
+                <span class="small text-secondary fw-semibold">Today's Attendance:</span>
+                {% if child.is_checked_in %}
+                  <span class="badge bg-success rounded-pill px-2 py-1">
+                    <i class="bi bi-box-arrow-in-right me-1"></i> Present ({{ today_att.formatted_check_in }})
+                  </span>
+                {% elif child.is_checked_out %}
+                  <span class="badge bg-secondary rounded-pill px-2 py-1">
+                    <i class="bi bi-box-arrow-right me-1"></i> Picked Up ({{ today_att.formatted_check_out }})
+                  </span>
+                {% elif today_att and today_att.status == 'absent' %}
+                  <span class="badge bg-danger rounded-pill px-2 py-1">Absent</span>
+                {% else %}
+                  <span class="badge bg-light text-muted border rounded-pill px-2 py-1">Not Checked In</span>
+                {% endif %}
+              </div>
+
+              <!-- Medical / Allergy Notice -->
+              {% if child.allergies and child.allergies.lower() != 'none' %}
+                <div class="alert alert-danger py-1 px-2 small mb-3 mb-0">
+                  <i class="bi bi-exclamation-circle-fill me-1"></i> <strong>Allergy:</strong> {{ child.allergies }}
+                </div>
+              {% endif %}
+
+              <!-- Parent Info -->
+              <div class="small text-muted mb-3">
+                <i class="bi bi-person me-1"></i> Parent: <strong class="text-dark">{{ child.parent.name if child.parent else 'Unlinked' }}</strong>
+                {% if child.parent and child.parent.phone %}
+                  <br><i class="bi bi-telephone me-1"></i> {{ child.parent.phone }}
+                {% endif %}
+              </div>
+
+              <!-- Quick Action Buttons -->
+              <div class="d-grid gap-2">
+                <div class="btn-group w-100">
+                  <a href="{{ url_for('caregiver.log_activity', child_id=child.id) }}" class="btn btn-sm btn-primary">
+                    <i class="bi bi-plus-circle me-1"></i> Log Activity
+                  </a>
+                  <a href="{{ url_for('caregiver.upload_photo', child_id=child.id) }}" class="btn btn-sm btn-outline-primary">
+                    <i class="bi bi-camera me-1"></i> Photo
+                  </a>
+                </div>
+
+                <div class="btn-group w-100">
+                  <a href="{{ url_for('caregiver.mark_child_attendance', child_id=child.id) }}" class="btn btn-sm btn-outline-secondary">
+                    <i class="bi bi-clock me-1"></i> Attendance
+                  </a>
+                  <a href="{{ url_for('messages.thread', child_id=child.id) }}" class="btn btn-sm btn-outline-secondary">
+                    <i class="bi bi-chat-dots me-1"></i> Chat
+                  </a>
+                  <a href="{{ url_for('caregiver.emergency_alert', child_id=child.id) }}" class="btn btn-sm btn-outline-danger" title="Send Emergency Alert">
+                    <i class="bi bi-exclamation-triangle-fill"></i> Alert
+                  </a>
+                </div>
+              </div>
+            </div>
+
+            <div class="card-footer bg-transparent border-top p-2 text-center">
+              <a href="{{ url_for('caregiver.child_detail', child_id=child.id) }}" class="small text-decoration-none fw-semibold text-primary">
+                View Complete Child Profile &amp; Logs &rarr;
+              </a>
+            </div>
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+  {% else %}
+    <div class="card card-custom p-5 text-center text-muted">
+      <i class="bi bi-emoji-smile fs-2 d-block mb-2"></i>
+      <h5 class="fw-bold text-dark">No Children Assigned Yet</h5>
+      <p class="small mb-0">The administrator has not yet assigned any students to your profile.</p>
+    </div>
+  {% endif %}
+</div>
+{% endblock %}

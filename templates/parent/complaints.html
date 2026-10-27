@@ -1,0 +1,104 @@
+{% extends "base.html" %}
+
+{% block title %}Support & Feedback{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+  <div class="d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-center gap-2 mb-4 pb-2 border-bottom">
+    <div>
+      <h2 class="fw-bold text-dark mb-1">Director Inquiry & Feedback Portal</h2>
+      <p class="text-muted small mb-0">Submit questions, schedule changes, or policy inquiries directly to the Daycare Director.</p>
+    </div>
+    <a href="{{ url_for('parent.dashboard') }}" class="btn btn-outline-secondary btn-sm rounded-pill px-3">
+      &larr; Dashboard
+    </a>
+  </div>
+
+  <div class="row g-4">
+    <!-- Submit Inquiry Form -->
+    <div class="col-lg-5">
+      <div class="card card-custom p-4 shadow-sm bg-white">
+        <h5 class="fw-bold text-dark mb-3">
+          <i class="bi bi-chat-left-dots text-primary me-2"></i> Submit Inquiry or Feedback
+        </h5>
+
+        <form method="POST" action="{{ url_for('parent.complaints') }}">
+          <div class="mb-3">
+            <label for="subject" class="form-label fw-semibold small text-secondary">Subject / Topic *</label>
+            <input type="text" class="form-control" id="subject" name="subject" placeholder="e.g. Question regarding outdoor play gear" required>
+          </div>
+
+          {% if children %}
+            <div class="mb-3">
+              <label for="child_id" class="form-label fw-semibold small text-secondary">Regarding Child (Optional)</label>
+              <select class="form-select" id="child_id" name="child_id">
+                <option value="">-- General Center Topic --</option>
+                {% for ch in children %}
+                  <option value="{{ ch.id }}">{{ ch.name }}</option>
+                {% endfor %}
+              </select>
+            </div>
+          {% endif %}
+
+          <div class="mb-4">
+            <label for="message" class="form-label fw-semibold small text-secondary">Your Message or Concern *</label>
+            <textarea class="form-control" id="message" name="message" rows="4" placeholder="Describe your question, scheduling inquiry, or feedback in detail..." required></textarea>
+          </div>
+
+          <button type="submit" class="btn btn-primary w-100 py-2 rounded-pill fw-semibold shadow-sm">
+            <i class="bi bi-send-fill me-1"></i> Send to Director
+          </button>
+        </form>
+      </div>
+    </div>
+
+    <!-- Prior Inquiries & Responses -->
+    <div class="col-lg-7">
+      <div class="card card-custom p-4 shadow-sm bg-white h-100">
+        <h5 class="fw-bold text-dark mb-3">
+          <i class="bi bi-clock-history text-secondary me-2"></i> Your Submitted Tickets
+        </h5>
+
+        {% if complaints %}
+          <div class="d-flex flex-column gap-3">
+            {% for c in complaints %}
+              <div class="p-3 rounded-3 border bg-light">
+                <div class="d-flex justify-content-between align-items-start mb-2">
+                  <div>
+                    <strong class="text-dark d-block">{{ c.subject }}</strong>
+                    <small class="text-muted">{{ c.formatted_date }}</small>
+                  </div>
+                  <span class="badge {{ c.badge_class }} rounded-pill text-uppercase px-2 py-1">
+                    {{ c.status }}
+                  </span>
+                </div>
+
+                <p class="small text-dark mb-2" style="white-space: pre-wrap;">{{ c.message }}</p>
+
+                <!-- Admin Response if resolved/in_progress -->
+                {% if c.admin_response %}
+                  <div class="p-3 bg-success-subtle border border-success rounded-3 mt-2 small text-dark">
+                    <strong class="d-block text-success mb-1">
+                      <i class="bi bi-reply-fill me-1"></i> Director's Response:
+                    </strong>
+                    {{ c.admin_response }}
+                  </div>
+                {% else %}
+                  <small class="text-muted fst-italic">
+                    <i class="bi bi-hourglass-split me-1"></i> Awaiting Director response...
+                  </small>
+                {% endif %}
+              </div>
+            {% endfor %}
+          </div>
+        {% else %}
+          <div class="text-center py-5 text-muted">
+            <i class="bi bi-chat-square-check fs-2 d-block mb-2"></i>
+            You haven't submitted any inquiries yet.
+          </div>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

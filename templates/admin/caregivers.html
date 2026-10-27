@@ -1,0 +1,97 @@
+{% extends "base.html" %}
+
+{% block title %}Caretaker Approvals & Staff{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+  <div class="d-flex justify-content-between align-items-center mb-4 pb-2 border-bottom">
+    <div>
+      <h2 class="fw-bold text-dark mb-1">Caretaker Management & Approvals</h2>
+      <p class="text-muted small mb-0">Review pending educator applications and manage active teaching staff.</p>
+    </div>
+    <a href="{{ url_for('admin.dashboard') }}" class="btn btn-outline-secondary btn-sm rounded-pill px-3">
+      &larr; Back to Dashboard
+    </a>
+  </div>
+
+  <div class="card card-custom">
+    <div class="card-header card-header-clean d-flex justify-content-between align-items-center">
+      <span class="fw-bold text-dark"><i class="bi bi-people-fill text-primary me-2"></i> All Registered Caretakers ({{ caregivers|length }})</span>
+    </div>
+    <div class="card-body p-0">
+      {% if caregivers %}
+        <div class="table-responsive">
+          <table class="table table-hover align-middle mb-0">
+            <thead class="table-light small text-muted">
+              <tr>
+                <th>Caretaker Name</th>
+                <th>Contact Info</th>
+                <th>Assigned Children</th>
+                <th>Approval Status</th>
+                <th>Registered On</th>
+                <th class="text-end">Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for cg in caregivers %}
+                <tr {% if not cg.is_approved %}class="table-warning"{% endif %}>
+                  <td>
+                    <div class="d-flex align-items-center gap-2">
+                      <div class="rounded-circle bg-light border p-2 text-primary">
+                        <i class="bi bi-person-fill fs-5"></i>
+                      </div>
+                      <div>
+                        <strong class="text-dark d-block">{{ cg.name }}</strong>
+                        <small class="text-muted">ID: #{{ cg.id }}</small>
+                      </div>
+                    </div>
+                  </td>
+                  <td>
+                    <span class="d-block small"><i class="bi bi-envelope me-1 text-muted"></i> {{ cg.email }}</span>
+                    <span class="d-block small text-muted"><i class="bi bi-telephone me-1 text-muted"></i> {{ cg.phone or 'Not provided' }}</span>
+                  </td>
+                  <td>
+                    <span class="badge bg-secondary-subtle text-dark border">
+                      {{ cg.assigned_children.count() }} children assigned
+                    </span>
+                  </td>
+                  <td>
+                    {% if cg.is_approved %}
+                      <span class="badge bg-success-subtle text-success border border-success px-2 py-1 rounded-pill">
+                        <i class="bi bi-check-circle-fill me-1"></i> Approved
+                      </span>
+                    {% else %}
+                      <span class="badge bg-warning-subtle text-warning border border-warning px-2 py-1 rounded-pill">
+                        <i class="bi bi-hourglass-split me-1"></i> Pending Review
+                      </span>
+                    {% endif %}
+                  </td>
+                  <td class="small text-muted">
+                    {{ cg.created_at.strftime('%b %d, %Y') if cg.created_at else 'N/A' }}
+                  </td>
+                  <td class="text-end">
+                    {% if not cg.is_approved %}
+                      <a href="{{ url_for('admin.approve_caregiver', user_id=cg.id) }}" class="btn btn-sm btn-success rounded-pill px-3 shadow-sm me-1">
+                        <i class="bi bi-check-lg me-1"></i> Approve
+                      </a>
+                    {% else %}
+                      <a href="{{ url_for('admin.reject_caregiver', user_id=cg.id) }}" class="btn btn-sm btn-outline-danger rounded-pill px-2" onclick="return confirm('Revoke approval for {{ cg.name }}?');">
+                        Revoke
+                      </a>
+                    {% endif %}
+                  </td>
+                </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      {% else %}
+        <div class="text-center py-5 text-muted">
+          <i class="bi bi-person-x fs-2 d-block mb-2"></i>
+          No caretakers registered in the platform yet.
+        </div>
+      {% endif %}
+    </div>
+  </div>
+</div>
+{% endblock %}

@@ -1,0 +1,146 @@
+{% extends "base.html" %}
+
+{% block title %}Activity Timeline - {{ child.name }}{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+  <!-- Header with Date Picker -->
+  <div class="card card-custom p-4 mb-4 shadow-sm bg-white">
+    <div class="d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-center gap-3">
+      <div>
+        <div class="d-flex align-items-center gap-2">
+          <h3 class="fw-bold text-dark mb-0">{{ child.name }}'s Activity Timeline</h3>
+          <span class="badge bg-light text-muted border text-uppercase">{{ child.age_group }}</span>
+        </div>
+        <p class="text-muted small mb-0">
+          Showing activity records for <strong>{{ selected_date.strftime('%A, %B %d, %Y') }}</strong>
+        </p>
+      </div>
+
+      <!-- Datepicker Controls -->
+      <div class="d-flex flex-wrap align-items-center gap-2">
+        <label for="timelineDatepicker" class="small fw-semibold text-secondary mb-0">Choose Date:</label>
+        <input type="date" class="form-control form-control-sm" id="timelineDatepicker" value="{{ selected_date.strftime('%Y-%m-%d') }}" style="width: auto;">
+        
+        <div class="btn-group">
+          <a href="{{ url_for('parent.timeline', child_id=child.id, date=today.strftime('%Y-%m-%d')) }}" class="btn btn-sm {% if selected_date == today %}btn-primary{% else %}btn-outline-secondary{% endif %}">
+            Today
+          </a>
+          <a href="{{ url_for('parent.timeline', child_id=child.id, date=(today - timedelta(days=1)).strftime('%Y-%m-%d')) }}" class="btn btn-sm {% if selected_date == today - timedelta(days=1) %}btn-primary{% else %}btn-outline-secondary{% endif %}">
+            Yesterday
+          </a>
+        </div>
+
+        <a href="{{ url_for('parent.dashboard') }}" class="btn btn-outline-secondary btn-sm rounded-pill px-3">
+          &larr; Dashboard
+        </a>
+      </div>
+    </div>
+
+    <!-- Attendance Strip for Selected Date -->
+    <div class="row g-2 mt-3 pt-3 border-top align-items-center">
+      <div class="col-md-4">
+        <span class="small text-muted d-block">Daycare Attendance:</span>
+        {% if attendance %}
+          <span class="badge {{ attendance.badge_class }} rounded-pill px-2 py-1 text-uppercase">{{ attendance.status }}</span>
+        {% else %}
+          <span class="badge bg-light text-muted border rounded-pill px-2 py-1">No attendance logged</span>
+        {% endif %}
+      </div>
+      <div class="col-md-4">
+        <span class="small text-muted d-block">Check In:</span>
+        <strong class="text-dark small">{{ attendance.formatted_check_in if attendance else '-' }}</strong>
+      </div>
+      <div class="col-md-4">
+        <span class="small text-muted d-block">Check Out:</span>
+        <strong class="text-dark small">{{ attendance.formatted_check_out if attendance else '-' }}</strong>
+      </div>
+    </div>
+  </div>
+
+  <!-- Timeline Stream -->
+  <div class="row g-4">
+    <div class="col-lg-8">
+      <div class="card card-custom p-4">
+        <h5 class="fw-bold text-dark mb-3">
+          <i class="bi bi-clock-history text-primary me-2"></i> Daily Activities &amp; Routine
+        </h5>
+
+        {% if logs %}
+          <div class="timeline-container">
+            {% for log in logs %}
+              <div class="timeline-item">
+                <div class="timeline-icon">
+                  <i class="bi {{ log.icon_class }}"></i>
+                </div>
+                <div class="timeline-content">
+                  <div class="d-flex justify-content-between align-items-center mb-1">
+                    <div>
+                      <span class="badge badge-pill-custom {{ log.badge_class }} me-2 text-uppercase">{{ log.type }}</span>
+                      <strong class="text-dark fs-6">{{ log.title }}</strong>
+                    </div>
+                    <small class="text-muted fw-semibold">{{ log.formatted_time }}</small>
+                  </div>
+                  
+                  {% if log.details %}
+                    <p class="text-secondary small mb-0 mt-2" style="white-space: pre-wrap;">{{ log.details }}</p>
+                  {% endif %}
+
+                  <div class="d-flex justify-content-between align-items-center mt-2 pt-2 border-top">
+                    <small class="text-muted" style="font-size: 0.7rem;">
+                      Logged by {{ log.author.name if log.author else 'Caretaker' }}
+                    </small>
+                    <small class="text-muted" style="font-size: 0.7rem;">
+                      <i class="bi bi-shield-check text-success me-1"></i> Verified
+                    </small>
+                  </div>
+                </div>
+              </div>
+            {% endfor %}
+          </div>
+        {% else %}
+          <div class="text-center py-5 text-muted">
+            <i class="bi bi-journal-x fs-2 d-block mb-2"></i>
+            No activity logs found for {{ selected_date.strftime('%b %d, %Y') }}.
+            <div class="mt-2">
+              <a href="{{ url_for('parent.timeline', child_id=child.id) }}" class="btn btn-sm btn-outline-primary rounded-pill">
+                View Today's Live Timeline
+              </a>
+            </div>
+          </div>
+        {% endif %}
+      </div>
+    </div>
+
+    <!-- Right Side: Photos Taken On This Date -->
+    <div class="col-lg-4">
+      <div class="card card-custom p-4">
+        <div class="d-flex justify-content-between align-items-center mb-3">
+          <h6 class="fw-bold text-dark mb-0">
+            <i class="bi bi-camera text-primary me-2"></i> Photos from this Day
+          </h6>
+          <a href="{{ url_for('parent.photos', child_id=child.id) }}" class="small text-decoration-none">All Photos &rarr;</a>
+        </div>
+
+        {% if photos %}
+          <div class="row g-2">
+            {% for p in photos %}
+              <div class="col-12">
+                <div class="card photo-card border shadow-xs">
+                  <img src="{{ url_for('static', filename=p.filepath) }}" alt="Activity Photo" class="img-fluid" style="height: 160px; object-fit: cover;">
+                  <div class="p-2">
+                    <small class="d-block fw-semibold text-dark">{{ p.caption or 'Activity photo' }}</small>
+                    <small class="text-muted" style="font-size: 0.7rem;">{{ p.formatted_time }}</small>
+                  </div>
+                </div>
+              </div>
+            {% endfor %}
+          </div>
+        {% else %}
+          <p class="text-muted small text-center py-4 mb-0">No photos shared on this date.</p>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

@@ -1,0 +1,173 @@
+{% extends "base.html" %}
+
+{% block title %}Welcome - Virtual Daycare Platform{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+  <!-- Hero Section -->
+  <div class="row align-items-center gy-5 py-4">
+    <div class="col-lg-6">
+      <span class="badge bg-primary-subtle text-primary fw-semibold px-3 py-2 rounded-pill mb-3">
+        <i class="bi bi-sparkles me-1"></i> Next Generation Early Childhood Platform
+      </span>
+      <h1 class="display-4 fw-bold tracking-tight text-dark mb-3">
+        Connecting Parents & Caretakers in Real-Time
+      </h1>
+      <p class="lead text-secondary mb-4">
+        Stay fully connected with your child's daily journey. Live activity logs, instant photo updates, daily attendance tracking, and emergency alerts — all in one secure portal.
+      </p>
+      <!-- <div class="d-flex flex-wrap gap-3">
+        <a href="{{ url_for('auth.login') }}" class="btn btn-primary btn-lg px-4 rounded-pill shadow-sm">
+          <i class="bi bi-box-arrow-in-right me-2"></i> Launch Portal
+        </a>
+        <a href="{{ url_for('auth.register') }}" class="btn btn-outline-secondary btn-lg px-4 rounded-pill">
+          <i class="bi bi-person-plus me-2"></i> New Registration
+        </a>
+        <a href="{{ url_for('presentation') }}" class="btn btn-success btn-lg px-4 rounded-pill shadow-sm">
+          <i class="bi bi-easel me-2"></i> College Presentation
+        </a>
+      </div> -->
+    </div>
+    <div class="col-lg-6">
+      <div class="card card-custom p-4 shadow border-0 bg-white">
+        <div class="d-flex align-items-center justify-content-between mb-3 border-bottom pb-2">
+          <h5 class="fw-bold mb-0 text-dark">
+            <i class="bi bi-shield-check text-primary me-2"></i> Portal Access
+          </h5>
+          <span class="badge bg-primary-subtle text-primary">Secure Daycare Gateway</span>
+        </div>
+        <p class="text-muted small">
+          Welcome to {{ daycare_name }}. Select your portal entry point below to manage daily activities or view student updates:
+        </p>
+
+        <div class="list-group list-group-flush gap-3 mt-3">
+          <a href="{{ url_for('auth.login') }}" class="list-group-item list-group-item-action rounded-3 border p-3">
+            <div class="d-flex justify-content-between align-items-center">
+              <div class="d-flex align-items-center gap-3">
+                <div class="rounded-circle bg-primary-subtle text-primary p-2 fs-5">
+                  <i class="bi bi-people-fill"></i>
+                </div>
+                <div>
+                  <strong class="text-dark d-block">Parent & Guardian Portal</strong>
+                  <small class="text-muted">View daily logs, photo gallery, attendance &amp; messages</small>
+                </div>
+              </div>
+              <span class="badge bg-primary rounded-pill px-3 py-2">Sign In &rarr;</span>
+            </div>
+          </a>
+
+          <a href="{{ url_for('auth.login') }}" class="list-group-item list-group-item-action rounded-3 border p-3">
+            <div class="d-flex justify-content-between align-items-center">
+              <div class="d-flex align-items-center gap-3">
+                <div class="rounded-circle bg-success-subtle text-success p-2 fs-5">
+                  <i class="bi bi-heart-pulse-fill"></i>
+                </div>
+                <div>
+                  <strong class="text-dark d-block">Educator & Staff Portal</strong>
+                  <small class="text-muted">Classroom rosters, activity logging &amp; attendance check-in</small>
+                </div>
+              </div>
+              <span class="badge bg-success rounded-pill px-3 py-2">Staff Login &rarr;</span>
+            </div>
+          </a>
+
+          <a href="{{ url_for('auth.register') }}" class="list-group-item list-group-item-action rounded-3 border p-3 bg-light">
+            <div class="d-flex justify-content-between align-items-center">
+              <div class="d-flex align-items-center gap-3">
+                <div class="rounded-circle bg-dark-subtle text-dark p-2 fs-5">
+                  <i class="bi bi-person-plus-fill"></i>
+                </div>
+                <div>
+                  <strong class="text-dark d-block">New Family or Educator Registration</strong>
+                  <small class="text-muted">Create a new parent account or apply as an educator</small>
+                </div>
+              </div>
+              <span class="badge bg-dark rounded-pill px-3 py-2">Register</span>
+            </div>
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Features Grid -->
+  <div class="row g-4 py-5">
+    <div class="col-12 text-center mb-2">
+      <h2 class="fw-bold text-dark">Platform Capabilities</h2>
+      <p class="text-muted">Everything modern daycare centers and parents need to collaborate smoothly.</p>
+    </div>
+
+    <div class="col-md-4">
+      <div class="card card-custom h-100 p-4">
+        <div class="rounded-circle bg-warning-subtle text-warning d-inline-flex align-items-center justify-content-center p-3 mb-3" style="width: 54px; height: 54px;">
+          <i class="bi bi-clock-history fs-4"></i>
+        </div>
+        <h5 class="fw-bold text-dark">Daily Activity Timelines</h5>
+        <p class="text-muted small">
+          Track meals, naps, diaper changes, mood ratings, and educational milestones in real-time with an interactive calendar history.
+        </p>
+      </div>
+    </div>
+
+    <div class="col-md-4">
+      <div class="card card-custom h-100 p-4">
+        <div class="rounded-circle bg-primary-subtle text-primary d-inline-flex align-items-center justify-content-center p-3 mb-3" style="width: 54px; height: 54px;">
+          <i class="bi bi-images fs-4"></i>
+        </div>
+        <h5 class="fw-bold text-dark">Private Photo Feed</h5>
+        <p class="text-muted small">
+          Secure, child-specific photo gallery feeds. Parents only see pictures of their own children with secure role-based isolation.
+        </p>
+      </div>
+    </div>
+
+    <div class="col-md-4">
+      <div class="card card-custom h-100 p-4">
+        <div class="rounded-circle bg-success-subtle text-success d-inline-flex align-items-center justify-content-center p-3 mb-3" style="width: 54px; height: 54px;">
+          <i class="bi bi-calendar-check fs-4"></i>
+        </div>
+        <h5 class="fw-bold text-dark">Daily Attendance Tracking</h5>
+        <p class="text-muted small">
+          Effortless daily attendance marking for morning check-in and evening pick-up with automated monthly attendance percentage tracking.
+        </p>
+      </div>
+    </div>
+
+    <div class="col-md-4">
+      <div class="card card-custom h-100 p-4">
+        <div class="rounded-circle bg-danger-subtle text-danger d-inline-flex align-items-center justify-content-center p-3 mb-3" style="width: 54px; height: 54px;">
+          <i class="bi bi-exclamation-triangle-fill fs-4"></i>
+        </div>
+        <h5 class="fw-bold text-dark">Urgent Emergency Alerts</h5>
+        <p class="text-muted small">
+          Instantly dispatch high-priority alerts for fevers, falls, or early pickups with prominent dashboard banners and SMS hooks.
+        </p>
+      </div>
+    </div>
+
+    <div class="col-md-4">
+      <div class="card card-custom h-100 p-4">
+        <div class="rounded-circle bg-info-subtle text-info d-inline-flex align-items-center justify-content-center p-3 mb-3" style="width: 54px; height: 54px;">
+          <i class="bi bi-chat-text-fill fs-4"></i>
+        </div>
+        <h5 class="fw-bold text-dark">Real-Time Messaging</h5>
+        <p class="text-muted small">
+          Direct parent-to-caretaker communication powered by Flask-SocketIO and AJAX fallback. No missed notes or questions.
+        </p>
+      </div>
+    </div>
+
+    <div class="col-md-4">
+      <div class="card card-custom h-100 p-4">
+        <div class="rounded-circle bg-purple-subtle text-primary d-inline-flex align-items-center justify-content-center p-3 mb-3" style="width: 54px; height: 54px; background-color: #ede9fe;">
+          <i class="bi bi-journal-bookmark-fill fs-4" style="color: #6366f1;"></i>
+        </div>
+        <h5 class="fw-bold text-dark">Interactive Learning Hub</h5>
+        <p class="text-muted small">
+          Curated nursery rhymes, interactive stories, and sensory learning activities categorized for infants, toddlers, and preschoolers.
+        </p>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

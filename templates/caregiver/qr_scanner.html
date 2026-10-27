@@ -1,0 +1,123 @@
+{% extends "base.html" %}
+
+{% block title %}QR Code Attendance Scanner{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+  <div class="row justify-content-center">
+    <div class="col-lg-8">
+      <div class="card card-custom p-4 shadow-sm mb-4">
+        <div class="d-flex justify-content-between align-items-center mb-3 pb-2 border-bottom">
+          <div>
+            <h4 class="fw-bold text-dark mb-1">
+              <i class="bi bi-qr-code-scan text-primary me-2"></i> Digital QR Attendance Scanner
+            </h4>
+            <p class="text-muted small mb-0">Fast check-in and check-out at morning arrival & evening pickup.</p>
+          </div>
+          <a href="{{ url_for('caregiver.dashboard') }}" class="btn btn-outline-secondary btn-sm rounded-pill">
+            &larr; Dashboard
+          </a>
+        </div>
+
+        <!-- Scanner Simulation Box -->
+        <div class="p-4 bg-light rounded-4 border text-center my-3">
+          <div class="mb-3 mx-auto p-3 bg-white rounded-3 border d-inline-block shadow-sm" style="max-width: 260px;">
+            <i class="bi bi-camera-video fs-1 text-primary d-block mb-1"></i>
+            <small class="text-muted d-block">Scanner Ready / Barcode Reader Active</small>
+          </div>
+
+          <form id="qrScanForm" class="mx-auto" style="max-width: 480px;">
+            <div class="input-group mb-2">
+              <span class="input-group-text bg-white"><i class="bi bi-upc-scan"></i></span>
+              <input type="text" class="form-control" id="qrDataInput" placeholder="Scan or enter QR Payload (e.g. DAYCARE_CHECKIN:CHILD_ID=1)" autofocus>
+              <button type="submit" class="btn btn-primary px-3 fw-semibold">
+                Submit Scan
+              </button>
+            </div>
+            <small class="text-muted">Enter barcode code or click any child below for 1-click test scan:</small>
+          </form>
+
+          <!-- Result Display Box -->
+          <div id="scanResultAlert" class="alert d-none mt-3 text-start mx-auto" style="max-width: 480px;"></div>
+        </div>
+
+        <!-- Quick Instructions & Roster Link -->
+        <div class="mt-4 pt-3 border-top">
+          <div class="row g-3">
+            <div class="col-md-6">
+              <div class="p-3 bg-white rounded-3 border h-100">
+                <h6 class="fw-bold text-dark mb-1"><i class="bi bi-upc-scan text-primary me-2"></i> Supported Scanners</h6>
+                <p class="text-muted small mb-0">Works with USB/Bluetooth barcode guns, mobile camera scanners, or manual entry of child IDs. Simply scan the child's pass to check in or out instantly.</p>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="p-3 bg-white rounded-3 border h-100 d-flex flex-column justify-content-between">
+                <div>
+                  <h6 class="fw-bold text-dark mb-1"><i class="bi bi-calendar-check text-success me-2"></i> Classroom Roster Mode</h6>
+                  <p class="text-muted small mb-2">Prefer to take classroom attendance manually from a list?</p>
+                </div>
+                <a href="{{ url_for('caregiver.roster_attendance') }}" class="btn btn-sm btn-outline-primary rounded-pill">
+                  Open Attendance Roster &rarr;
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+  const form = document.getElementById('qrScanForm');
+  const input = document.getElementById('qrDataInput');
+
+  form.addEventListener('submit', function (e) {
+    e.preventDefault();
+    const val = input.value.trim();
+    if (!val) return;
+    processScan(val);
+  });
+});
+
+function triggerScan(qrPayload) {
+  document.getElementById('qrDataInput').value = qrPayload;
+  processScan(qrPayload);
+}
+
+function processScan(qrPayload) {
+  const resultBox = document.getElementById('scanResultAlert');
+  resultBox.className = 'alert alert-info mt-3 text-start mx-auto d-block';
+  resultBox.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span> Processing QR code...';
+
+  fetch('/api/qr-scan', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({ qr_data: qrPayload })
+  })
+    .then(res => res.json())
+    .then(data => {
+      if (data.success) {
+        resultBox.className = 'alert alert-success mt-3 text-start mx-auto d-block shadow-sm';
+        resultBox.innerHTML = `
+          <strong>${data.message}</strong>
+          <div class="small text-muted mt-1">Status: ${data.action} | Time: ${data.time || 'N/A'}</div>
+        `;
+        setTimeout(() => {
+          window.location.reload();
+        }, 1200);
+      } else {
+        resultBox.className = 'alert alert-danger mt-3 text-start mx-auto d-block shadow-sm';
+        resultBox.innerHTML = `<strong>Scan Error:</strong> ${data.error || 'Failed to process QR code.'}`;
+      }
+    })
+    .catch(err => {
+      resultBox.className = 'alert alert-danger mt-3 text-start mx-auto d-block shadow-sm';
+      resultBox.innerHTML = '<strong>Network Error:</strong> Could not connect to attendance server.';
+    });
+}
+</script>
+{% endblock %}

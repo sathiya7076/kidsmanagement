@@ -1,0 +1,94 @@
+{% extends "base.html" %}
+
+{% block title %}Profile - {{ child.name }}{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+  <div class="row justify-content-center">
+    <div class="col-md-8">
+      <div class="card card-custom p-4 shadow-sm bg-white">
+        <div class="d-flex justify-content-between align-items-center mb-4 pb-2 border-bottom">
+          <div class="d-flex align-items-center gap-3">
+            <div class="rounded-circle bg-primary-subtle text-primary fw-bold fs-2 d-flex align-items-center justify-content-center" style="width: 60px; height: 60px;">
+              {{ child.name[:1] }}
+            </div>
+            <div>
+              <h3 class="fw-bold text-dark mb-0">{{ child.name }}</h3>
+              <span class="badge bg-light text-muted border text-uppercase">{{ child.age_group }}</span>
+            </div>
+          </div>
+          <a href="{{ url_for('parent.dashboard') }}" class="btn btn-outline-secondary btn-sm rounded-pill px-3">
+            &larr; Dashboard
+          </a>
+        </div>
+
+        <div class="row g-4">
+          <!-- Basic Info -->
+          <div class="col-md-6">
+            <h6 class="fw-bold text-dark border-bottom pb-2 mb-3">
+              <i class="bi bi-info-circle text-primary me-2"></i> Student Details
+            </h6>
+            <ul class="list-unstyled small mb-0">
+              <li class="mb-2"><span class="text-muted">Full Name:</span> <strong class="text-dark">{{ child.name }}</strong></li>
+              <li class="mb-2"><span class="text-muted">Date of Birth:</span> <strong class="text-dark">{{ child.dob.strftime('%B %d, %Y') if child.dob else 'N/A' }}</strong></li>
+              <li class="mb-2"><span class="text-muted">Age:</span> <strong class="text-dark">{{ child.age_string }}</strong></li>
+              <li class="mb-2"><span class="text-muted">Gender:</span> <strong class="text-dark">{{ child.gender.title() if child.gender else 'Unspecified' }}</strong></li>
+              <li class="mb-2"><span class="text-muted">Enrolled Since:</span> <span class="text-dark">{{ child.created_at.strftime('%B %Y') if child.created_at else 'Recent' }}</span></li>
+            </ul>
+          </div>
+
+          <!-- Caregiver & School Info -->
+          <div class="col-md-6">
+            <h6 class="fw-bold text-dark border-bottom pb-2 mb-3">
+              <i class="bi bi-heart-pulse text-success me-2"></i> Classroom Educator
+            </h6>
+            {% if child.caregiver %}
+              <div class="p-3 bg-light rounded-3 border">
+                <strong class="text-dark d-block mb-1">{{ child.caregiver.name }}</strong>
+                <span class="d-block small text-muted"><i class="bi bi-envelope me-1"></i> {{ child.caregiver.email }}</span>
+                <span class="d-block small text-muted"><i class="bi bi-telephone me-1"></i> {{ child.caregiver.phone or 'Contact Daycare Front Desk' }}</span>
+                <div class="mt-2">
+                  <a href="{{ url_for('messages.thread', child_id=child.id) }}" class="btn btn-sm btn-outline-primary rounded-pill px-3">
+                    <i class="bi bi-chat-dots me-1"></i> Message Educator
+                  </a>
+                </div>
+              </div>
+            {% else %}
+              <div class="p-3 bg-light rounded-3 border text-muted small">
+                Staff educator assignment pending.
+              </div>
+            {% endif %}
+          </div>
+
+          <!-- Medical & Dietary Safety Alert Box -->
+          <div class="col-12">
+            <h6 class="fw-bold text-dark border-bottom pb-2 mb-3">
+              <i class="bi bi-shield-fill-plus text-danger me-2"></i> Allergies &amp; Medical Directives
+            </h6>
+            <div class="p-3 rounded-3 border {% if child.allergies and child.allergies.lower() != 'none' %}border-danger bg-danger-subtle text-danger-emphasis{% else %}bg-light text-muted{% endif %}">
+              <strong class="d-block small mb-1">Declared Allergies / Intolerances:</strong>
+              <p class="mb-0 fw-semibold">{{ child.allergies or 'No known allergies reported.' }}</p>
+            </div>
+          </div>
+
+          <!-- Daily Care Notes -->
+          <div class="col-12">
+            <h6 class="fw-bold text-dark border-bottom pb-2 mb-3">
+              <i class="bi bi-journal-text text-secondary me-2"></i> Daily Routines &amp; Comfort Habits
+            </h6>
+            <div class="p-3 bg-light rounded-3 border small text-dark" style="white-space: pre-wrap;">
+              {{ child.notes or 'No special behavioral or soothing notes specified.' }}
+            </div>
+          </div>
+
+
+        </div>
+
+        <div class="text-center mt-4 pt-3 border-top text-muted small">
+          <i class="bi bi-lock-fill me-1"></i> Child profile is maintained in read-only mode for parents. To make official changes to medical records or allergies, please contact the daycare administration.
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

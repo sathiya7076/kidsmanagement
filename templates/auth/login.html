@@ -1,0 +1,59 @@
+{% extends "base.html" %}
+
+{% block title %}Sign In{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+  <div class="row justify-content-center">
+    <div class="col-md-6 col-lg-5">
+      <div class="card card-custom p-4 shadow-sm">
+        <div class="text-center mb-4">
+          <div class="brand-icon mx-auto mb-3" style="width: 50px; height: 50px; font-size: 1.6rem;">
+            <i class="bi bi-balloon-heart-fill"></i>
+          </div>
+          <h3 class="fw-bold text-dark mb-1">Welcome Back</h3>
+          <p class="text-muted small">Sign in to your Daycare Portal account</p>
+        </div>
+
+        <form method="POST" action="{{ url_for('auth.login') }}">
+          <div class="mb-3">
+            <label for="email" class="form-label fw-semibold small text-secondary">Email Address</label>
+            <div class="input-group">
+              <span class="input-group-text bg-light"><i class="bi bi-envelope"></i></span>
+              <input type="email" class="form-control" id="email" name="email" value="{{ request.args.get('email', email or '') }}" placeholder="name@example.com" required autofocus>
+            </div>
+          </div>
+
+          <div class="mb-3">
+            <div class="d-flex justify-content-between">
+              <label for="password" class="form-label fw-semibold small text-secondary">Password</label>
+              <a href="{{ url_for('auth.reset_request') }}" class="small text-decoration-none text-primary">Forgot Password?</a>
+            </div>
+            <div class="input-group">
+              <span class="input-group-text bg-light"><i class="bi bi-lock"></i></span>
+              <input type="password" class="form-control" id="password" name="password" placeholder="••••••••" required>
+            </div>
+          </div>
+
+          <div class="mb-3 form-check">
+            <input type="checkbox" class="form-check-input" id="remember" name="remember">
+            <label class="form-check-label small text-muted" for="remember">Keep me logged in</label>
+          </div>
+
+          <button type="submit" class="btn btn-primary w-100 py-2 rounded-pill fw-semibold shadow-sm">
+            Sign In
+          </button>
+        </form>
+
+          <div class="text-center mt-3 pt-3 border-top">
+            <p class="text-muted small mb-0">
+              Don't have an account yet? 
+              <a href="{{ url_for('auth.register') }}" class="fw-semibold text-primary text-decoration-none">Register here</a>
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

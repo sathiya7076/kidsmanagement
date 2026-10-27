@@ -1,0 +1,77 @@
+{% extends "base.html" %}
+
+{% block title %}Upload Photo for {{ child.name }}{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+  <div class="row justify-content-center">
+    <div class="col-md-7 col-lg-6">
+      <div class="card card-custom p-4 shadow-sm">
+        <div class="d-flex justify-content-between align-items-center mb-4 pb-2 border-bottom">
+          <div>
+            <h4 class="fw-bold text-dark mb-1">
+              <i class="bi bi-camera-fill text-primary me-2"></i> Share Child Photo
+            </h4>
+            <p class="text-muted small mb-0">Upload a moment for <strong>{{ child.name }}</strong>'s parents to see</p>
+          </div>
+          <a href="{{ url_for('caregiver.child_detail', child_id=child.id) }}" class="btn btn-outline-secondary btn-sm rounded-pill">
+            &larr; Cancel
+          </a>
+        </div>
+
+        <form method="POST" action="{{ url_for('caregiver.upload_photo', child_id=child.id) }}" enctype="multipart/form-data">
+          <div class="mb-3">
+            <label for="photoInput" class="form-label fw-semibold small text-secondary">Select Photo File *</label>
+            <input type="file" class="form-control" id="photoInput" name="photo" accept="image/*" required onchange="previewImage(event)">
+            <div class="form-text small">Supported formats: JPG, PNG, WEBP, GIF (Max 5MB).</div>
+          </div>
+
+          <!-- Image Preview -->
+          <div id="previewContainer" class="mb-3 text-center d-none">
+            <img id="imagePreview" src="#" alt="Preview" class="img-thumbnail rounded-3 shadow-sm" style="max-height: 220px; object-fit: contain;">
+          </div>
+
+          <div class="mb-3">
+            <label for="category" class="form-label fw-semibold small text-secondary">Photo Category</label>
+            <select class="form-select" id="category" name="category">
+              <option value="Activity" selected>Activity / Playtime</option>
+              <option value="Outdoor">Outdoor / Playground</option>
+              <option value="Art">Creative Art & Craft</option>
+              <option value="Meal">Meal / Snack Time</option>
+              <option value="Milestone">Learning Milestone</option>
+              <option value="Nap">Quiet Nap Time</option>
+            </select>
+          </div>
+
+          <div class="mb-4">
+            <label for="caption" class="form-label fw-semibold small text-secondary">Caption / Description</label>
+            <textarea class="form-control" id="caption" name="caption" rows="3" placeholder="Describe the wonderful moment (e.g. Leo loved mixing primary colors in art class today!)..."></textarea>
+          </div>
+
+          <div class="d-flex justify-content-end gap-2">
+            <a href="{{ url_for('caregiver.child_detail', child_id=child.id) }}" class="btn btn-outline-secondary px-4 rounded-pill">Cancel</a>
+            <button type="submit" class="btn btn-primary px-4 rounded-pill fw-semibold shadow-sm">
+              <i class="bi bi-cloud-arrow-up-fill me-1"></i> Upload & Share Photo
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+function previewImage(event) {
+  const file = event.target.files[0];
+  if (file) {
+    const reader = new FileReader();
+    reader.onload = function (e) {
+      const img = document.getElementById('imagePreview');
+      img.src = e.target.result;
+      document.getElementById('previewContainer').classList.remove('d-none');
+    };
+    reader.readAsDataURL(file);
+  }
+}
+</script>
+{% endblock %}

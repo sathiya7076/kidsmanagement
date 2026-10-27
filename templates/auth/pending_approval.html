@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+
+{% block title %}Account Pending Approval{% endblock %}
+
+{% block content %}
+<div class="container py-5 text-center">
+  <div class="card card-custom p-5 mx-auto shadow-sm" style="max-width: 580px;">
+    <div class="mb-3 text-warning">
+      <i class="bi bi-hourglass-split" style="font-size: 4rem;"></i>
+    </div>
+    <h3 class="fw-bold text-dark">Caretaker Account Pending Review</h3>
+    <p class="text-secondary mt-2">
+      Thank you for registering as a caretaker with <strong>{{ daycare_name }}</strong>. For child safety compliance, an administrator must verify and approve your credentials before you can access student profiles.
+    </p>
+    
+    <div class="alert alert-light border mt-3 text-start small">
+      <strong>Next Steps:</strong>
+      <ul class="mb-0 mt-1 ps-3 text-muted">
+        <li>The Daycare Director and administration team have been notified of your registration.</li>
+        <li>Your credentials and safety certifications will be reviewed according to state licensing guidelines.</li>
+        <li>Once approved, you will have immediate access to your assigned classroom rosters, daily logging tools, and parent messaging.</li>
+      </ul>
+    </div>
+
+    <div class="mt-4 d-flex justify-content-center gap-2">
+      <a href="{{ url_for('auth.logout') }}" class="btn btn-outline-danger px-4 rounded-pill">
+        <i class="bi bi-box-arrow-right me-1"></i> Sign Out
+      </a>
+      <a href="{{ url_for('index') }}" class="btn btn-primary px-4 rounded-pill">
+        Return Home
+      </a>
+    </div>
+  </div>
+</div>
+{% endblock %}

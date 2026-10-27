@@ -1,0 +1,1784 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Virtual Daycare Platform - College Presentation</title>
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            brand: {
+              50: '#eef2ff',
+              100: '#e0e7ff',
+              400: '#818cf8',
+              500: '#6366f1',
+              600: '#4f46e5',
+              700: '#4338ca',
+              900: '#1e1b4b',
+            },
+            emerald: {
+              400: '#34d399',
+              500: '#10b981',
+              600: '#059669',
+            },
+            slate: {
+              850: '#131c2e',
+              900: '#0f172a',
+              950: '#090d16',
+            }
+          },
+          fontFamily: {
+            sans: ['Outfit', 'Inter', 'system-ui', 'sans-serif'],
+            mono: ['JetBrains Mono', 'monospace'],
+          }
+        }
+      }
+    }
+  </script>
+  <!-- Google Fonts & Lucide Icons -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <style>
+    body {
+      font-family: 'Outfit', 'Inter', sans-serif;
+      user-select: none;
+      -webkit-user-select: none;
+    }
+    .slide {
+      display: none;
+      opacity: 0;
+      transition: opacity 0.35s ease, transform 0.35s ease;
+      transform: scale(0.98);
+    }
+    .slide.active {
+      display: flex;
+      opacity: 1;
+      transform: scale(1);
+    }
+    .glass-panel {
+      background: rgba(30, 41, 59, 0.7);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+    }
+    .glass-card {
+      background: rgba(15, 23, 42, 0.6);
+      backdrop-filter: blur(8px);
+      border: 1px solid rgba(255, 255, 255, 0.06);
+    }
+    /* Custom Scrollbar for notes and overview */
+    ::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #0f172a;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #334155;
+      border-radius: 4px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: #475569;
+    }
+    /* Print to PDF Styles */
+    @media print {
+      body {
+        background: #0f172a !important;
+        color: #f8fafc !important;
+      }
+      .no-print {
+        display: none !important;
+      }
+      .slide {
+        display: flex !important;
+        opacity: 1 !important;
+        transform: none !important;
+        page-break-after: always;
+        height: 100vh !important;
+        min-height: 100vh !important;
+      }
+      #overview-modal, #notes-drawer {
+        display: none !important;
+      }
+    }
+  </style>
+</head>
+<body class="bg-slate-950 text-slate-100 min-h-screen flex flex-col justify-between overflow-x-hidden selection:bg-brand-500 selection:text-white">
+
+  <!-- Top Navigation Bar (Fixed in Presentation Mode) -->
+  <header class="no-print h-14 border-b border-slate-800 bg-slate-900/80 backdrop-blur-md px-6 flex items-center justify-between z-40">
+    <div class="flex items-center gap-3">
+      <span class="text-xl">🎈</span>
+      <span class="font-bold tracking-tight text-white flex items-center gap-2">
+        Virtual Daycare <span class="text-xs px-2 py-0.5 rounded-full bg-brand-500/20 text-brand-400 border border-brand-500/30">CAPSTONE REVIEW</span>
+      </span>
+    </div>
+
+    <!-- Live Slide Title Tracker -->
+    <div class="hidden md:flex items-center gap-2 text-sm text-slate-400 font-medium">
+      <span id="header-category" class="text-brand-400 font-semibold uppercase text-xs tracking-wider">Overview</span>
+      <span>•</span>
+      <span id="header-title" class="text-slate-200">Welcome & Project Summary</span>
+    </div>
+
+    <!-- Action Controls -->
+    <div class="flex items-center gap-2">
+      <!-- Notes Toggle Button -->
+      <button id="btn-notes" onclick="toggleNotes()" title="Speaker Notes (Shortcut: N)" class="px-2.5 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white text-xs flex items-center gap-1.5 transition border border-slate-700">
+        <i data-lucide="file-text" class="w-3.5 h-3.5"></i>
+        <span class="hidden sm:inline">Notes</span>
+      </button>
+
+      <!-- Overview Grid Button -->
+      <button id="btn-overview" onclick="toggleOverview()" title="Slide Grid Overview (Shortcut: O)" class="px-2.5 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white text-xs flex items-center gap-1.5 transition border border-slate-700">
+        <i data-lucide="layout-grid" class="w-3.5 h-3.5"></i>
+        <span class="hidden sm:inline">Overview</span>
+      </button>
+
+      <!-- Fullscreen Toggle -->
+      <button onclick="toggleFullscreen()" title="Fullscreen (Shortcut: F)" class="p-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white transition border border-slate-700">
+        <i data-lucide="maximize" class="w-4 h-4"></i>
+      </button>
+
+      <!-- Download PPTX Link -->
+      <a href="/Virtual_Daycare_College_Presentation.pptx" download class="px-3 py-1.5 rounded-lg bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-semibold flex items-center gap-1.5 transition shadow-lg shadow-emerald-600/20">
+        <i data-lucide="download" class="w-3.5 h-3.5"></i>
+        <span>Download .PPTX</span>
+      </a>
+    </div>
+  </header>
+
+  <!-- Main Slide Viewport (Centered Container 16:9 responsive) -->
+  <main class="flex-1 flex items-center justify-center p-2 sm:p-4 md:p-6 relative max-w-[1600px] mx-auto w-full">
+
+    <!-- ============================================================= -->
+    <!-- SLIDE 1: Title & Capstone Hero -->
+    <!-- ============================================================= -->
+    <section class="slide active w-full min-h-[78vh] flex flex-col justify-between glass-panel rounded-2xl p-6 sm:p-10 md:p-12 shadow-2xl relative overflow-hidden" data-category="Executive Brief" data-title="Title & Capstone Overview" data-notes="Welcome members of the examination committee. I am presenting the Virtual Daycare Platform: an end-to-end full-stack ecosystem connecting early childhood educators and working parents in real time. It features production Flask 3 architecture, event-driven WebSockets, streamlined daily attendance roster, and strict multi-tenant privacy isolation.">
+      <div class="absolute -top-24 -right-24 w-96 h-96 bg-brand-500/10 rounded-full blur-3xl pointer-events-none"></div>
+      <div class="absolute -bottom-24 -left-24 w-96 h-96 bg-emerald-500/10 rounded-full blur-3xl pointer-events-none"></div>
+
+      <div class="flex items-center justify-between border-b border-slate-800 pb-4">
+        <div class="flex items-center gap-2">
+          <span class="h-2 w-2 rounded-full bg-emerald-500 animate-pulse"></span>
+          <span class="text-xs font-semibold text-emerald-400 tracking-wider uppercase">College Final Year Capstone Project</span>
+        </div>
+        <div class="text-xs text-slate-400 font-mono">Academic Year 2026 • Computer Science & Engineering</div>
+      </div>
+
+      <div class="my-auto py-8 text-center max-w-4xl mx-auto">
+        <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-slate-800 border border-slate-700 text-brand-300 text-xs font-medium mb-6">
+          <i data-lucide="shield-check" class="w-3.5 h-3.5 text-emerald-400"></i> Production Ready • Zero-Leak Multi-Tenant Architecture
+        </div>
+        <h1 class="text-4xl sm:text-5xl md:text-6xl font-extrabold tracking-tight text-white mb-6 leading-tight">
+          🎈 Virtual Daycare Platform
+        </h1>
+        <p class="text-lg sm:text-xl text-slate-300 font-light mb-8 max-w-2xl mx-auto leading-relaxed">
+          A Real-Time Early Childhood Management & Parental Telemetry Ecosystem Powered by Python, Flask, WebSockets & Daily Attendance Roster
+        </p>
+
+        <!-- Tech Stack Pills -->
+        <div class="flex flex-wrap items-center justify-center gap-2 text-xs font-mono text-slate-300">
+          <span class="px-3 py-1.5 rounded-lg bg-slate-800/90 border border-slate-700/80 flex items-center gap-1.5"><i data-lucide="code" class="w-3 h-3 text-brand-400"></i> Python 3.11 / Flask 3.1</span>
+          <span class="px-3 py-1.5 rounded-lg bg-slate-800/90 border border-slate-700/80 flex items-center gap-1.5"><i data-lucide="database" class="w-3 h-3 text-cyan-400"></i> SQLAlchemy ORM</span>
+          <span class="px-3 py-1.5 rounded-lg bg-slate-800/90 border border-slate-700/80 flex items-center gap-1.5"><i data-lucide="zap" class="w-3 h-3 text-amber-400"></i> Flask-SocketIO</span>
+          <span class="px-3 py-1.5 rounded-lg bg-slate-800/90 border border-slate-700/80 flex items-center gap-1.5"><i data-lucide="calendar-check" class="w-3 h-3 text-emerald-400"></i> Daily Roster Engine</span>
+          <span class="px-3 py-1.5 rounded-lg bg-slate-800/90 border border-slate-700/80 flex items-center gap-1.5"><i data-lucide="layout" class="w-3 h-3 text-rose-400"></i> Bootstrap 5 & Jinja2</span>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 border-t border-slate-800/80 pt-4 text-xs text-slate-400">
+        <div class="flex items-center gap-2">
+          <i data-lucide="check-circle-2" class="w-4 h-4 text-emerald-400"></i>
+          <span>8/8 Automated Test Suites Passing</span>
+        </div>
+        <div class="flex items-center justify-center gap-2">
+          <i data-lucide="lock" class="w-4 h-4 text-brand-400"></i>
+          <span>Strict Role-Based Access Isolation</span>
+        </div>
+        <div class="flex items-center justify-end gap-2">
+          <i data-lucide="server" class="w-4 h-4 text-cyan-400"></i>
+          <span>Gunicorn & WSGI Production Ready</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================= -->
+    <!-- SLIDE 2: Problem Statement & Motivation -->
+    <!-- ============================================================= -->
+    <section class="slide w-full min-h-[78vh] flex flex-col justify-between glass-panel rounded-2xl p-6 sm:p-10 md:p-12 shadow-2xl relative" data-category="1. Domain Problem" data-title="The Communication & Safety Crisis in Childcare" data-notes="Let's analyze why traditional daycare operations fail. First, parents endure 8-10 hours of daily informational blackout, creating extreme workplace anxiety. Second, unorganized messaging groups like WhatsApp leak private child photos and sensitive allergy details to unauthorized parties. Third, paper attendance registers are vulnerable to human error, loss, and cannot compute regulatory monthly attendance compliance metrics.">
+      <div>
+        <div class="flex items-center gap-2 text-xs font-bold text-rose-400 tracking-wider uppercase mb-2">
+          <i data-lucide="alert-triangle" class="w-4 h-4"></i> The Core Problem Domain
+        </div>
+        <h2 class="text-3xl font-extrabold text-white mb-2">Why Modern Childcare Needs Digital Transformation</h2>
+        <p class="text-slate-400 text-sm">Critical bottlenecks observed in existing pre-school and daycare centers.</p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6 my-auto py-4">
+        <!-- Problem Card 1 -->
+        <div class="glass-card p-6 rounded-xl border border-rose-500/20 relative group hover:border-rose-500/50 transition">
+          <div class="w-10 h-10 rounded-lg bg-rose-500/10 flex items-center justify-center text-rose-400 mb-4 font-bold text-lg">
+            <i data-lucide="eye-off" class="w-5 h-5"></i>
+          </div>
+          <h3 class="text-lg font-bold text-white mb-2">The Parental Blackout</h3>
+          <p class="text-slate-300 text-xs leading-relaxed mb-3">
+            Parents experience 8–10 hours of zero visibility into their infant's day. Did they eat? Did they nap? Are they fussy? This leads to chronic parental anxiety and excessive, disruptive phone calls to teachers.
+          </p>
+          <div class="text-[11px] font-mono text-rose-400 bg-rose-950/40 px-2.5 py-1 rounded border border-rose-900/50">
+            Impact: High teacher friction & parent distrust
+          </div>
+        </div>
+
+        <!-- Problem Card 2 -->
+        <div class="glass-card p-6 rounded-xl border border-amber-500/20 relative group hover:border-amber-500/50 transition">
+          <div class="w-10 h-10 rounded-lg bg-amber-500/10 flex items-center justify-center text-amber-400 mb-4 font-bold text-lg">
+            <i data-lucide="file-x" class="w-5 h-5"></i>
+          </div>
+          <h3 class="text-lg font-bold text-white mb-2">Fragile Paper Sign-In Logs</h3>
+          <p class="text-slate-300 text-xs leading-relaxed mb-3">
+            Handwritten sign-in clipboards cause pickup bottlenecks, forged sign-outs, and zero automated compliance records. Daycare directors struggle to calculate monthly attendance rates required for licensing subsidies.
+          </p>
+          <div class="text-[11px] font-mono text-amber-400 bg-amber-950/40 px-2.5 py-1 rounded border border-amber-900/50">
+            Impact: Time theft, lost records & audit failure
+          </div>
+        </div>
+
+        <!-- Problem Card 3 -->
+        <div class="glass-card p-6 rounded-xl border border-cyan-500/20 relative group hover:border-cyan-500/50 transition">
+          <div class="w-10 h-10 rounded-lg bg-cyan-500/10 flex items-center justify-center text-cyan-400 mb-4 font-bold text-lg">
+            <i data-lucide="unlock" class="w-5 h-5"></i>
+          </div>
+          <h3 class="text-lg font-bold text-white mb-2">Privacy & GDPR Leaks</h3>
+          <p class="text-slate-300 text-xs leading-relaxed mb-3">
+            Generic messaging apps expose children's photos, dietary medical restrictions, and home contacts to other parents without isolation. Unvetted employees can access sensitive child records without oversight.
+          </p>
+          <div class="text-[11px] font-mono text-cyan-400 bg-cyan-950/40 px-2.5 py-1 rounded border border-cyan-900/50">
+            Impact: Massive privacy violation & security hazards
+          </div>
+        </div>
+      </div>
+
+      <div class="bg-slate-900/80 p-4 rounded-xl border border-slate-800 flex items-center justify-between text-xs">
+        <span class="text-slate-400">Key Research Question:</span>
+        <span class="font-semibold text-brand-300 italic">"Can an event-driven, role-segregated web system eliminate information asymmetry while enforcing bulletproof child privacy?"</span>
+      </div>
+    </section>
+
+    <!-- ============================================================= -->
+    <!-- SLIDE 3: Proposed Solution: The Virtual Daycare Ecosystem -->
+    <!-- ============================================================= -->
+    <section class="slide w-full min-h-[78vh] flex flex-col justify-between glass-panel rounded-2xl p-6 sm:p-10 md:p-12 shadow-2xl relative" data-category="2. Architectural Overview" data-title="The Virtual Daycare Solution" data-notes="Here is our proposed engineering answer: The Virtual Daycare Ecosystem. We architected four unified pillars: 1. Real-Time Telemetry for instant routine tracking. 2. Streamlined Daily Attendance Roster with 1-click check-ins. 3. Zero-Leak Multi-Tenant Data Isolation. 4. Critical Emergency Alerts paired with early childhood curriculum.">
+      <div>
+        <div class="flex items-center gap-2 text-xs font-bold text-brand-400 tracking-wider uppercase mb-2">
+          <i data-lucide="sparkles" class="w-4 h-4"></i> The Technical Solution
+        </div>
+        <h2 class="text-3xl font-extrabold text-white mb-2">The Four Pillars of Virtual Daycare</h2>
+        <p class="text-slate-400 text-sm">Engineered as a cohesive, role-segregated cloud web platform.</p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-5 my-auto py-4">
+        <div class="glass-card p-5 rounded-xl border border-brand-500/20 flex gap-4 items-start">
+          <div class="p-3 rounded-lg bg-brand-500/10 text-brand-400 shrink-0">
+            <i data-lucide="activity" class="w-6 h-6"></i>
+          </div>
+          <div>
+            <h4 class="text-base font-bold text-white mb-1">1. Real-Time Daily Activity Telemetry</h4>
+            <p class="text-slate-300 text-xs leading-relaxed">
+              Caretakers log meals, sleep cycles, moods, diaper hygiene, and milestones in seconds. Parents receive instant timeline feeds with time-tags and visual status badges.
+            </p>
+          </div>
+        </div>
+
+        <div class="glass-card p-5 rounded-xl border border-emerald-500/20 flex gap-4 items-start">
+          <div class="p-3 rounded-lg bg-emerald-500/10 text-emerald-400 shrink-0">
+            <i data-lucide="calendar-check" class="w-6 h-6"></i>
+          </div>
+          <div>
+            <h4 class="text-base font-bold text-white mb-1">2. Daily Attendance Roster & Analytics</h4>
+            <p class="text-slate-300 text-xs leading-relaxed">
+              Streamlined daily classroom roster. 1-click arrival check-in and pickup check-out with automated monthly percentage compliance calculation.
+            </p>
+          </div>
+        </div>
+
+        <div class="glass-card p-5 rounded-xl border border-rose-500/20 flex gap-4 items-start">
+          <div class="p-3 rounded-lg bg-rose-500/10 text-rose-400 shrink-0">
+            <i data-lucide="shield-alert" class="w-6 h-6"></i>
+          </div>
+          <div>
+            <h4 class="text-base font-bold text-white mb-1">3. Strict Multi-Tenant Child Isolation</h4>
+            <p class="text-slate-300 text-xs leading-relaxed">
+              Enforced by custom <code class="text-rose-400 font-mono">@role_required</code> decorators and <code class="text-rose-400 font-mono">get_authorized_child()</code> object-level validation. Zero unauthorized cross-tenant data leaks (HTTP 403 enforcement).
+            </p>
+          </div>
+        </div>
+
+        <div class="glass-card p-5 rounded-xl border border-cyan-500/20 flex gap-4 items-start">
+          <div class="p-3 rounded-lg bg-cyan-500/10 text-cyan-400 shrink-0">
+            <i data-lucide="bell-ring" class="w-6 h-6"></i>
+          </div>
+          <div>
+            <h4 class="text-base font-bold text-white mb-1">4. Emergency Dispatch & Learning Hub</h4>
+            <p class="text-slate-300 text-xs leading-relaxed">
+              One-touch high-priority medical/accident alert banners with simulated SMS/Email hooks (Twilio/SendGrid ready), plus an age-stratified nursery rhyme and story curriculum.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <div class="flex items-center justify-between border-t border-slate-800 pt-3 text-xs text-slate-400">
+        <span>Target Users: Daycare Directors • Classroom Educators • Working Parents</span>
+        <span class="text-emerald-400 font-medium">Outcome: 100% Digital Transparency & Child Safety</span>
+      </div>
+    </section>
+
+    <!-- ============================================================= -->
+    <!-- SLIDE 4: Multi-Tier System Architecture (Interactive) -->
+    <!-- ============================================================= -->
+    <section class="slide w-full min-h-[78vh] flex flex-col justify-between glass-panel rounded-2xl p-6 sm:p-10 md:p-12 shadow-2xl relative" data-category="3. System Engineering" data-title="Multi-Tier System Architecture" data-notes="This slide illustrates the multi-tier software architecture. Notice the separation of concerns: Layer 1 is the client layer using Bootstrap 5 and Socket.IO client. Layer 2 handles WSGI routing and WebSocket duplexing. Layer 3 partitions business logic into 7 specialized Flask Blueprints. Layer 4 encapsulates database persistence with SQLAlchemy ORM and real-time notification hooks.">
+      <div>
+        <div class="flex items-center justify-between">
+          <div>
+            <div class="flex items-center gap-2 text-xs font-bold text-cyan-400 tracking-wider uppercase mb-1">
+              <i data-lucide="layers" class="w-4 h-4"></i> System Architecture
+            </div>
+            <h2 class="text-3xl font-extrabold text-white mb-1">4-Tier Decoupled Software Architecture</h2>
+          </div>
+          <span class="text-xs font-mono bg-slate-800 text-slate-400 px-3 py-1 rounded-full border border-slate-700">Interactive Layer Explorer</span>
+        </div>
+        <p class="text-slate-400 text-xs">Click on any layer below to inspect its operational mechanics and design decisions.</p>
+      </div>
+
+      <!-- Interactive Architecture Stack -->
+      <div class="grid grid-cols-1 md:grid-cols-4 gap-4 my-auto py-3">
+        <!-- Layer 1 -->
+        <div onclick="selectArchLayer(1)" id="arch-card-1" class="cursor-pointer glass-card p-4 rounded-xl border border-brand-500/40 bg-brand-950/20 hover:border-brand-500 transition">
+          <div class="flex items-center justify-between mb-2">
+            <span class="text-xs font-bold font-mono text-brand-400">TIER 1</span>
+            <i data-lucide="monitor" class="w-4 h-4 text-brand-400"></i>
+          </div>
+          <h4 class="text-sm font-bold text-white mb-1">Client Presentation</h4>
+          <p class="text-slate-400 text-[11px] leading-relaxed">
+            Responsive HTML5, Jinja2, Bootstrap 5, SocketIO client, and touch-friendly UI.
+          </p>
+        </div>
+
+        <!-- Layer 2 -->
+        <div onclick="selectArchLayer(2)" id="arch-card-2" class="cursor-pointer glass-card p-4 rounded-xl border border-slate-700 hover:border-emerald-500 transition">
+          <div class="flex items-center justify-between mb-2">
+            <span class="text-xs font-bold font-mono text-emerald-400">TIER 2</span>
+            <i data-lucide="cpu" class="w-4 h-4 text-emerald-400"></i>
+          </div>
+          <h4 class="text-sm font-bold text-white mb-1">Real-Time Gateway</h4>
+          <p class="text-slate-400 text-[11px] leading-relaxed">
+            WSGI runner, Flask-SocketIO event loop, user rooms (<code class="text-emerald-400">user_{id}</code>), and polling fallback.
+          </p>
+        </div>
+
+        <!-- Layer 3 -->
+        <div onclick="selectArchLayer(3)" id="arch-card-3" class="cursor-pointer glass-card p-4 rounded-xl border border-slate-700 hover:border-amber-500 transition">
+          <div class="flex items-center justify-between mb-2">
+            <span class="text-xs font-bold font-mono text-amber-400">TIER 3</span>
+            <i data-lucide="grid" class="w-4 h-4 text-amber-400"></i>
+          </div>
+          <h4 class="text-sm font-bold text-white mb-1">Domain Blueprints</h4>
+          <p class="text-slate-400 text-[11px] leading-relaxed">
+            7 segregated modules: Auth, Admin, Caregiver, Parent, Messages, Learning, and REST API.
+          </p>
+        </div>
+
+        <!-- Layer 4 -->
+        <div onclick="selectArchLayer(4)" id="arch-card-4" class="cursor-pointer glass-card p-4 rounded-xl border border-slate-700 hover:border-rose-500 transition">
+          <div class="flex items-center justify-between mb-2">
+            <span class="text-xs font-bold font-mono text-rose-400">TIER 4</span>
+            <i data-lucide="database" class="w-4 h-4 text-rose-400"></i>
+          </div>
+          <h4 class="text-sm font-bold text-white mb-1">Data & Security</h4>
+          <p class="text-slate-400 text-[11px] leading-relaxed">
+            SQLAlchemy ORM (SQLite / PostgreSQL), Werkzeug crypto hashing, SocketIO notifications.
+          </p>
+        </div>
+      </div>
+
+      <!-- Dynamic Architecture Details Inspector Box -->
+      <div id="arch-details-box" class="bg-slate-900 p-4 rounded-xl border border-brand-500/30 text-xs flex flex-col gap-1.5">
+        <div class="flex items-center justify-between">
+          <span class="font-bold text-brand-300 font-mono uppercase" id="arch-detail-title">Tier 1: Client & Presentation Mechanics</span>
+          <span class="text-[10px] text-slate-500">Click tiers above to inspect</span>
+        </div>
+        <p class="text-slate-300 text-xs" id="arch-detail-desc">
+          Uses Jinja2 inheritance (<code class="text-brand-300 font-mono">base.html</code>) with Bootstrap 5 grid. Mobile-first design ensures teachers on tablets and parents on smartphones have native-app feel with instant notification bell counters.
+        </p>
+      </div>
+
+      <div class="flex items-center justify-between border-t border-slate-800 pt-3 text-xs text-slate-400">
+        <span>Architectural Pattern: Modular MVC + Event-Driven WebSockets</span>
+        <span class="font-mono text-brand-400">Codebase: /virtual-daycare/app.py</span>
+      </div>
+    </section>
+
+    <!-- ============================================================= -->
+    <!-- SLIDE 5: Role-Based Access Control (Interactive Persona Switcher) -->
+    <!-- ============================================================= -->
+    <section class="slide w-full min-h-[78vh] flex flex-col justify-between glass-panel rounded-2xl p-6 sm:p-10 md:p-12 shadow-2xl relative" data-category="4. Security & Permissions" data-title="Role-Based Access Control (RBAC) Matrix" data-notes="Security and privacy are enforced using an RBAC model. We distinguish three user personas: The Director Admin oversees staff approvals and enrollments. The Caretaker is strictly restricted to their assigned classroom children and blocked until approved. The Parent has isolated, read-only telemetry for their own children only.">
+      <div>
+        <div class="flex items-center gap-2 text-xs font-bold text-amber-400 tracking-wider uppercase mb-1">
+          <i data-lucide="users" class="w-4 h-4"></i> User Personas & Permissions
+        </div>
+        <h2 class="text-3xl font-extrabold text-white mb-1">Triple-Role Security Matrix</h2>
+        <p class="text-slate-400 text-xs">Switch between user roles below to simulate permissions and visible interfaces.</p>
+      </div>
+
+      <!-- Persona Selector Tabs -->
+      <div class="flex gap-2 my-2">
+        <button onclick="switchRoleView('director')" id="role-tab-director" class="px-4 py-2 rounded-lg text-xs font-bold transition flex items-center gap-2 bg-amber-500 text-slate-950">
+          <i data-lucide="crown" class="w-4 h-4"></i> Daycare Director (Admin)
+        </button>
+        <button onclick="switchRoleView('caregiver')" id="role-tab-caregiver" class="px-4 py-2 rounded-lg text-xs font-bold transition flex items-center gap-2 bg-slate-800 text-slate-300 hover:text-white">
+          <i data-lucide="graduation-cap" class="w-4 h-4"></i> Educator / Caretaker
+        </button>
+        <button onclick="switchRoleView('parent')" id="role-tab-parent" class="px-4 py-2 rounded-lg text-xs font-bold transition flex items-center gap-2 bg-slate-800 text-slate-300 hover:text-white">
+          <i data-lucide="heart" class="w-4 h-4"></i> Parent / Guardian
+        </button>
+      </div>
+
+      <!-- Dynamic Role Dashboard Simulation Card -->
+      <div id="role-content-box" class="glass-card p-6 rounded-xl border border-amber-500/30 my-auto">
+        <div class="flex items-center justify-between border-b border-slate-800 pb-3 mb-4">
+          <div>
+            <h3 class="text-base font-bold text-amber-400 flex items-center gap-2" id="role-view-title">
+              👑 Director / Administrator Role Capabilities
+            </h3>
+            <p class="text-slate-400 text-xs" id="role-view-sub">Complete institutional authority and staff gatekeeper</p>
+          </div>
+          <span class="text-xs font-mono px-2.5 py-1 rounded bg-amber-500/20 text-amber-300 border border-amber-500/30" id="role-view-badge">
+            ROLE: admin
+          </span>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs" id="role-view-grid">
+          <div class="space-y-2">
+            <div class="flex items-start gap-2 text-slate-200">
+              <i data-lucide="check" class="w-4 h-4 text-emerald-400 shrink-0 mt-0.5"></i>
+              <span><strong>Caretaker Approval Workflow:</strong> Vets newly registered teachers; toggles <code class="text-amber-300 font-mono">is_approved</code> before they can see children.</span>
+            </div>
+            <div class="flex items-start gap-2 text-slate-200">
+              <i data-lucide="check" class="w-4 h-4 text-emerald-400 shrink-0 mt-0.5"></i>
+              <span><strong>Child Enrollment:</strong> Registers children, assigns parents and caretakers, and configures emergency safety details.</span>
+            </div>
+            <div class="flex items-start gap-2 text-slate-200">
+              <i data-lucide="check" class="w-4 h-4 text-emerald-400 shrink-0 mt-0.5"></i>
+              <span><strong>Center Analytics:</strong> Real-time student headcount, caretaker-child ratios, and attendance trends.</span>
+            </div>
+          </div>
+          <div class="space-y-2">
+            <div class="flex items-start gap-2 text-slate-200">
+              <i data-lucide="check" class="w-4 h-4 text-emerald-400 shrink-0 mt-0.5"></i>
+              <span><strong>Learning Curriculum CMS:</strong> Authors, edits, and categorizes rhymes, stories, and activities.</span>
+            </div>
+            <div class="flex items-start gap-2 text-slate-200">
+              <i data-lucide="check" class="w-4 h-4 text-emerald-400 shrink-0 mt-0.5"></i>
+              <span><strong>Inquiry & Complaint Resolution:</strong> Direct parent feedback channels with status resolution audits.</span>
+            </div>
+            <div class="flex items-start gap-2 text-slate-200">
+              <i data-lucide="check" class="w-4 h-4 text-emerald-400 shrink-0 mt-0.5"></i>
+              <span><strong>Global Emergency Broadcast:</strong> Authority to trigger facility-wide alerts or evacuation advisories.</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="bg-slate-900/90 p-3 rounded-lg border border-slate-800 flex items-center justify-between text-xs">
+        <span class="text-slate-400">Security Guard:</span>
+        <code class="text-amber-400 font-mono">@role_required('admin') • routes/admin.py</code>
+      </div>
+    </section>
+
+    <!-- ============================================================= -->
+    <!-- SLIDE 6: Daily Attendance Roster Engine (Interactive Demo) -->
+    <!-- ============================================================= -->
+    <section class="slide w-full min-h-[78vh] flex flex-col justify-between glass-panel rounded-2xl p-6 sm:p-10 md:p-12 shadow-2xl relative" data-category="5. Core Innovation" data-title="Daily Attendance Roster Engine" data-notes="Now let's examine our daily attendance engine. The classroom caretaker accesses an intuitive daily roster where morning arrival and evening pick-up are recorded with a single click. When a caretaker marks a child present, an intelligent state machine registers the arrival timestamp, computes center hours, alerts parents immediately, and updates monthly attendance compliance analytics dynamically.">
+      <div>
+        <div class="flex items-center gap-2 text-xs font-bold text-emerald-400 tracking-wider uppercase mb-1">
+          <i data-lucide="calendar-check" class="w-4 h-4"></i> Core Innovation #1
+        </div>
+        <h2 class="text-3xl font-extrabold text-white mb-1">Daily Attendance Roster & Compliance Pipeline</h2>
+        <p class="text-slate-400 text-xs">1-Click classroom roster check-in, pickup check-out, and dynamic monthly attendance analytics.</p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-12 gap-6 my-auto py-2">
+        <!-- Left: Technical Pipeline Steps -->
+        <div class="md:col-span-7 space-y-3">
+          <div class="glass-card p-3 rounded-xl border border-slate-800 flex items-start gap-3">
+            <span class="w-6 h-6 rounded-full bg-emerald-500/20 text-emerald-400 text-xs font-bold flex items-center justify-center shrink-0">1</span>
+            <div>
+              <h4 class="text-xs font-bold text-white">Classroom Roster Integration</h4>
+              <p class="text-slate-400 text-[11px]">Caretakers view all assigned children for today in a clean, real-time classroom roster with instant 1-click arrival buttons.</p>
+            </div>
+          </div>
+
+          <div class="glass-card p-3 rounded-xl border border-slate-800 flex items-start gap-3">
+            <span class="w-6 h-6 rounded-full bg-emerald-500/20 text-emerald-400 text-xs font-bold flex items-center justify-center shrink-0">2</span>
+            <div>
+              <h4 class="text-xs font-bold text-white">1-Click Arrival Check-In</h4>
+              <p class="text-slate-400 text-[11px]">Single click marks child Present, records precise arrival UTC timestamp, and notifies parents in real-time.</p>
+            </div>
+          </div>
+
+          <div class="glass-card p-3 rounded-xl border border-slate-800 flex items-start gap-3">
+            <span class="w-6 h-6 rounded-full bg-emerald-500/20 text-emerald-400 text-xs font-bold flex items-center justify-center shrink-0">3</span>
+            <div>
+              <h4 class="text-xs font-bold text-white">Evening Departure & Duration</h4>
+              <p class="text-slate-400 text-[11px]">Evening pick-up button logs departure timestamp, computes exact hours in center, and sends pickup confirmation.</p>
+            </div>
+          </div>
+
+          <div class="glass-card p-3 rounded-xl border border-slate-800 flex items-start gap-3">
+            <span class="w-6 h-6 rounded-full bg-emerald-500/20 text-emerald-400 text-xs font-bold flex items-center justify-center shrink-0">4</span>
+            <div>
+              <h4 class="text-xs font-bold text-white">Automated Monthly Percentage Analytics</h4>
+              <p class="text-slate-400 text-[11px]"><code class="text-emerald-400 font-mono">get_monthly_attendance_stats()</code> dynamically calculates non-weekend school days vs. attended days for audit-proof reports.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Right: Interactive Live Roster Simulator -->
+        <div class="md:col-span-5 glass-card p-5 rounded-xl border border-emerald-500/30 flex flex-col justify-between items-center text-center">
+          <span class="text-xs font-bold text-emerald-400 uppercase tracking-wider mb-2">Live Daily Attendance Roster Simulator</span>
+
+          <!-- Simulated Roster Child Card -->
+          <div class="w-full bg-slate-900/80 p-4 rounded-xl shadow-lg border border-slate-700/60 text-left">
+            <div class="flex items-center gap-3 mb-3">
+              <div class="w-10 h-10 rounded-full bg-emerald-500/20 text-emerald-400 font-bold flex items-center justify-center text-sm border border-emerald-500/30">
+                L
+              </div>
+              <div>
+                <div class="text-xs font-bold text-white" id="roster-demo-student">Leo Miller</div>
+                <div class="text-[10px] text-slate-400">Toddler Group &bull; Caretaker: Emma</div>
+              </div>
+            </div>
+
+            <!-- Simulated Attendance Status Pill -->
+            <div id="roster-demo-badge" class="py-1.5 px-3 rounded-lg bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 text-xs font-bold flex items-center justify-center gap-2 mb-2">
+              <span class="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span>
+              <span id="roster-demo-status">STATUS: PRESENT (In Facility - 08:30 AM)</span>
+            </div>
+
+            <div class="text-[11px] text-slate-400 text-center font-medium" id="roster-demo-rate">
+              95% Monthly Rate (20 / 21 School Days)
+            </div>
+          </div>
+
+          <!-- Simulate Roster Action Button -->
+          <div class="mt-4 w-full">
+            <button onclick="simulateRosterScan()" class="w-full py-2.5 px-4 rounded-lg bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs transition shadow-lg shadow-emerald-600/30 flex items-center justify-center gap-2">
+              <i data-lucide="calendar-check" class="w-4 h-4"></i>
+              <span id="roster-scan-btn-label">1-Click Departure (Check Out)</span>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div class="bg-slate-900/90 p-3 rounded-lg border border-slate-800 flex items-center justify-between text-xs">
+        <span class="text-slate-400">Endpoint Implementation:</span>
+        <code class="text-emerald-400 font-mono">POST /caregiver/child/&lt;id&gt;/attendance &bull; models/child.py:get_monthly_attendance_stats()</code>
+      </div>
+    </section>
+
+    <!-- ============================================================= -->
+    <!-- SLIDE 7: Real-Time Activity Logging (Interactive Widget) -->
+    <!-- ============================================================= -->
+    <section class="slide w-full min-h-[78vh] flex flex-col justify-between glass-panel rounded-2xl p-6 sm:p-10 md:p-12 shadow-2xl relative" data-category="6. Telemetry & Routine" data-title="Real-Time Activity Telemetry Engine" data-notes="Educators log routines through a touch-friendly form designed for rapid tablet entry. We support 6 specialized categories: meals with portion sizes, nap cycles with sleep quality, moods, diaper hygiene, developmental milestones, and general notes. Each entry immediately reflects in the parent's live daily timeline.">
+      <div>
+        <div class="flex items-center gap-2 text-xs font-bold text-brand-400 tracking-wider uppercase mb-1">
+          <i data-lucide="clock" class="w-4 h-4"></i> Core Innovation #2
+        </div>
+        <h2 class="text-3xl font-extrabold text-white mb-1">Real-Time Daily Activity Telemetry</h2>
+        <p class="text-slate-400 text-xs">Multi-category routine logging with instant synchronization to parent's timeline.</p>
+      </div>
+
+      <!-- Interactive Activity Category Buttons & Live Log Preview -->
+      <div class="grid grid-cols-1 md:grid-cols-12 gap-6 my-auto py-2">
+        <!-- 6 Category Pickers -->
+        <div class="md:col-span-6 space-y-2">
+          <span class="text-xs font-bold text-slate-300 uppercase tracking-wider block mb-2">Click Category to Simulate Caretaker Log:</span>
+          
+          <div class="grid grid-cols-2 gap-2 text-xs">
+            <button onclick="addSimulatedLog('meal')" class="p-3 rounded-lg bg-amber-500/10 hover:bg-amber-500/20 border border-amber-500/30 text-amber-300 font-medium flex items-center gap-2 text-left transition">
+              <span>🍼</span>
+              <div>
+                <div class="font-bold">Meal / Nutrition</div>
+                <div class="text-[10px] text-slate-400">Portions, fluids, allergies</div>
+              </div>
+            </button>
+
+            <button onclick="addSimulatedLog('nap')" class="p-3 rounded-lg bg-indigo-500/10 hover:bg-indigo-500/20 border border-indigo-500/30 text-indigo-300 font-medium flex items-center gap-2 text-left transition">
+              <span>😴</span>
+              <div>
+                <div class="font-bold">Nap & Sleep</div>
+                <div class="text-[10px] text-slate-400">Start, wake, sleep depth</div>
+              </div>
+            </button>
+
+            <button onclick="addSimulatedLog('mood')" class="p-3 rounded-lg bg-emerald-500/10 hover:bg-emerald-500/20 border border-emerald-500/30 text-emerald-300 font-medium flex items-center gap-2 text-left transition">
+              <span>😊</span>
+              <div>
+                <div class="font-bold">Mood & Emotion</div>
+                <div class="text-[10px] text-slate-400">Cheerful, fussy, cooperative</div>
+              </div>
+            </button>
+
+            <button onclick="addSimulatedLog('diaper')" class="p-3 rounded-lg bg-cyan-500/10 hover:bg-cyan-500/20 border border-cyan-500/30 text-cyan-300 font-medium flex items-center gap-2 text-left transition">
+              <span>🧷</span>
+              <div>
+                <div class="font-bold">Diaper / Potty</div>
+                <div class="text-[10px] text-slate-400">Dry, wet, barrier cream</div>
+              </div>
+            </button>
+
+            <button onclick="addSimulatedLog('milestone')" class="p-3 rounded-lg bg-rose-500/10 hover:bg-rose-500/20 border border-rose-500/30 text-rose-300 font-medium flex items-center gap-2 text-left transition">
+              <span>🌟</span>
+              <div>
+                <div class="font-bold">Milestone</div>
+                <div class="text-[10px] text-slate-400">First words, sharing toy</div>
+              </div>
+            </button>
+
+            <button onclick="addSimulatedLog('note')" class="p-3 rounded-lg bg-slate-700/40 hover:bg-slate-700/60 border border-slate-600 text-slate-200 font-medium flex items-center gap-2 text-left transition">
+              <span>📝</span>
+              <div>
+                <div class="font-bold">Teacher Note</div>
+                <div class="text-[10px] text-slate-400">Clothing, reminders</div>
+              </div>
+            </button>
+          </div>
+
+          <div class="bg-slate-900/80 p-3 rounded-lg border border-slate-800 text-[11px] text-slate-400 flex items-center gap-2 mt-2">
+            <i data-lucide="info" class="w-4 h-4 text-brand-400 shrink-0"></i>
+            <span>Each activity entry saves with UTC timestamp, author user ID, and cascade foreign key to <code class="text-brand-300 font-mono">children.id</code>.</span>
+          </div>
+        </div>
+
+        <!-- Simulated Parent Timeline Feed -->
+        <div class="md:col-span-6 glass-card p-4 rounded-xl border border-slate-700 flex flex-col justify-between">
+          <div class="flex items-center justify-between border-b border-slate-800 pb-2 mb-2">
+            <div class="flex items-center gap-2">
+              <i data-lucide="smartphone" class="w-4 h-4 text-brand-400"></i>
+              <span class="text-xs font-bold text-white">Live Parent Timeline Feed</span>
+            </div>
+            <span class="text-[10px] font-mono text-emerald-400 bg-emerald-950 px-2 py-0.5 rounded border border-emerald-800">WebSocket Synced</span>
+          </div>
+
+          <!-- Timeline Items Container -->
+          <div id="simulated-timeline-container" class="space-y-2 overflow-y-auto max-h-[220px] pr-1">
+            <!-- Initial Item -->
+            <div class="bg-slate-900/90 p-2.5 rounded-lg border border-slate-800 text-xs flex items-start gap-2.5">
+              <span class="text-lg">🍼</span>
+              <div class="flex-1">
+                <div class="flex items-center justify-between">
+                  <span class="font-bold text-amber-400 text-xs">Morning Breakfast</span>
+                  <span class="text-[10px] text-slate-400 font-mono">09:15 AM</span>
+                </div>
+                <p class="text-slate-300 text-[11px]">Ate warm oatmeal and banana slices. Consumed full portion and 150ml warm milk.</p>
+              </div>
+            </div>
+
+            <!-- Initial Item 2 -->
+            <div class="bg-slate-900/90 p-2.5 rounded-lg border border-slate-800 text-xs flex items-start gap-2.5">
+              <span class="text-lg">😴</span>
+              <div class="flex-1">
+                <div class="flex items-center justify-between">
+                  <span class="font-bold text-indigo-400 text-xs">Midday Nap</span>
+                  <span class="text-[10px] text-slate-400 font-mono">11:30 AM</span>
+                </div>
+                <p class="text-slate-300 text-[11px]">Fell asleep quickly after story time. Rested peacefully for 1 hr 20 mins.</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="text-center pt-2 text-[10px] text-slate-400 border-t border-slate-800/80 mt-2">
+            Click any button on the left to inject simulated real-time activity events.
+          </div>
+        </div>
+      </div>
+
+      <div class="bg-slate-900/90 p-3 rounded-lg border border-slate-800 flex items-center justify-between text-xs">
+        <span class="text-slate-400">ORM Model:</span>
+        <code class="text-brand-400 font-mono">class ActivityLog(db.Model) &bull; models/activity.py</code>
+      </div>
+    </section>
+
+    <!-- ============================================================= -->
+    <!-- SLIDE 8: Real-Time WebSockets & Emergency Alerts -->
+    <!-- ============================================================= -->
+    <section class="slide w-full min-h-[78vh] flex flex-col justify-between glass-panel rounded-2xl p-6 sm:p-10 md:p-12 shadow-2xl relative" data-category="7. Critical Communications" data-title="WebSockets & Emergency Incident Dispatch" data-notes="Communication safety is non-negotiable. We integrated Flask-SocketIO to provide bidirectional WebSocket events. We maintain isolated user rooms for instant notification bell badges and scoped child rooms for messaging. In addition, caretakers have an emergency alert dispatcher: if a child develops a sudden fever or an accident occurs, triggering an alert paints a high-priority warning banner across the parent's screen and invokes external SMS and Email notification hooks.">
+      <div>
+        <div class="flex items-center gap-2 text-xs font-bold text-rose-400 tracking-wider uppercase mb-1">
+          <i data-lucide="radio" class="w-4 h-4"></i> Core Innovation #3
+        </div>
+        <h2 class="text-3xl font-extrabold text-white mb-1">WebSockets & Emergency Broadcast System</h2>
+        <p class="text-slate-400 text-xs">Full-duplex event streaming with fallback polling and critical incident alerting.</p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6 my-auto py-2">
+        <!-- WebSocket Architecture Details -->
+        <div class="glass-card p-5 rounded-xl border border-slate-800 space-y-3">
+          <div class="flex items-center gap-2 text-brand-400 font-bold text-sm">
+            <i data-lucide="network" class="w-4 h-4"></i>
+            <span>Flask-SocketIO Room Architecture</span>
+          </div>
+
+          <div class="space-y-2 text-xs text-slate-300">
+            <div class="p-2.5 rounded-lg bg-slate-900 border border-slate-800">
+              <span class="font-mono text-brand-300 font-bold">Room: user_{user_id}</span>
+              <p class="text-slate-400 text-[11px] mt-0.5">Emits <code class="text-brand-400 font-mono">new_notification</code> payload. Updates the navbar notification bell badge instantaneously without page refresh.</p>
+            </div>
+
+            <div class="p-2.5 rounded-lg bg-slate-900 border border-slate-800">
+              <span class="font-mono text-brand-300 font-bold">Room: child_{child_id}</span>
+              <p class="text-slate-400 text-[11px] mt-0.5">Emits <code class="text-brand-400 font-mono">new_chat_message</code>. Keeps two-way teacher-parent messaging private, scoped, and strictly isolated.</p>
+            </div>
+
+            <div class="p-2.5 rounded-lg bg-slate-900 border border-slate-800">
+              <span class="font-mono text-emerald-400 font-bold">Zero-Downtime Fallback Polling</span>
+              <p class="text-slate-400 text-[11px] mt-0.5">Automatic fallback to HTTP REST polling (<code class="text-emerald-300 font-mono">/api/notifications/unread</code>) if client WebSocket transport is blocked by institutional firewalls.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Emergency Alert Live Simulation Card -->
+        <div class="glass-card p-5 rounded-xl border border-rose-500/30 flex flex-col justify-between">
+          <div>
+            <div class="flex items-center justify-between mb-3">
+              <div class="flex items-center gap-2 text-rose-400 font-bold text-sm">
+                <i data-lucide="alert-octagon" class="w-4 h-4"></i>
+                <span>Emergency Broadcast Dispatcher</span>
+              </div>
+              <span class="text-[10px] font-mono bg-rose-950 text-rose-300 px-2 py-0.5 rounded border border-rose-800">Priority Level: HIGH</span>
+            </div>
+
+            <p class="text-xs text-slate-300 mb-3 leading-relaxed">
+              When an educator checks "Emergency Alert" on a message, the system overrides standard chat and broadcasts high-priority notifications.
+            </p>
+
+            <!-- Dynamic Alert Preview Container -->
+            <div id="alert-banner-preview" class="p-3 rounded-lg bg-rose-500/10 border border-rose-500/40 text-xs space-y-1.5">
+              <div class="flex items-center gap-2 text-rose-400 font-bold">
+                <i data-lucide="flame" class="w-4 h-4 animate-bounce"></i>
+                <span>HIGH PRIORITY MEDICAL ADVISORY</span>
+              </div>
+              <p class="text-slate-200 text-[11px]" id="alert-banner-text">
+                "Leo Miller has developed a sudden 101.4°F fever. First aid administered. Please contact caretaker Emma immediately."
+              </p>
+              <div class="text-[10px] text-slate-400 font-mono pt-1 border-t border-rose-500/20 flex justify-between">
+                <span>SMS Dispatch: +1 (555) 890-1234</span>
+                <span class="text-emerald-400 font-bold">SIMULATED TWILIO OK</span>
+              </div>
+            </div>
+          </div>
+
+          <button onclick="triggerSimulatedAlert()" class="w-full mt-3 py-2 px-3 rounded-lg bg-rose-600 hover:bg-rose-500 text-white font-bold text-xs transition flex items-center justify-center gap-2 shadow-lg shadow-rose-600/30">
+            <i data-lucide="bell-ring" class="w-4 h-4"></i>
+            <span>Simulate Urgent Health Broadcast</span>
+          </button>
+        </div>
+      </div>
+
+      <div class="bg-slate-900/90 p-3 rounded-lg border border-slate-800 flex items-center justify-between text-xs">
+        <span class="text-slate-400">Dispatcher File:</span>
+        <code class="text-rose-400 font-mono">notifications.py &bull; send_notification() & send_sms() hooks</code>
+      </div>
+    </section>
+
+    <!-- ============================================================= -->
+    <!-- SLIDE 9: Interactive Early Learning Hub -->
+    <!-- ============================================================= -->
+    <section class="slide w-full min-h-[78vh] flex flex-col justify-between glass-panel rounded-2xl p-6 sm:p-10 md:p-12 shadow-2xl relative" data-category="8. Educational Ecosystem" data-title="Early Learning & Curriculum Hub" data-notes="Beyond administrative operations, our platform supports early childhood development. The Learning Hub categorizes activities into three distinct tracks: Infants (0-1 year) focused on sensory motor stimulation, Toddlers (1-3 years) focused on interactive rhymes and motor coordination, and Preschoolers (3-5 years) focused on phonics and storytelling. This bridges learning between classroom and home.">
+      <div>
+        <div class="flex items-center gap-2 text-xs font-bold text-cyan-400 tracking-wider uppercase mb-1">
+          <i data-lucide="book-open" class="w-4 h-4"></i> Educational Engine
+        </div>
+        <h2 class="text-3xl font-extrabold text-white mb-1">Interactive Early Learning Hub</h2>
+        <p class="text-slate-400 text-xs">Age-stratified developmental curriculum for home-and-school continuity.</p>
+      </div>
+
+      <!-- 3 Age Tier Columns -->
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6 my-auto py-2">
+        <!-- Track 1: Infant -->
+        <div class="glass-card p-5 rounded-xl border border-cyan-500/30 relative">
+          <div class="w-9 h-9 rounded-lg bg-cyan-500/10 text-cyan-400 flex items-center justify-center font-bold mb-3">
+            👶
+          </div>
+          <span class="text-[10px] font-mono bg-cyan-950 text-cyan-300 px-2 py-0.5 rounded border border-cyan-800">Age: 0 - 1 Year</span>
+          <h3 class="text-base font-bold text-white mt-2 mb-1">Infant Sensory Track</h3>
+          <p class="text-slate-300 text-xs leading-relaxed mb-3">
+            High-contrast visual tracking, soothing classical lullabies, and gentle tummy-time developmental motor activities designed for early neural connectivity.
+          </p>
+          <ul class="text-[11px] text-slate-400 space-y-1 border-t border-slate-800 pt-2 font-mono">
+            <li>• High-contrast flash cards</li>
+            <li>• Soothing Brahms Lullaby</li>
+            <li>• Visual mirror tracking</li>
+          </ul>
+        </div>
+
+        <!-- Track 2: Toddler -->
+        <div class="glass-card p-5 rounded-xl border border-amber-500/30 relative">
+          <div class="w-9 h-9 rounded-lg bg-amber-500/10 text-amber-400 flex items-center justify-center font-bold mb-3">
+            🧸
+          </div>
+          <span class="text-[10px] font-mono bg-amber-950 text-amber-300 px-2 py-0.5 rounded border border-amber-800">Age: 1 - 3 Years</span>
+          <h3 class="text-base font-bold text-white mt-2 mb-1">Toddler Rhyme & Motion</h3>
+          <p class="text-slate-300 text-xs leading-relaxed mb-3">
+            Interactive rhymes with hand-gestures ("Itsy Bitsy Spider", "Wheels on the Bus"), tactile color sorting, animal sound mimicry, and early social play.
+          </p>
+          <ul class="text-[11px] text-slate-400 space-y-1 border-t border-slate-800 pt-2 font-mono">
+            <li>• Interactive rhyme karaoke</li>
+            <li>• Animal sound puzzle match</li>
+            <li>• Tactile sensory bins</li>
+          </ul>
+        </div>
+
+        <!-- Track 3: Preschool -->
+        <div class="glass-card p-5 rounded-xl border border-emerald-500/30 relative">
+          <div class="w-9 h-9 rounded-lg bg-emerald-500/10 text-emerald-400 flex items-center justify-center font-bold mb-3">
+            🎨
+          </div>
+          <span class="text-[10px] font-mono bg-emerald-950 text-emerald-300 px-2 py-0.5 rounded border border-emerald-800">Age: 3 - 5 Years</span>
+          <h3 class="text-base font-bold text-white mt-2 mb-1">Preschool Readiness</h3>
+          <p class="text-slate-300 text-xs leading-relaxed mb-3">
+            Interactive moral storybooks ("The Tortoise and the Hare"), basic counting games, emotional recognition, and kindergarten readiness crafts.
+          </p>
+          <ul class="text-[11px] text-slate-400 space-y-1 border-t border-slate-800 pt-2 font-mono">
+            <li>• Immersive reading view</li>
+            <li>• Emotional expression cards</li>
+            <li>• Early counting challenges</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="bg-slate-900/90 p-3 rounded-lg border border-slate-800 flex items-center justify-between text-xs">
+        <span class="text-slate-400">Content Model:</span>
+        <code class="text-cyan-400 font-mono">LearningResource &bull; routes/learning.py &bull; Distraction-free Reading Mode</code>
+      </div>
+    </section>
+
+    <!-- ============================================================= -->
+    <!-- SLIDE 10: Relational Database Schema & Data Models -->
+    <!-- ============================================================= -->
+    <section class="slide w-full min-h-[78vh] flex flex-col justify-between glass-panel rounded-2xl p-6 sm:p-10 md:p-12 shadow-2xl relative" data-category="9. Database Design" data-title="Relational Schema & Entity Relationships" data-notes="Let's examine the relational database design implemented in SQLAlchemy ORM. The core entity is Child, which maintains foreign keys to both User as parent and User as caregiver. ActivityLog, Photo, Attendance, and Message all link to Child with cascade deletion. Indexes are placed on timestamps and dates to maintain sub-second query performance.">
+      <div>
+        <div class="flex items-center gap-2 text-xs font-bold text-brand-400 tracking-wider uppercase mb-1">
+          <i data-lucide="database" class="w-4 h-4"></i> Data Architecture
+        </div>
+        <h2 class="text-3xl font-extrabold text-white mb-1">Relational Database Schema & ORM Mapping</h2>
+        <p class="text-slate-400 text-xs">Normalized relational design with foreign key cascades and timestamp indexing.</p>
+      </div>
+
+      <!-- 3 Relational Column Cards -->
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6 my-auto py-2 text-xs">
+        <!-- User & Child -->
+        <div class="glass-card p-4 rounded-xl border border-brand-500/30">
+          <div class="flex items-center justify-between border-b border-slate-800 pb-2 mb-2 font-mono font-bold text-brand-400">
+            <span>users & children</span>
+            <i data-lucide="user-check" class="w-4 h-4"></i>
+          </div>
+          <div class="font-mono text-[11px] text-slate-300 space-y-1.5">
+            <div class="bg-slate-900 p-2 rounded border border-slate-800">
+              <span class="text-emerald-400">TABLE users:</span>
+              <div>id (PK, Int)</div>
+              <div>email (Unique, Str)</div>
+              <div>password_hash (Str)</div>
+              <div>role ('admin'|'caregiver'|'parent')</div>
+              <div>is_approved (Bool)</div>
+            </div>
+            <div class="bg-slate-900 p-2 rounded border border-slate-800">
+              <span class="text-cyan-400">TABLE children:</span>
+              <div>id (PK, Int)</div>
+              <div>name, dob, gender</div>
+              <div>allergies, notes</div>
+              <div>parent_id (FK -> users.id)</div>
+              <div>caregiver_id (FK -> users.id)</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Activity & Attendance -->
+        <div class="glass-card p-4 rounded-xl border border-emerald-500/30">
+          <div class="flex items-center justify-between border-b border-slate-800 pb-2 mb-2 font-mono font-bold text-emerald-400">
+            <span>activity_logs & attendance</span>
+            <i data-lucide="calendar-check" class="w-4 h-4"></i>
+          </div>
+          <div class="font-mono text-[11px] text-slate-300 space-y-1.5">
+            <div class="bg-slate-900 p-2 rounded border border-slate-800">
+              <span class="text-amber-400">TABLE activity_logs:</span>
+              <div>id (PK, Int)</div>
+              <div>child_id (FK -> children.id)</div>
+              <div>type ('meal'|'nap'|'mood'...)</div>
+              <div>title, details (Text)</div>
+              <div>timestamp (Index, DateTime)</div>
+            </div>
+            <div class="bg-slate-900 p-2 rounded border border-slate-800">
+              <span class="text-emerald-400">TABLE attendance:</span>
+              <div>id (PK, Int)</div>
+              <div>child_id (FK -> children.id)</div>
+              <div>date (Index, Date)</div>
+              <div>check_in_time, check_out_time</div>
+              <div>status ('present'|'absent'|'late')</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Messages & Notifications -->
+        <div class="glass-card p-4 rounded-xl border border-rose-500/30">
+          <div class="flex items-center justify-between border-b border-slate-800 pb-2 mb-2 font-mono font-bold text-rose-400">
+            <span>messages & notifications</span>
+            <i data-lucide="message-square" class="w-4 h-4"></i>
+          </div>
+          <div class="font-mono text-[11px] text-slate-300 space-y-1.5">
+            <div class="bg-slate-900 p-2 rounded border border-slate-800">
+              <span class="text-rose-400">TABLE messages:</span>
+              <div>id (PK, Int)</div>
+              <div>child_id (FK -> children.id)</div>
+              <div>sender_id, receiver_id (FK)</div>
+              <div>content (Text), is_alert (Bool)</div>
+              <div>alert_severity ('info'|'warning'...)</div>
+            </div>
+            <div class="bg-slate-900 p-2 rounded border border-slate-800">
+              <span class="text-purple-400">TABLE notifications:</span>
+              <div>id (PK, Int)</div>
+              <div>user_id (FK -> users.id)</div>
+              <div>title, message, is_read</div>
+              <div>is_urgent (Bool)</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="bg-slate-900/90 p-3 rounded-lg border border-slate-800 flex items-center justify-between text-xs">
+        <span class="text-slate-400">Zero Data Loss:</span>
+        <span class="text-slate-300 font-mono">cascade='all, delete-orphan' enforces Referential Integrity</span>
+      </div>
+    </section>
+
+    <!-- ============================================================= -->
+    <!-- SLIDE 11: Security Engineering & Privacy Isolation -->
+    <!-- ============================================================= -->
+    <section class="slide w-full min-h-[78vh] flex flex-col justify-between glass-panel rounded-2xl p-6 sm:p-10 md:p-12 shadow-2xl relative" data-category="10. Security & Compliance" data-title="Security Architecture & OWASP Defense" data-notes="Let's address the critical security mechanisms implemented in the codebase. To prevent Broken Access Control, every endpoint accessing child data invokes get_authorized_child(), which verifies user ownership. If a parent attempts to tamper with child IDs in the URL, they immediately receive an HTTP 403 Forbidden. Furthermore, file uploads use UUIDv4 randomization and Werkzeug filename sanitization to eliminate path traversal and RCE attacks.">
+      <div>
+        <div class="flex items-center gap-2 text-xs font-bold text-emerald-400 tracking-wider uppercase mb-1">
+          <i data-lucide="shield-check" class="w-4 h-4"></i> Security Engineering
+        </div>
+        <h2 class="text-3xl font-extrabold text-white mb-1">Zero-Trust Child Privacy & OWASP Mitigations</h2>
+        <p class="text-slate-400 text-xs">Architectural safeguards against unauthorized access, data leaks, and code injection.</p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-5 my-auto py-2">
+        <!-- Defense 1: Object-Level Authorization -->
+        <div class="glass-card p-4 rounded-xl border border-rose-500/30">
+          <div class="flex items-center gap-2 text-rose-400 font-bold text-sm mb-2">
+            <i data-lucide="lock" class="w-4 h-4"></i>
+            <span>Object-Level Authorization Guard</span>
+          </div>
+          <p class="text-slate-300 text-xs mb-2 leading-relaxed">
+            Mitigates OWASP Broken Access Control (BOLA). Every child data route routes through <code class="text-rose-400 font-mono">get_authorized_child()</code>:
+          </p>
+          <pre class="bg-slate-900 p-2.5 rounded text-[10px] font-mono text-slate-300 overflow-x-auto border border-slate-800">
+if current_user.is_parent:
+    if child.parent_id != current_user.id:
+        abort(403) # Strictly blocks unauthorized peeking</pre>
+        </div>
+
+        <!-- Defense 2: Role Gatekeeper Decorator -->
+        <div class="glass-card p-4 rounded-xl border border-amber-500/30">
+          <div class="flex items-center gap-2 text-amber-400 font-bold text-sm mb-2">
+            <i data-lucide="user-x" class="w-4 h-4"></i>
+            <span>Pending Caretaker Access Barrier</span>
+          </div>
+          <p class="text-slate-300 text-xs mb-2 leading-relaxed">
+            Protects children from unvetted adult access. Newly registered educators are trapped in pending state:
+          </p>
+          <pre class="bg-slate-900 p-2.5 rounded text-[10px] font-mono text-slate-300 overflow-x-auto border border-slate-800">
+@role_required('caregiver')
+if not current_user.is_approved:
+    return redirect(url_for('auth.pending_approval'))</pre>
+        </div>
+
+        <!-- Defense 3: Password Encryption -->
+        <div class="glass-card p-4 rounded-xl border border-cyan-500/30">
+          <div class="flex items-center gap-2 text-cyan-400 font-bold text-sm mb-2">
+            <i data-lucide="key" class="w-4 h-4"></i>
+            <span>PBKDF2-SHA256 Password Hashing</span>
+          </div>
+          <p class="text-slate-300 text-xs leading-relaxed">
+            Zero plaintext credentials. Employs Werkzeug's cryptographic salt-protected hashing. Resilient against rainbow tables and offline dictionary brute-force attacks.
+          </p>
+        </div>
+
+        <!-- Defense 4: Sanitized Uploads -->
+        <div class="glass-card p-4 rounded-xl border border-emerald-500/30">
+          <div class="flex items-center gap-2 text-emerald-400 font-bold text-sm mb-2">
+            <i data-lucide="file-check" class="w-4 h-4"></i>
+            <span>UUID File Renaming & Extension Whitelist</span>
+          </div>
+          <p class="text-slate-300 text-xs leading-relaxed">
+            Uploaded child activity photos are stripped of client metadata, checked against strict extension whitelists, and saved as random <code class="text-emerald-400 font-mono">uuid.uuid4().hex</code> to eliminate path traversal and RCE.
+          </p>
+        </div>
+      </div>
+
+      <div class="bg-slate-900/90 p-3 rounded-lg border border-slate-800 flex items-center justify-between text-xs">
+        <span class="text-slate-400">Security Verification:</span>
+        <span class="text-emerald-400 font-mono font-bold">100% Automated Security Tests Passing</span>
+      </div>
+    </section>
+
+    <!-- ============================================================= -->
+    <!-- SLIDE 12: Automated Verification & Test Suite -->
+    <!-- ============================================================= -->
+    <section class="slide w-full min-h-[78vh] flex flex-col justify-between glass-panel rounded-2xl p-6 sm:p-10 md:p-12 shadow-2xl relative" data-category="11. Quality Assurance" data-title="Automated Test Suite (8/8 Suites)" data-notes="We verified the entire system through an automated unit test suite in test_daycare.py. Running under Python's unittest with an in-memory SQLite database, all 8 test cases pass with 100% success rate. These test suites explicitly verify role redirects, the pending approval barrier, child isolation with 403 checks, daily roster attendance state transitions, and emergency banner dispatch.">
+      <div>
+        <div class="flex items-center justify-between">
+          <div>
+            <div class="flex items-center gap-2 text-xs font-bold text-emerald-400 tracking-wider uppercase mb-1">
+              <i data-lucide="check-circle" class="w-4 h-4"></i> Verification & QA
+            </div>
+            <h2 class="text-3xl font-extrabold text-white mb-1">Automated Test Execution (8/8 Passing)</h2>
+          </div>
+          <span class="text-xs font-mono bg-emerald-950 text-emerald-400 px-3 py-1 rounded-full border border-emerald-800 flex items-center gap-1.5">
+            <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span> 8 OF 8 TESTS PASSED
+          </span>
+        </div>
+        <p class="text-slate-400 text-xs">Executed via <code class="text-brand-300 font-mono">python -m unittest -v test_daycare.py</code> on in-memory SQLite engine.</p>
+      </div>
+
+      <!-- Test Cases Grid -->
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-3 my-auto py-2 text-xs font-mono">
+        <div class="p-2.5 rounded-lg bg-slate-900 border border-emerald-500/30 flex items-start gap-2">
+          <i data-lucide="check" class="w-4 h-4 text-emerald-400 shrink-0 mt-0.5"></i>
+          <div>
+            <span class="text-slate-200 font-bold">1. Landing & Role-Based Redirects</span>
+            <div class="text-[10px] text-slate-400">Verifies authenticated redirect routes for admin, caregiver, parent.</div>
+          </div>
+        </div>
+
+        <div class="p-2.5 rounded-lg bg-slate-900 border border-emerald-500/30 flex items-start gap-2">
+          <i data-lucide="check" class="w-4 h-4 text-emerald-400 shrink-0 mt-0.5"></i>
+          <div>
+            <span class="text-slate-200 font-bold">2. Caretaker Pending Approval Blocker</span>
+            <div class="text-[10px] text-slate-400">Asserts unapproved caretakers cannot view children; Director approval lifts block.</div>
+          </div>
+        </div>
+
+        <div class="p-2.5 rounded-lg bg-slate-900 border border-emerald-500/30 flex items-start gap-2">
+          <i data-lucide="check" class="w-4 h-4 text-emerald-400 shrink-0 mt-0.5"></i>
+          <div>
+            <span class="text-slate-200 font-bold">3. Activity Logging & Timeline Sync</span>
+            <div class="text-[10px] text-slate-400">Tests teacher activity creation and immediate presence in parent daily timeline.</div>
+          </div>
+        </div>
+
+        <div class="p-2.5 rounded-lg bg-slate-900 border border-emerald-500/30 flex items-start gap-2">
+          <i data-lucide="check" class="w-4 h-4 text-emerald-400 shrink-0 mt-0.5"></i>
+          <div>
+            <span class="text-slate-200 font-bold">4. Strict Child Data Isolation (HTTP 403)</span>
+            <div class="text-[10px] text-slate-400">Asserts parent accessing unauthorized child ID receives immediate 403 Forbidden.</div>
+          </div>
+        </div>
+
+        <div class="p-2.5 rounded-lg bg-slate-900 border border-emerald-500/30 flex items-start gap-2">
+          <i data-lucide="check" class="w-4 h-4 text-emerald-400 shrink-0 mt-0.5"></i>
+          <div>
+            <span class="text-slate-200 font-bold">5. Emergency Alert Dispatch & Banner</span>
+            <div class="text-[10px] text-slate-400">Verifies high-priority emergency flag dispatches alert banner to parent dashboard.</div>
+          </div>
+        </div>
+
+        <div class="p-2.5 rounded-lg bg-slate-900 border border-emerald-500/30 flex items-start gap-2">
+          <i data-lucide="check" class="w-4 h-4 text-emerald-400 shrink-0 mt-0.5"></i>
+          <div>
+            <span class="text-slate-200 font-bold">6. Daily Attendance Roster State Flow</span>
+            <div class="text-[10px] text-slate-400">Tests 1-click check-in and check-out daily roster state transitions.</div>
+          </div>
+        </div>
+
+        <div class="p-2.5 rounded-lg bg-slate-900 border border-emerald-500/30 flex items-start gap-2">
+          <i data-lucide="check" class="w-4 h-4 text-emerald-400 shrink-0 mt-0.5"></i>
+          <div>
+            <span class="text-slate-200 font-bold">7. Interactive Learning Resource Inspection</span>
+            <div class="text-[10px] text-slate-400">Tests age-group filtering (infant/toddler/preschool) and reading view rendering.</div>
+          </div>
+        </div>
+
+        <div class="p-2.5 rounded-lg bg-slate-900 border border-emerald-500/30 flex items-start gap-2">
+          <i data-lucide="check" class="w-4 h-4 text-emerald-400 shrink-0 mt-0.5"></i>
+          <div>
+            <span class="text-slate-200 font-bold">8. Password Reset Token Generation</span>
+            <div class="text-[10px] text-slate-400">Validates secure reset token generation and credential password updates.</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="bg-slate-900/90 p-3 rounded-lg border border-slate-800 flex items-center justify-between text-xs">
+        <span class="text-slate-400">Test Execution Summary:</span>
+        <span class="text-emerald-400 font-mono font-bold">Ran 8 tests in 0.942s &bull; OK (100% Success)</span>
+      </div>
+    </section>
+
+    <!-- ============================================================= -->
+    <!-- SLIDE 13: Production Deployment & 12-Factor DevOps -->
+    <!-- ============================================================= -->
+    <section class="slide w-full min-h-[78vh] flex flex-col justify-between glass-panel rounded-2xl p-6 sm:p-10 md:p-12 shadow-2xl relative" data-category="12. DevOps & Infrastructure" data-title="Production Deployment Architecture" data-notes="This application is not just an academic prototype; it is fully deployment ready. It incorporates WSGI entry points via wsgi.py, multi-worker Gunicorn server configuration, a Procfile for instant cloud deployment to Render, Railway, or AWS, and 12-Factor environment variable management. It supports seamless switching from local SQLite to production PostgreSQL.">
+      <div>
+        <div class="flex items-center gap-2 text-xs font-bold text-cyan-400 tracking-wider uppercase mb-1">
+          <i data-lucide="cloud" class="w-4 h-4"></i> DevOps & Deployment
+        </div>
+        <h2 class="text-3xl font-extrabold text-white mb-1">Deployment Architecture & Production Readiness</h2>
+        <p class="text-slate-400 text-xs">Engineered following modern 12-Factor Web App methodologies.</p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-5 my-auto py-2">
+        <div class="glass-card p-5 rounded-xl border border-slate-800 flex items-start gap-3.5">
+          <div class="p-3 rounded-lg bg-brand-500/10 text-brand-400 shrink-0">
+            <i data-lucide="server" class="w-5 h-5"></i>
+          </div>
+          <div>
+            <h4 class="text-sm font-bold text-white mb-1">WSGI Production Entry & Gunicorn</h4>
+            <p class="text-slate-400 text-xs leading-relaxed">
+              Configured with <code class="text-brand-300 font-mono">wsgi.py</code> to interface with multi-worker Gunicorn or uWSGI for high-concurrency requests and persistent WebSocket connections.
+            </p>
+          </div>
+        </div>
+
+        <div class="glass-card p-5 rounded-xl border border-slate-800 flex items-start gap-3.5">
+          <div class="p-3 rounded-lg bg-emerald-500/10 text-emerald-400 shrink-0">
+            <i data-lucide="cloud-lightning" class="w-5 h-5"></i>
+          </div>
+          <div>
+            <h4 class="text-sm font-bold text-white mb-1">1-Click Cloud PaaS Ready (Procfile)</h4>
+            <p class="text-slate-400 text-xs leading-relaxed">
+              Includes native <code class="text-emerald-300 font-mono">Procfile</code> for 1-click zero-downtime deployment onto cloud platforms like Render, Railway, Heroku, or Docker container nodes.
+            </p>
+          </div>
+        </div>
+
+        <div class="glass-card p-5 rounded-xl border border-slate-800 flex items-start gap-3.5">
+          <div class="p-3 rounded-lg bg-amber-500/10 text-amber-400 shrink-0">
+            <i data-lucide="sliders" class="w-5 h-5"></i>
+          </div>
+          <div>
+            <h4 class="text-sm font-bold text-white mb-1">12-Factor Secret Segregation</h4>
+            <p class="text-slate-400 text-xs leading-relaxed">
+              Zero hardcoded secrets. Uses <code class="text-amber-300 font-mono">.env</code> and <code class="text-amber-300 font-mono">python-dotenv</code> for strict isolation between development, staging, and production environments.
+            </p>
+          </div>
+        </div>
+
+        <div class="glass-card p-5 rounded-xl border border-slate-800 flex items-start gap-3.5">
+          <div class="p-3 rounded-lg bg-cyan-500/10 text-cyan-400 shrink-0">
+            <i data-lucide="database-zap" class="w-5 h-5"></i>
+          </div>
+          <div>
+            <h4 class="text-sm font-bold text-white mb-1">Database Portability</h4>
+            <p class="text-slate-400 text-xs leading-relaxed">
+              Plug-and-play persistence. Switch from local zero-install SQLite to multi-node PostgreSQL simply by adjusting the <code class="text-cyan-300 font-mono">DATABASE_URL</code> environment string.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <div class="bg-slate-900/90 p-3 rounded-lg border border-slate-800 flex items-center justify-between text-xs">
+        <span class="text-slate-400">Production Command:</span>
+        <code class="text-emerald-400 font-mono">gunicorn -w 1 -b 0.0.0.0:5000 wsgi:app</code>
+      </div>
+    </section>
+
+    <!-- ============================================================= -->
+    <!-- SLIDE 14: Future Scope & Roadmap -->
+    <!-- ============================================================= -->
+    <section class="slide w-full min-h-[78vh] flex flex-col justify-between glass-panel rounded-2xl p-6 sm:p-10 md:p-12 shadow-2xl relative" data-category="13. Future Roadmap" data-title="Future Technical Extensions & Roadmap" data-notes="Looking forward, we have identified three high-impact development directions: 1. AI-driven developmental milestone analysis to detect early speech or motor delays. 2. Native mobile apps using React Native or Flutter with biometric Apple/Google health sync. 3. Smart IoT turnstile gate hardware directly connected to our attendance engine for physical access control.">
+      <div>
+        <div class="flex items-center gap-2 text-xs font-bold text-purple-400 tracking-wider uppercase mb-1">
+          <i data-lucide="compass" class="w-4 h-4"></i> Future Scope
+        </div>
+        <h2 class="text-3xl font-extrabold text-white mb-1">Future Roadmap & Technical Extensions</h2>
+        <p class="text-slate-400 text-xs">Extending the platform with AI analytics, mobile wrappers, and IoT hardware.</p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6 my-auto py-2">
+        <!-- Scope 1 -->
+        <div class="glass-card p-5 rounded-xl border border-purple-500/30">
+          <div class="w-9 h-9 rounded-lg bg-purple-500/10 text-purple-400 flex items-center justify-center font-bold mb-3">
+            <i data-lucide="brain" class="w-5 h-5"></i>
+          </div>
+          <h3 class="text-base font-bold text-white mb-2">AI Milestone Analytics</h3>
+          <p class="text-slate-300 text-xs leading-relaxed mb-3">
+            Train lightweight machine learning models on routine logs to detect early motor or speech developmental delays, suggesting personalized sensory activities.
+          </p>
+          <div class="text-[10px] font-mono text-purple-400 bg-purple-950/50 p-2 rounded border border-purple-800">
+            • Predictive speech delay detection<br>• Custom developmental pacing
+          </div>
+        </div>
+
+        <!-- Scope 2 -->
+        <div class="glass-card p-5 rounded-xl border border-cyan-500/30">
+          <div class="w-9 h-9 rounded-lg bg-cyan-500/10 text-cyan-400 flex items-center justify-center font-bold mb-3">
+            <i data-lucide="smartphone" class="w-5 h-5"></i>
+          </div>
+          <h3 class="text-base font-bold text-white mb-2">Native Mobile Applications</h3>
+          <p class="text-slate-300 text-xs leading-relaxed mb-3">
+            Build cross-platform mobile apps in React Native or Flutter, adding native push notifications and biometric FaceID check-in authorization for guardians.
+          </p>
+          <div class="text-[10px] font-mono text-cyan-400 bg-cyan-950/50 p-2 rounded border border-cyan-800">
+            • Instant APNs & FCM push notifications<br>• Geofenced automatic arrival detection
+          </div>
+        </div>
+
+        <!-- Scope 3 -->
+        <div class="glass-card p-5 rounded-xl border border-emerald-500/30">
+          <div class="w-9 h-9 rounded-lg bg-emerald-500/10 text-emerald-400 flex items-center justify-center font-bold mb-3">
+            <i data-lucide="door-closed" class="w-5 h-5"></i>
+          </div>
+          <h3 class="text-base font-bold text-white mb-2">IoT Smart Gate Hardware</h3>
+          <p class="text-slate-300 text-xs leading-relaxed mb-3">
+            Interface smart RFID cards and biometric hardware directly with physical turnstiles at daycare entrance gates for automated, secure door unlock.
+          </p>
+          <div class="text-[10px] font-mono text-emerald-400 bg-emerald-950/50 p-2 rounded border border-emerald-800">
+            • Automated magnetic door release<br>• High-resolution camera facial verification
+          </div>
+        </div>
+      </div>
+
+      <div class="bg-slate-900/90 p-3 rounded-lg border border-slate-800 flex items-center justify-between text-xs">
+        <span class="text-slate-400">Commercial Scalability:</span>
+        <span class="text-purple-300">Ready for Stripe tuition payment integration & GPS school bus tracking</span>
+      </div>
+    </section>
+
+    <!-- ============================================================= -->
+    <!-- SLIDE 15: Conclusion & Viva Defense -->
+    <!-- ============================================================= -->
+    <section class="slide w-full min-h-[78vh] flex flex-col justify-between glass-panel rounded-2xl p-6 sm:p-10 md:p-12 shadow-2xl relative" data-category="14. Defense & Conclusion" data-title="Conclusion & Review Defense" data-notes="In conclusion, the Virtual Daycare Platform delivers a robust, secure, and production-tested solution for modern early childhood institutions. It solves parental anxiety, modernizes manual tracking with an intuitive daily roster, and adheres to strict privacy isolation standards. Thank you, professors. I am now open for viva questions.">
+      <div class="flex items-center justify-between border-b border-slate-800 pb-3">
+        <div class="flex items-center gap-2 text-xs font-bold text-emerald-400 tracking-wider uppercase">
+          <i data-lucide="award" class="w-4 h-4"></i> Capstone Summary
+        </div>
+        <span class="text-xs text-slate-400 font-mono">Virtual Daycare Platform v1.0</span>
+      </div>
+
+      <div class="my-auto py-6 text-center max-w-3xl mx-auto">
+        <h2 class="text-3xl sm:text-4xl font-extrabold text-white mb-4">
+          🎓 Project Defense & Conclusions
+        </h2>
+        <p class="text-slate-300 text-sm leading-relaxed mb-6">
+          The Virtual Daycare Platform bridges early childhood institutional management with modern real-time engineering—delivering peace of mind to parents, operational efficiency to educators, and privacy to children.
+        </p>
+
+        <!-- Key Achievements Badges -->
+        <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 text-xs mb-8">
+          <div class="glass-card p-3 rounded-xl border border-emerald-500/30">
+            <div class="text-xl font-bold text-emerald-400 font-mono">100%</div>
+            <div class="text-slate-400 text-[11px]">Test Suite Passing</div>
+          </div>
+          <div class="glass-card p-3 rounded-xl border border-brand-500/30">
+            <div class="text-xl font-bold text-brand-400 font-mono">Zero</div>
+            <div class="text-slate-400 text-[11px]">Cross-Tenant Leaks</div>
+          </div>
+          <div class="glass-card p-3 rounded-xl border border-amber-500/30">
+            <div class="text-xl font-bold text-amber-400 font-mono">&lt; 1 sec</div>
+            <div class="text-slate-400 text-[11px]">Roster State Transition Latency</div>
+          </div>
+          <div class="glass-card p-3 rounded-xl border border-cyan-500/30">
+            <div class="text-xl font-bold text-cyan-400 font-mono">12-Factor</div>
+            <div class="text-slate-400 text-[11px]">Cloud Deployment Ready</div>
+          </div>
+        </div>
+
+        <div class="inline-block p-4 rounded-xl bg-slate-900/90 border border-slate-700 text-slate-200 text-sm">
+          <p class="font-semibold text-brand-300 mb-1">Thank you for your review and evaluation!</p>
+          <p class="text-xs text-slate-400">Ready for Questions, Code Walkthrough & Committee Discussion.</p>
+        </div>
+      </div>
+
+      <div class="flex items-center justify-between border-t border-slate-800 pt-3 text-xs text-slate-400">
+        <span>Project: Virtual Daycare Platform</span>
+        <span class="text-emerald-400 font-semibold">Q&A Session Open</span>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Bottom Navigation Controller (Fixed in Presentation Mode) -->
+  <footer class="no-print h-14 border-t border-slate-800 bg-slate-900/80 backdrop-blur-md px-6 flex items-center justify-between z-40">
+    <!-- Progress Indicator & Counter -->
+    <div class="flex items-center gap-3">
+      <span id="slide-counter" class="text-xs font-mono font-bold text-brand-400 bg-slate-800 px-2.5 py-1 rounded border border-slate-700">01 / 15</span>
+      <div class="w-32 sm:w-48 h-1.5 bg-slate-800 rounded-full overflow-hidden">
+        <div id="progress-bar" class="h-full bg-gradient-to-r from-brand-500 to-emerald-400 transition-all duration-300 w-[6.66%]"></div>
+      </div>
+    </div>
+
+    <!-- Navigation Arrow Buttons -->
+    <div class="flex items-center gap-2">
+      <button onclick="prevSlide()" id="btn-prev" class="p-2 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white transition border border-slate-700 disabled:opacity-30 disabled:cursor-not-allowed">
+        <i data-lucide="chevron-left" class="w-4 h-4"></i>
+      </button>
+      <button onclick="nextSlide()" id="btn-next" class="p-2 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white transition border border-slate-700 disabled:opacity-30 disabled:cursor-not-allowed">
+        <i data-lucide="chevron-right" class="w-4 h-4"></i>
+      </button>
+    </div>
+
+    <!-- Keyboard Shortcuts Legend -->
+    <div class="hidden lg:flex items-center gap-3 text-[11px] text-slate-400 font-mono">
+      <span><kbd class="px-1.5 py-0.5 rounded bg-slate-800 border border-slate-700 text-slate-300">Space</kbd> / <kbd class="px-1.5 py-0.5 rounded bg-slate-800 border border-slate-700 text-slate-300">→</kbd> Next</span>
+      <span><kbd class="px-1.5 py-0.5 rounded bg-slate-800 border border-slate-700 text-slate-300">F</kbd> Fullscreen</span>
+      <span><kbd class="px-1.5 py-0.5 rounded bg-slate-800 border border-slate-700 text-slate-300">N</kbd> Notes</span>
+      <span><kbd class="px-1.5 py-0.5 rounded bg-slate-800 border border-slate-700 text-slate-300">O</kbd> Grid</span>
+    </div>
+  </footer>
+
+  <!-- Slide Overview Grid Modal (Triggered by 'O' or button) -->
+  <div id="overview-modal" class="no-print fixed inset-0 bg-slate-950/90 backdrop-blur-xl z-50 hidden flex-col p-6 overflow-y-auto">
+    <div class="flex items-center justify-between pb-4 border-b border-slate-800 max-w-7xl mx-auto w-full">
+      <div class="flex items-center gap-2">
+        <i data-lucide="layout-grid" class="w-5 h-5 text-brand-400"></i>
+        <h3 class="text-lg font-bold text-white">Slide Navigator Overview</h3>
+      </div>
+      <button onclick="toggleOverview()" class="p-2 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-400 hover:text-white transition">
+        <i data-lucide="x" class="w-5 h-5"></i>
+      </button>
+    </div>
+
+    <div id="overview-grid" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-4 py-6 max-w-7xl mx-auto w-full">
+      <!-- Injected via JavaScript -->
+    </div>
+  </div>
+
+  <!-- Speaker Notes Drawer (Triggered by 'N' or button) -->
+  <div id="notes-drawer" class="no-print fixed bottom-14 right-6 w-96 max-w-[90vw] glass-panel rounded-xl border border-slate-700 shadow-2xl p-4 z-40 hidden flex-col gap-2 transition-all">
+    <div class="flex items-center justify-between border-b border-slate-800 pb-2">
+      <div class="flex items-center gap-2 text-xs font-bold text-brand-300">
+        <i data-lucide="file-text" class="w-3.5 h-3.5"></i>
+        <span>Speaker Script / Viva Notes</span>
+      </div>
+      <button onclick="toggleNotes()" class="text-slate-400 hover:text-white">
+        <i data-lucide="x" class="w-3.5 h-3.5"></i>
+      </button>
+    </div>
+    <div id="notes-content" class="text-xs text-slate-300 leading-relaxed max-h-56 overflow-y-auto pr-1">
+      <!-- Injected dynamically based on current slide -->
+    </div>
+  </div>
+
+  <!-- Presentation Logic & Interactive Scripts -->
+  <script>
+    let currentSlideIndex = 0;
+    const slides = document.querySelectorAll('.slide');
+    const totalSlides = slides.length;
+
+    function updateSlideView() {
+      slides.forEach((slide, idx) => {
+        if (idx === currentSlideIndex) {
+          slide.classList.add('active');
+          slide.style.display = 'flex';
+          setTimeout(() => slide.style.opacity = '1', 20);
+        } else {
+          slide.classList.remove('active');
+          slide.style.opacity = '0';
+          slide.style.display = 'none';
+        }
+      });
+
+      // Update counters & progress
+      const current = currentSlideIndex + 1;
+      const counterText = `${String(current).padStart(2, '0')} / ${String(totalSlides).padStart(2, '0')}`;
+      document.getElementById('slide-counter').textContent = counterText;
+      const progressPct = ((current) / totalSlides) * 100;
+      document.getElementById('progress-bar').style.width = `${progressPct}%`;
+
+      // Update Header Tracker
+      const activeSlide = slides[currentSlideIndex];
+      const category = activeSlide.getAttribute('data-category') || 'VIRTUAL DAYCARE';
+      const title = activeSlide.getAttribute('data-title') || 'Platform Presentation';
+      const notes = activeSlide.getAttribute('data-notes') || 'No specific notes recorded for this slide.';
+
+      document.getElementById('header-category').textContent = category;
+      document.getElementById('header-title').textContent = title;
+      document.getElementById('notes-content').textContent = notes;
+
+      // Update Prev / Next button disabled state
+      document.getElementById('btn-prev').disabled = (currentSlideIndex === 0);
+      document.getElementById('btn-next').disabled = (currentSlideIndex === totalSlides - 1);
+    }
+
+    function nextSlide() {
+      if (currentSlideIndex < totalSlides - 1) {
+        currentSlideIndex++;
+        updateSlideView();
+      }
+    }
+
+    function prevSlide() {
+      if (currentSlideIndex > 0) {
+        currentSlideIndex--;
+        updateSlideView();
+      }
+    }
+
+    function goToSlide(index) {
+      if (index >= 0 && index < totalSlides) {
+        currentSlideIndex = index;
+        updateSlideView();
+        const overview = document.getElementById('overview-modal');
+        if (!overview.classList.contains('hidden')) {
+          toggleOverview();
+        }
+      }
+    }
+
+    // Keyboard Navigation
+    window.addEventListener('keydown', (e) => {
+      // Don't trigger if user is typing in an input
+      if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
+
+      switch(e.key) {
+        case 'ArrowRight':
+        case 'ArrowDown':
+        case ' ':
+        case 'PageDown':
+          e.preventDefault();
+          nextSlide();
+          break;
+        case 'ArrowLeft':
+        case 'ArrowUp':
+        case 'PageUp':
+          e.preventDefault();
+          prevSlide();
+          break;
+        case 'f':
+        case 'F':
+          toggleFullscreen();
+          break;
+        case 'n':
+        case 'N':
+          toggleNotes();
+          break;
+        case 'o':
+        case 'O':
+          toggleOverview();
+          break;
+        case 'Escape':
+          document.getElementById('overview-modal').classList.add('hidden');
+          document.getElementById('notes-drawer').classList.add('hidden');
+          break;
+      }
+    });
+
+    function toggleFullscreen() {
+      if (!document.fullscreenElement) {
+        document.documentElement.requestFullscreen().catch(err => console.log(err));
+      } else {
+        if (document.exitFullscreen) {
+          document.exitFullscreen();
+        }
+      }
+    }
+
+    function toggleNotes() {
+      const drawer = document.getElementById('notes-drawer');
+      drawer.classList.toggle('hidden');
+      drawer.classList.toggle('flex');
+    }
+
+    function toggleOverview() {
+      const modal = document.getElementById('overview-modal');
+      const isHidden = modal.classList.contains('hidden');
+      if (isHidden) {
+        // Build overview grid
+        const grid = document.getElementById('overview-grid');
+        grid.innerHTML = '';
+        slides.forEach((slide, idx) => {
+          const title = slide.getAttribute('data-title') || `Slide ${idx + 1}`;
+          const cat = slide.getAttribute('data-category') || '';
+          const card = document.createElement('div');
+          card.className = `p-3 rounded-xl border text-xs cursor-pointer transition ${idx === currentSlideIndex ? 'border-brand-500 bg-brand-950/40 text-white' : 'border-slate-800 bg-slate-900/80 text-slate-300 hover:border-slate-600'}`;
+          card.innerHTML = `
+            <div class="flex justify-between items-center text-[10px] font-mono text-slate-400 mb-1">
+              <span>SLIDE ${idx + 1}</span>
+              <span class="text-brand-400">${cat}</span>
+            </div>
+            <div class="font-bold text-xs truncate">${title}</div>
+          `;
+          card.onclick = () => goToSlide(idx);
+          grid.appendChild(card);
+        });
+        modal.classList.remove('hidden');
+        modal.classList.add('flex');
+      } else {
+        modal.classList.add('hidden');
+        modal.classList.remove('flex');
+      }
+    }
+
+    // Touch Swipe Support for Mobile & Tablets
+    let touchStartX = 0;
+    window.addEventListener('touchstart', (e) => {
+      touchStartX = e.changedTouches[0].screenX;
+    }, false);
+    window.addEventListener('touchend', (e) => {
+      const touchEndX = e.changedTouches[0].screenX;
+      if (touchEndX < touchStartX - 50) nextSlide();
+      if (touchEndX > touchStartX + 50) prevSlide();
+    }, false);
+
+    // ==========================================
+    // Interactive Demos Embedded in Slides
+    // ==========================================
+
+    // 1. Architecture Layer Inspector
+    function selectArchLayer(layer) {
+      // Reset borders
+      for (let i = 1; i <= 4; i++) {
+        document.getElementById(`arch-card-${i}`).className = "cursor-pointer glass-card p-4 rounded-xl border border-slate-700 transition";
+      }
+      const activeCard = document.getElementById(`arch-card-${layer}`);
+      const titleElem = document.getElementById('arch-detail-title');
+      const descElem = document.getElementById('arch-detail-desc');
+
+      if (layer === 1) {
+        activeCard.className = "cursor-pointer glass-card p-4 rounded-xl border border-brand-500 bg-brand-950/40 transition";
+        titleElem.textContent = "Tier 1: Client & Presentation Tier";
+        descElem.innerHTML = "Built with Jinja2 templates, Bootstrap 5 responsive utility classes, and custom glassmorphic styling. Communicates with backend via asynchronous Fetch API and duplex Socket.IO events for live UI re-renders without full page reloads.";
+      } else if (layer === 2) {
+        activeCard.className = "cursor-pointer glass-card p-4 rounded-xl border border-emerald-500 bg-emerald-950/40 transition";
+        titleElem.textContent = "Tier 2: Real-Time Application Gateway";
+        descElem.innerHTML = "Flask-SocketIO event manager running on gevent or eventlet WSGI server. Handles client connection handshakes, dynamically allocates user-scoped rooms (<code class='text-emerald-400'>user_{id}</code>), and child rooms (<code class='text-emerald-400'>child_{id}</code>) to guarantee zero message leakage.";
+      } else if (layer === 3) {
+        activeCard.className = "cursor-pointer glass-card p-4 rounded-xl border border-amber-500 bg-amber-950/40 transition";
+        titleElem.textContent = "Tier 3: Domain Blueprints Tier";
+        descElem.innerHTML = "Business logic is decoupled into 7 distinct Flask Blueprints: <code class='text-amber-300'>auth</code>, <code class='text-amber-300'>admin</code>, <code class='text-amber-300'>caregiver</code>, <code class='text-amber-300'>parent</code>, <code class='text-amber-300'>messages</code>, <code class='text-amber-300'>learning</code>, and <code class='text-amber-300'>api</code>. Each blueprint enforces role decorators independently.";
+      } else if (layer === 4) {
+        activeCard.className = "cursor-pointer glass-card p-4 rounded-xl border border-rose-500 bg-rose-950/40 transition";
+        titleElem.textContent = "Tier 4: Persistence & Data Models Tier";
+        descElem.innerHTML = "SQLAlchemy ORM maps relations across User, Child, ActivityLog, Attendance, Photo, and LearningResource. Supports transactional ACID compliance with SQLite for dev/testing and PostgreSQL for scalable enterprise deployment.";
+      }
+    }
+
+    // 2. Role Persona Switcher
+    function switchRoleView(role) {
+      const tabDirector = document.getElementById('role-tab-director');
+      const tabCaregiver = document.getElementById('role-tab-caregiver');
+      const tabParent = document.getElementById('role-tab-parent');
+
+      const title = document.getElementById('role-view-title');
+      const sub = document.getElementById('role-view-sub');
+      const badge = document.getElementById('role-view-badge');
+      const grid = document.getElementById('role-view-grid');
+
+      // Reset tabs
+      [tabDirector, tabCaregiver, tabParent].forEach(tab => {
+        tab.className = "px-4 py-2 rounded-lg text-xs font-bold transition flex items-center gap-2 bg-slate-800 text-slate-300 hover:text-white";
+      });
+
+      if (role === 'director') {
+        tabDirector.className = "px-4 py-2 rounded-lg text-xs font-bold transition flex items-center gap-2 bg-amber-500 text-slate-950";
+        title.innerHTML = "👑 Director / Administrator Role Capabilities";
+        sub.textContent = "Complete institutional authority and staff gatekeeper";
+        badge.textContent = "ROLE: admin";
+        badge.className = "text-xs font-mono px-2.5 py-1 rounded bg-amber-500/20 text-amber-300 border border-amber-500/30";
+        grid.innerHTML = `
+          <div class="space-y-2">
+            <div class="flex items-start gap-2 text-slate-200">
+              <i data-lucide="check" class="w-4 h-4 text-emerald-400 shrink-0 mt-0.5"></i>
+              <span><strong>Caretaker Approval Workflow:</strong> Vets newly registered teachers; toggles <code class="text-amber-300 font-mono">is_approved</code> before they can see children.</span>
+            </div>
+            <div class="flex items-start gap-2 text-slate-200">
+              <i data-lucide="check" class="w-4 h-4 text-emerald-400 shrink-0 mt-0.5"></i>
+              <span><strong>Child Enrollment:</strong> Registers children, assigns parents and caretakers, and configures emergency safety details.</span>
+            </div>
+            <div class="flex items-start gap-2 text-slate-200">
+              <i data-lucide="check" class="w-4 h-4 text-emerald-400 shrink-0 mt-0.5"></i>
+              <span><strong>Center Analytics:</strong> Real-time student headcount, caretaker-child ratios, and attendance trends.</span>
+            </div>
+          </div>
+          <div class="space-y-2">
+            <div class="flex items-start gap-2 text-slate-200">
+              <i data-lucide="check" class="w-4 h-4 text-emerald-400 shrink-0 mt-0.5"></i>
+              <span><strong>Learning Curriculum CMS:</strong> Authors, edits, and categorizes rhymes, stories, and activities.</span>
+            </div>
+            <div class="flex items-start gap-2 text-slate-200">
+              <i data-lucide="check" class="w-4 h-4 text-emerald-400 shrink-0 mt-0.5"></i>
+              <span><strong>Inquiry & Complaint Resolution:</strong> Direct parent feedback channels with status resolution audits.</span>
+            </div>
+            <div class="flex items-start gap-2 text-slate-200">
+              <i data-lucide="check" class="w-4 h-4 text-emerald-400 shrink-0 mt-0.5"></i>
+              <span><strong>Global Emergency Broadcast:</strong> Authority to trigger facility-wide alerts or evacuation advisories.</span>
+            </div>
+          </div>
+        `;
+      } else if (role === 'caregiver') {
+        tabCaregiver.className = "px-4 py-2 rounded-lg text-xs font-bold transition flex items-center gap-2 bg-emerald-500 text-slate-950";
+        title.innerHTML = "👩‍🏫 Early Childhood Educator / Caretaker Role";
+        sub.textContent = "Classroom roster management & direct activity logger";
+        badge.textContent = "ROLE: caregiver";
+        badge.className = "text-xs font-mono px-2.5 py-1 rounded bg-emerald-500/20 text-emerald-300 border border-emerald-500/30";
+        grid.innerHTML = `
+          <div class="space-y-2">
+            <div class="flex items-start gap-2 text-slate-200">
+              <i data-lucide="check" class="w-4 h-4 text-emerald-400 shrink-0 mt-0.5"></i>
+              <span><strong>Daily Attendance Roster:</strong> Quickly marks morning check-in and evening departure with 1-click roster tools.</span>
+            </div>
+            <div class="flex items-start gap-2 text-slate-200">
+              <i data-lucide="check" class="w-4 h-4 text-emerald-400 shrink-0 mt-0.5"></i>
+              <span><strong>Multi-Category Activity Logging:</strong> Logs meals, sleep cycles, mood changes, diaper changes, and milestone progress.</span>
+            </div>
+            <div class="flex items-start gap-2 text-slate-200">
+              <i data-lucide="check" class="w-4 h-4 text-emerald-400 shrink-0 mt-0.5"></i>
+              <span><strong>Direct Messaging & Photos:</strong> Secure two-way chat with parents and classroom photo updates.</span>
+            </div>
+          </div>
+          <div class="space-y-2">
+            <div class="flex items-start gap-2 text-slate-200">
+              <i data-lucide="check" class="w-4 h-4 text-emerald-400 shrink-0 mt-0.5"></i>
+              <span><strong>Emergency Alert Trigger:</strong> Instantly sends medical, accident, or fever broadcast to parent screens and SMS.</span>
+            </div>
+            <div class="flex items-start gap-2 text-slate-200">
+              <i data-lucide="check" class="w-4 h-4 text-emerald-400 shrink-0 mt-0.5"></i>
+              <span><strong>Scoped Classroom Isolation:</strong> Caretakers only access children specifically assigned to their group.</span>
+            </div>
+          </div>
+        `;
+      } else if (role === 'parent') {
+        tabParent.className = "px-4 py-2 rounded-lg text-xs font-bold transition flex items-center gap-2 bg-brand-500 text-white";
+        title.innerHTML = "👨‍👩‍👧 Parent / Guardian Role Capabilities";
+        sub.textContent = "Real-time telemetry of their enrolled child";
+        badge.textContent = "ROLE: parent";
+        badge.className = "text-xs font-mono px-2.5 py-1 rounded bg-brand-500/20 text-brand-300 border border-brand-500/30";
+        grid.innerHTML = `
+          <div class="space-y-2">
+            <div class="flex items-start gap-2 text-slate-200">
+              <i data-lucide="check" class="w-4 h-4 text-emerald-400 shrink-0 mt-0.5"></i>
+              <span><strong>Live Daily Timeline:</strong> Real-time feed of routines with date picker for historical reviews.</span>
+            </div>
+            <div class="flex items-start gap-2 text-slate-200">
+              <i data-lucide="check" class="w-4 h-4 text-emerald-400 shrink-0 mt-0.5"></i>
+              <span><strong>Attendance History:</strong> Track daily attendance check-in/out timestamps and monthly rate summaries.</span>
+            </div>
+            <div class="flex items-start gap-2 text-slate-200">
+              <i data-lucide="check" class="w-4 h-4 text-emerald-400 shrink-0 mt-0.5"></i>
+              <span><strong>Attendance & Percentage Stats:</strong> Monthly compliance breakdown (% present vs. weekdays).</span>
+            </div>
+          </div>
+          <div class="space-y-2">
+            <div class="flex items-start gap-2 text-slate-200">
+              <i data-lucide="check" class="w-4 h-4 text-emerald-400 shrink-0 mt-0.5"></i>
+              <span><strong>Private Child Photo Gallery:</strong> Daily classroom moments exclusively filtered for their child.</span>
+            </div>
+            <div class="flex items-start gap-2 text-slate-200">
+              <i data-lucide="check" class="w-4 h-4 text-emerald-400 shrink-0 mt-0.5"></i>
+              <span><strong>Zero-Leak Privacy Isolation:</strong> Strict 403 Forbidden enforcement blocks viewing other children.</span>
+            </div>
+          </div>
+        `;
+      }
+      lucide.createIcons();
+    }
+
+    // 3. Daily Attendance Roster Simulator
+    let isStudentCheckedIn = true;
+    function simulateRosterScan() {
+      const badge = document.getElementById('roster-demo-badge');
+      const statusText = document.getElementById('roster-demo-status');
+      const btnLabel = document.getElementById('roster-scan-btn-label');
+      const rateText = document.getElementById('roster-demo-rate');
+
+      if (isStudentCheckedIn) {
+        // Switch to Checked Out
+        isStudentCheckedIn = false;
+        badge.className = "py-1.5 px-3 rounded-lg bg-amber-500/20 text-amber-300 border border-amber-500/30 text-xs font-bold flex items-center justify-center gap-2 mb-2";
+        statusText.textContent = "STATUS: PICKED UP (05:15 PM)";
+        btnLabel.textContent = "1-Click Arrival (Check In)";
+        rateText.textContent = "Duration: 8 hrs 45 mins • Day Completed";
+      } else {
+        // Switch to Checked In
+        isStudentCheckedIn = true;
+        badge.className = "py-1.5 px-3 rounded-lg bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 text-xs font-bold flex items-center justify-center gap-2 mb-2";
+        statusText.textContent = "STATUS: PRESENT (In Facility - 08:30 AM)";
+        btnLabel.textContent = "1-Click Departure (Check Out)";
+        rateText.textContent = "95% Monthly Rate (20 / 21 School Days)";
+      }
+    }
+
+    // 4. Activity Logger Simulation
+    function addSimulatedLog(type) {
+      const container = document.getElementById('simulated-timeline-container');
+      const now = new Date();
+      const timeStr = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+
+      let icon = '🍼';
+      let title = 'Meal Log';
+      let titleColor = 'text-amber-400';
+      let desc = 'Ate lunch portion well and drank water.';
+
+      if (type === 'meal') {
+        icon = '🍼'; title = 'Lunch & Hydration'; titleColor = 'text-amber-400';
+        desc = 'Enjoyed baked chicken tenders and steamed peas. Drank 120ml water.';
+      } else if (type === 'nap') {
+        icon = '😴'; title = 'Afternoon Nap'; titleColor = 'text-indigo-400';
+        desc = 'Fell asleep gently. Sleep quality rated: Peaceful.';
+      } else if (type === 'mood') {
+        icon = '😊'; title = 'Playful & Cheerful'; titleColor = 'text-emerald-400';
+        desc = 'Showed high engagement during group building block session.';
+      } else if (type === 'diaper') {
+        icon = '🧷'; title = 'Diaper Change (Wet)'; titleColor = 'text-cyan-400';
+        desc = 'Clean diaper applied with barrier cream. Baby is dry and comfortable.';
+      } else if (type === 'milestone') {
+        icon = '🌟'; title = 'Developmental Milestone!'; titleColor = 'text-rose-400';
+        desc = 'Voluntarily shared colored crayons with peer during art activity!';
+      } else if (type === 'note') {
+        icon = '📝'; title = 'Caretaker Reminder'; titleColor = 'text-slate-200';
+        desc = 'Please bring extra pair of socks tomorrow for outdoor water play.';
+      }
+
+      const item = document.createElement('div');
+      item.className = "bg-slate-900/90 p-2.5 rounded-lg border border-brand-500/40 text-xs flex items-start gap-2.5 animate-fade-in";
+      item.innerHTML = `
+        <span class="text-lg">${icon}</span>
+        <div class="flex-1">
+          <div class="flex items-center justify-between">
+            <span class="font-bold ${titleColor} text-xs">${title}</span>
+            <span class="text-[10px] text-emerald-400 font-mono font-bold">${timeStr} (JUST NOW)</span>
+          </div>
+          <p class="text-slate-300 text-[11px]">${desc}</p>
+        </div>
+      `;
+      container.prepend(item);
+    }
+
+    // 5. Emergency Incident Simulation
+    function triggerSimulatedAlert() {
+      const banner = document.getElementById('alert-banner-preview');
+      const text = document.getElementById('alert-banner-text');
+      banner.classList.add('bg-rose-600/30', 'border-rose-400', 'animate-pulse');
+      text.innerHTML = `<strong>⚠️ CRITICAL EMERGENCY ALERT DISPATCHED:</strong> Teacher Emma logged high temperature (102°F). Parent notification emitted over WebSocket and simulated SMS dispatched to +1 (555) 890-1234.`;
+      setTimeout(() => {
+        banner.classList.remove('animate-pulse');
+      }, 3000);
+    }
+
+    // Initialize Lucide Icons & Initial Slide
+    document.addEventListener('DOMContentLoaded', () => {
+      lucide.createIcons();
+      updateSlideView();
+    });
+  </script>
+</body>
+</html>

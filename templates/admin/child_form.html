@@ -1,0 +1,91 @@
+{% extends "base.html" %}
+
+{% block title %}{% if child %}Edit {{ child.name }}{% else %}Enroll New Child{% endif %}{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+  <div class="row justify-content-center">
+    <div class="col-md-8">
+      <div class="card card-custom p-4 shadow-sm">
+        <div class="d-flex justify-content-between align-items-center mb-4 pb-2 border-bottom">
+          <h4 class="fw-bold text-dark mb-0">
+            {% if child %}
+              <i class="bi bi-pencil-square text-primary me-2"></i> Edit Child Profile: {{ child.name }}
+            {% else %}
+              <i class="bi bi-person-plus-fill text-primary me-2"></i> Enroll New Child
+            {% endif %}
+          </h4>
+          <a href="{{ url_for('admin.children') }}" class="btn btn-outline-secondary btn-sm rounded-pill">
+            &larr; Cancel
+          </a>
+        </div>
+
+        <form method="POST" action="{% if child %}{{ url_for('admin.edit_child', child_id=child.id) }}{% else %}{{ url_for('admin.new_child') }}{% endif %}">
+          <div class="row g-3 mb-3">
+            <div class="col-md-8">
+              <label for="name" class="form-label fw-semibold small text-secondary">Child's Full Name *</label>
+              <input type="text" class="form-control" id="name" name="name" value="{{ child.name if child else '' }}" placeholder="e.g. Leo Miller" required>
+            </div>
+            <div class="col-md-4">
+              <label for="gender" class="form-label fw-semibold small text-secondary">Gender</label>
+              <select class="form-select" id="gender" name="gender">
+                <option value="male" {% if child and child.gender == 'male' %}selected{% endif %}>Male</option>
+                <option value="female" {% if child and child.gender == 'female' %}selected{% endif %}>Female</option>
+                <option value="unspecified" {% if not child or child.gender == 'unspecified' %}selected{% endif %}>Unspecified</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="row g-3 mb-3">
+            <div class="col-md-6">
+              <label for="dob" class="form-label fw-semibold small text-secondary">Date of Birth *</label>
+              <input type="date" class="form-control" id="dob" name="dob" value="{{ child.dob.strftime('%Y-%m-%d') if child and child.dob else '' }}" required>
+            </div>
+            <div class="col-md-6">
+              <label for="parent_id" class="form-label fw-semibold small text-secondary">Linked Parent Account *</label>
+              <select class="form-select" id="parent_id" name="parent_id" required>
+                <option value="">Select Parent...</option>
+                {% for p in parents %}
+                  <option value="{{ p.id }}" {% if child and child.parent_id == p.id %}selected{% endif %}>
+                    {{ p.name }} ({{ p.email }})
+                  </option>
+                {% endfor %}
+              </select>
+            </div>
+          </div>
+
+          <div class="mb-3">
+            <label for="caregiver_id" class="form-label fw-semibold small text-secondary">Assigned Educator / Caretaker</label>
+            <select class="form-select" id="caregiver_id" name="caregiver_id">
+              <option value="">-- No Caretaker Assigned Yet --</option>
+              {% for cg in caregivers %}
+                <option value="{{ cg.id }}" {% if child and child.caregiver_id == cg.id %}selected{% endif %}>
+                  {{ cg.name }} ({{ cg.email }})
+                </option>
+              {% endfor %}
+            </select>
+            <div class="form-text small">Only approved caretakers appear in this list.</div>
+          </div>
+
+          <div class="mb-3">
+            <label for="allergies" class="form-label fw-semibold small text-secondary">Allergies & Dietary Restrictions</label>
+            <input type="text" class="form-control" id="allergies" name="allergies" value="{{ child.allergies if child else '' }}" placeholder="e.g. Peanuts, Strawberries, Dairy (or None)">
+          </div>
+
+          <div class="mb-4">
+            <label for="notes" class="form-label fw-semibold small text-secondary">Medical & Daily Care Notes</label>
+            <textarea class="form-control" id="notes" name="notes" rows="3" placeholder="Emergency contact notes, sleep habits, comfort items, etc.">{{ child.notes if child else '' }}</textarea>
+          </div>
+
+          <div class="d-flex justify-content-end gap-2">
+            <a href="{{ url_for('admin.children') }}" class="btn btn-outline-secondary px-4 rounded-pill">Cancel</a>
+            <button type="submit" class="btn btn-primary px-4 rounded-pill fw-semibold shadow-sm">
+              {% if child %}Save Changes{% else %}Enroll Child{% endif %}
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

@@ -1,0 +1,85 @@
+{% extends "base.html" %}
+
+{% block title %}Messages - Virtual Daycare Platform{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+  <div class="d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-center gap-2 mb-4 pb-2 border-bottom">
+    <div>
+      <h2 class="fw-bold text-dark mb-1">Messages &amp; Direct Communication</h2>
+      <p class="text-muted small mb-0">Direct chat threads between educators and parents for each student.</p>
+    </div>
+  </div>
+
+  <div class="row justify-content-center">
+    <div class="col-lg-8">
+      <div class="card card-custom shadow-sm bg-white">
+        <div class="card-header card-header-clean d-flex justify-content-between align-items-center">
+          <span class="fw-bold text-dark"><i class="bi bi-chat-dots-fill text-primary me-2"></i> Active Conversation Threads</span>
+        </div>
+        <div class="card-body p-0">
+          {% if threads %}
+            <div class="list-group list-group-flush">
+              {% for item in threads %}
+                {% set child = item.child %}
+                {% set msg = item.latest_message %}
+                {% set unread = item.unread_count %}
+
+                <a href="{{ url_for('messages.thread', child_id=child.id) }}" class="list-group-item list-group-item-action p-3 {% if unread > 0 %}bg-primary-subtle bg-opacity-25{% endif %}">
+                  <div class="d-flex align-items-center justify-content-between">
+                    <div class="d-flex align-items-center gap-3">
+                      <div class="rounded-circle bg-primary-subtle text-primary fw-bold fs-5 d-flex align-items-center justify-content-center" style="width: 48px; height: 48px;">
+                        {{ child.name[:1] }}
+                      </div>
+                      <div>
+                        <div class="d-flex align-items-center gap-2">
+                          <strong class="text-dark">{{ child.name }}</strong>
+                          <span class="badge bg-light text-muted border text-uppercase" style="font-size: 0.65rem;">{{ child.age_group }}</span>
+                          {% if unread > 0 %}
+                            <span class="badge bg-danger rounded-pill">{{ unread }} unread</span>
+                          {% endif %}
+                        </div>
+
+                        <div class="small text-muted mt-1">
+                          {% if current_user.is_parent %}
+                            Caretaker: <strong class="text-dark">{{ child.caregiver.name if child.caregiver else 'Staff' }}</strong>
+                          {% else %}
+                            Parent: <strong class="text-dark">{{ child.parent.name if child.parent else 'Parent' }}</strong>
+                          {% endif %}
+                        </div>
+
+                        {% if msg %}
+                          <p class="text-secondary small mb-0 mt-1 text-truncate" style="max-width: 420px;">
+                            {% if msg.is_alert %}
+                              <span class="badge bg-danger me-1">ALERT</span>
+                            {% endif %}
+                            <strong>{{ msg.sender.name if msg.sender else 'User' }}:</strong> {{ msg.content }}
+                          </p>
+                        {% else %}
+                          <span class="small text-muted fst-italic">No messages in thread yet. Click to start conversation.</span>
+                        {% endif %}
+                      </div>
+                    </div>
+
+                    <div class="text-end">
+                      {% if msg %}
+                        <small class="text-muted d-block" style="font-size: 0.75rem;">{{ msg.formatted_time }}</small>
+                      {% endif %}
+                      <i class="bi bi-chevron-right text-muted"></i>
+                    </div>
+                  </div>
+                </a>
+              {% endfor %}
+            </div>
+          {% else %}
+            <div class="text-center py-5 text-muted">
+              <i class="bi bi-chat-left-dots fs-2 d-block mb-2"></i>
+              No active message threads found.
+            </div>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

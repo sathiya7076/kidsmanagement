@@ -1,0 +1,54 @@
+{% extends "base.html" %}
+
+{% block title %}Reset Password{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+  <div class="row justify-content-center">
+    <div class="col-md-6 col-lg-5">
+      <div class="card card-custom p-4 shadow-sm">
+        <div class="text-center mb-4">
+          <div class="brand-icon mx-auto mb-3" style="width: 50px; height: 50px; font-size: 1.6rem; background: linear-gradient(135deg, #f59e0b, #ef4444);">
+            <i class="bi bi-key-fill"></i>
+          </div>
+          <h3 class="fw-bold text-dark mb-1">Reset Password</h3>
+          <p class="text-muted small">Enter your registered email address to receive a secure password reset link.</p>
+        </div>
+
+        {% if reset_link %}
+          <div class="alert alert-success border-success p-3 mb-4">
+            <h6 class="fw-bold mb-1"><i class="bi bi-check-circle-fill me-1"></i> Reset Token Generated!</h6>
+            <p class="small text-muted mb-2">Since this demo runs locally without a live email server, here is your generated reset link:</p>
+            <div class="p-2 bg-white rounded border mb-2 text-break">
+              <a href="{{ reset_link }}" class="small fw-semibold text-primary">{{ reset_link }}</a>
+            </div>
+            <a href="{{ reset_link }}" class="btn btn-sm btn-success w-100 rounded-pill">
+              Click Here to Reset Password Now &rarr;
+            </a>
+          </div>
+        {% endif %}
+
+        <form method="POST" action="{{ url_for('auth.reset_request') }}">
+          <div class="mb-3">
+            <label for="email" class="form-label fw-semibold small text-secondary">Account Email Address</label>
+            <div class="input-group">
+              <span class="input-group-text bg-light"><i class="bi bi-envelope"></i></span>
+              <input type="email" class="form-control" id="email" name="email" placeholder="e.g. parent1@example.com" required autofocus>
+            </div>
+          </div>
+
+          <button type="submit" class="btn btn-primary w-100 py-2 rounded-pill fw-semibold shadow-sm">
+            Generate Reset Link
+          </button>
+        </form>
+
+        <div class="text-center mt-3 pt-3 border-top">
+          <a href="{{ url_for('auth.login') }}" class="small text-decoration-none text-secondary">
+            &larr; Return to Sign In
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

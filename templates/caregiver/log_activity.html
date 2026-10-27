@@ -1,0 +1,258 @@
+{% extends "base.html" %}
+
+{% block title %}Log Activity for {{ child.name }}{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+  <div class="row justify-content-center">
+    <div class="col-md-9 col-lg-8">
+      <div class="card card-custom p-4 shadow-sm">
+        <div class="d-flex justify-content-between align-items-center mb-4 pb-2 border-bottom">
+          <div>
+            <h4 class="fw-bold text-dark mb-1">
+              <i class="bi bi-pencil-square text-primary me-2"></i> Log Daily Activity
+            </h4>
+            <p class="text-muted small mb-0">Record updates for <strong>{{ child.name }}</strong> ({{ child.age_string }})</p>
+          </div>
+          <a href="{{ url_for('caregiver.child_detail', child_id=child.id) }}" class="btn btn-outline-secondary btn-sm rounded-pill">
+            &larr; Back to Child
+          </a>
+        </div>
+
+        <form method="POST" action="{{ url_for('caregiver.log_activity', child_id=child.id) }}" id="activityLogForm">
+          <!-- Activity Type Selection Pills -->
+          <div class="mb-4">
+            <label class="form-label fw-semibold small text-secondary d-block">Select Activity Category *</label>
+            <div class="row g-2">
+              <div class="col-4 col-md-2">
+                <input type="radio" class="btn-check" name="type" id="typeMeal" value="meal" checked autocomplete="off" onchange="switchActivityType('meal')">
+                <label class="btn btn-outline-warning w-100 py-2 rounded-3 text-center" for="typeMeal">
+                  <i class="bi bi-cup-hot-fill d-block fs-5 mb-1"></i>
+                  <span class="small fw-semibold">Meal</span>
+                </label>
+              </div>
+
+              <div class="col-4 col-md-2">
+                <input type="radio" class="btn-check" name="type" id="typeNap" value="nap" autocomplete="off" onchange="switchActivityType('nap')">
+                <label class="btn btn-outline-info w-100 py-2 rounded-3 text-center" for="typeNap">
+                  <i class="bi bi-moon-stars-fill d-block fs-5 mb-1"></i>
+                  <span class="small fw-semibold">Nap</span>
+                </label>
+              </div>
+
+              <div class="col-4 col-md-2">
+                <input type="radio" class="btn-check" name="type" id="typeMood" value="mood" autocomplete="off" onchange="switchActivityType('mood')">
+                <label class="btn btn-outline-success w-100 py-2 rounded-3 text-center" for="typeMood">
+                  <i class="bi bi-emoji-smile-fill d-block fs-5 mb-1"></i>
+                  <span class="small fw-semibold">Mood</span>
+                </label>
+              </div>
+
+              <div class="col-4 col-md-2">
+                <input type="radio" class="btn-check" name="type" id="typeDiaper" value="diaper" autocomplete="off" onchange="switchActivityType('diaper')">
+                <label class="btn btn-outline-primary w-100 py-2 rounded-3 text-center" for="typeDiaper">
+                  <i class="bi bi-droplet-fill d-block fs-5 mb-1"></i>
+                  <span class="small fw-semibold">Diaper</span>
+                </label>
+              </div>
+
+              <div class="col-4 col-md-2">
+                <input type="radio" class="btn-check" name="type" id="typeMilestone" value="milestone" autocomplete="off" onchange="switchActivityType('milestone')">
+                <label class="btn btn-outline-danger w-100 py-2 rounded-3 text-center" for="typeMilestone">
+                  <i class="bi bi-star-fill d-block fs-5 mb-1"></i>
+                  <span class="small fw-semibold">Milestone</span>
+                </label>
+              </div>
+
+              <div class="col-4 col-md-2">
+                <input type="radio" class="btn-check" name="type" id="typeNote" value="note" autocomplete="off" onchange="switchActivityType('note')">
+                <label class="btn btn-outline-secondary w-100 py-2 rounded-3 text-center" for="typeNote">
+                  <i class="bi bi-journal-text d-block fs-5 mb-1"></i>
+                  <span class="small fw-semibold">Note</span>
+                </label>
+              </div>
+            </div>
+          </div>
+
+          <!-- DYNAMIC SUB-SECTIONS -->
+
+          <!-- 1. MEAL SECTION -->
+          <div id="sectionMeal" class="p-3 bg-light rounded-3 border mb-4">
+            <h6 class="fw-bold text-dark mb-3"><i class="bi bi-cup-hot text-warning me-2"></i> Meal & Snack Details</h6>
+            
+            <div class="row g-3 mb-3">
+              <div class="col-md-6">
+                <label class="form-label small text-secondary fw-semibold">Meal Type</label>
+                <select class="form-select form-select-sm" name="meal_type">
+                  <option value="Breakfast">Breakfast</option>
+                  <option value="Morning Snack">Morning Snack</option>
+                  <option value="Lunch" selected>Lunch</option>
+                  <option value="Afternoon Snack">Afternoon Snack</option>
+                  <option value="Bottle Feed">Bottle Feed (Formula/Milk)</option>
+                </select>
+              </div>
+
+              <div class="col-md-6">
+                <label class="form-label small text-secondary fw-semibold">Amount Consumed</label>
+                <select class="form-select form-select-sm" name="amount_eaten">
+                  <option value="All (100%)" selected>All (100%)</option>
+                  <option value="Most (~75%)">Most (~75%)</option>
+                  <option value="Half (~50%)">Half (~50%)</option>
+                  <option value="A Little (~25%)">A Little (~25%)</option>
+                  <option value="Refused / None">Refused / None</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="mb-3">
+              <label class="form-label small text-secondary fw-semibold">Food Items Served</label>
+              <input type="text" class="form-control form-control-sm" name="food_items" placeholder="e.g. Grilled cheese, baby carrots, apple slices, water">
+            </div>
+
+            <div>
+              <label class="form-label small text-secondary fw-semibold">Meal Notes (Optional)</label>
+              <input type="text" class="form-control form-control-sm" name="meal_notes" placeholder="e.g. Loved the fruit, tried carrots with enthusiasm">
+            </div>
+          </div>
+
+          <!-- 2. NAP SECTION -->
+          <div id="sectionNap" class="p-3 bg-light rounded-3 border mb-4 d-none">
+            <h6 class="fw-bold text-dark mb-3"><i class="bi bi-moon-stars text-info me-2"></i> Nap & Rest Time</h6>
+            <div class="row g-3 mb-3">
+              <div class="col-md-4">
+                <label class="form-label small text-secondary fw-semibold">Start Time</label>
+                <input type="time" class="form-control form-control-sm" name="nap_start" value="12:30">
+              </div>
+              <div class="col-md-4">
+                <label class="form-label small text-secondary fw-semibold">End Time</label>
+                <input type="time" class="form-control form-control-sm" name="nap_end" value="14:00">
+              </div>
+              <div class="col-md-4">
+                <label class="form-label small text-secondary fw-semibold">Sleep Quality</label>
+                <select class="form-select form-select-sm" name="nap_quality">
+                  <option value="Peaceful & Deep" selected>Peaceful & Deep</option>
+                  <option value="Woke up once">Woke up once</option>
+                  <option value="Restless">Restless</option>
+                  <option value="Quiet rest only (no sleep)">Quiet rest only (no sleep)</option>
+                </select>
+              </div>
+            </div>
+            <div>
+              <label class="form-label small text-secondary fw-semibold">Nap Notes</label>
+              <input type="text" class="form-control form-control-sm" name="nap_notes" placeholder="e.g. Fell asleep quickly with soft lullaby">
+            </div>
+          </div>
+
+          <!-- 3. MOOD SECTION -->
+          <div id="sectionMood" class="p-3 bg-light rounded-3 border mb-4 d-none">
+            <h6 class="fw-bold text-dark mb-3"><i class="bi bi-emoji-smile text-success me-2"></i> Child Mood & Behavior</h6>
+            <div class="mb-3">
+              <label class="form-label small text-secondary fw-semibold">Overall Mood</label>
+              <div class="d-flex flex-wrap gap-2">
+                <div class="form-check form-check-inline">
+                  <input class="form-check-input" type="radio" name="mood_val" id="moodHappy" value="Happy & Smiling" checked>
+                  <label class="form-check-label small" for="moodHappy">😊 Happy & Smiling</label>
+                </div>
+                <div class="form-check form-check-inline">
+                  <input class="form-check-input" type="radio" name="mood_val" id="moodEnergetic" value="Energetic & Playful">
+                  <label class="form-check-label small" for="moodEnergetic">⚡ Energetic & Playful</label>
+                </div>
+                <div class="form-check form-check-inline">
+                  <input class="form-check-input" type="radio" name="mood_val" id="moodCalm" value="Calm & Content">
+                  <label class="form-check-label small" for="moodCalm">🌿 Calm & Content</label>
+                </div>
+                <div class="form-check form-check-inline">
+                  <input class="form-check-input" type="radio" name="mood_val" id="moodFussy" value="Fussy / Teething">
+                  <label class="form-check-label small" for="moodFussy">🥺 Fussy / Teething</label>
+                </div>
+                <div class="form-check form-check-inline">
+                  <input class="form-check-input" type="radio" name="mood_val" id="moodSleepy" value="Sleepy & Tired">
+                  <label class="form-check-label small" for="moodSleepy">😴 Sleepy & Tired</label>
+                </div>
+              </div>
+            </div>
+            <div>
+              <label class="form-label small text-secondary fw-semibold">Mood Notes</label>
+              <input type="text" class="form-control form-control-sm" name="mood_notes" placeholder="e.g. Enjoyed sharing crayons with peers, very joyful">
+            </div>
+          </div>
+
+          <!-- 4. DIAPER / BATHROOM SECTION -->
+          <div id="sectionDiaper" class="p-3 bg-light rounded-3 border mb-4 d-none">
+            <h6 class="fw-bold text-dark mb-3"><i class="bi bi-droplet text-primary me-2"></i> Diaper Change & Bathroom Routine</h6>
+            <div class="row g-3 mb-3">
+              <div class="col-md-6">
+                <label class="form-label small text-secondary fw-semibold">Diaper / Potty Status</label>
+                <select class="form-select form-select-sm" name="diaper_type">
+                  <option value="Wet Diaper" selected>Wet Diaper Changed</option>
+                  <option value="Soiled / BM">Soiled Diaper Changed</option>
+                  <option value="Wet & Soiled">Both Wet & Soiled Changed</option>
+                  <option value="Dry Diaper Check">Dry Diaper Check</option>
+                  <option value="Potty Success! (Toilet)">Potty Success! (Toilet)</option>
+                  <option value="Potty Attempt (Dry)">Potty Attempt (Dry)</option>
+                </select>
+              </div>
+              <div class="col-md-6">
+                <label class="form-label small text-secondary fw-semibold">Skin / Hygiene Notes</label>
+                <input type="text" class="form-control form-control-sm" name="diaper_notes" placeholder="e.g. Diaper cream applied, washed hands properly">
+              </div>
+            </div>
+          </div>
+
+          <!-- 5. MILESTONE SECTION -->
+          <div id="sectionMilestone" class="p-3 bg-light rounded-3 border mb-4 d-none">
+            <h6 class="fw-bold text-dark mb-3"><i class="bi bi-star text-danger me-2"></i> Developmental Milestone</h6>
+            <div class="mb-3">
+              <label class="form-label small text-secondary fw-semibold">Milestone Title</label>
+              <input type="text" class="form-control form-control-sm" name="milestone_title" placeholder="e.g. Stacked 6 blocks, Named all colors, First word combination">
+            </div>
+            <div>
+              <label class="form-label small text-secondary fw-semibold">Observation Details</label>
+              <textarea class="form-control form-control-sm" name="milestone_details" rows="2" placeholder="Describe the achievement in detail..."></textarea>
+            </div>
+          </div>
+
+          <!-- 6. GENERAL NOTE SECTION -->
+          <div id="sectionNote" class="p-3 bg-light rounded-3 border mb-4 d-none">
+            <h6 class="fw-bold text-dark mb-3"><i class="bi bi-journal-text text-secondary me-2"></i> Daily Note / Observation</h6>
+            <div class="mb-3">
+              <label class="form-label small text-secondary fw-semibold">Note Title</label>
+              <input type="text" class="form-control form-control-sm" name="note_title" placeholder="e.g. Outdoor play, Craft project, General update">
+            </div>
+            <div>
+              <label class="form-label small text-secondary fw-semibold">Note Details</label>
+              <textarea class="form-control form-control-sm" name="note_details" rows="3" placeholder="Write any observation or message for the parents..."></textarea>
+            </div>
+          </div>
+
+          <!-- Submit Buttons -->
+          <div class="d-flex justify-content-end gap-2">
+            <a href="{{ url_for('caregiver.child_detail', child_id=child.id) }}" class="btn btn-outline-secondary px-4 rounded-pill">
+              Cancel
+            </a>
+            <button type="submit" class="btn btn-primary px-4 rounded-pill fw-semibold shadow-sm">
+              <i class="bi bi-check2-circle me-1"></i> Save & Notify Parent
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+function switchActivityType(type) {
+  const sections = ['Meal', 'Nap', 'Mood', 'Diaper', 'Milestone', 'Note'];
+  sections.forEach(sec => {
+    const el = document.getElementById('section' + sec);
+    if (el) {
+      if (sec.toLowerCase() === type) {
+        el.classList.remove('d-none');
+      } else {
+        el.classList.add('d-none');
+      }
+    }
+  });
+}
+</script>
+{% endblock %}
